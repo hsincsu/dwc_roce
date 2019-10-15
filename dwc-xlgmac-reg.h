@@ -743,12 +743,39 @@
 /*PGU Registers*/
 #define PGU_BASE 			0 /*wait for answer*/
 
-#define GENRSP 				2000
-#define CFGRNR 				2004
-#define CFGSIZEOFWRENTRY 		2008
-#define UPLINKDOWNLINK 			2010
-#define WQERETRYCOUNT			2014
-#define WQERETRYTIMER			2018
+#define GENRSP 				0x2000	/*whether CQ interrup*/
+#define CFGRNR 				0x2004	/*QP WQE, NIC WORK, RNR,CREDIT TIMER*/
+#define CFGSIZEOFWRENTRY 		0x2008	/*size of workrequest, 16byte times*/
+#define UPLINKDOWNLINK 			0x2010	/*MTU with uplink & downlink*/
+#define WQERETRYCOUNT			0x2014	/*WQE retry count*/
+#define WQERETRYTIMER			0x2018	/*WQE timer*/
+#define INTRMASK			0x2020	/*INTR MASK*/
+#define WRONGVECTOR			0x2024	/*err vector*/
+#define WRONGFIELD			0x2028	/*err field*/
+#define TLBINIT				0x202c  /*TLB INIT*/
+#define SOCKETIP			0x2030  /*SOCKET ID TO IP*/
+#define QPTOQP				0x2034	/*QP TO QP*/
+#define CQQUEUEUP			0x0000	/*the upper border of cq*/
+#define CQQUEUEDOWN			0x0008	/*the lower border of cq*/
+#define CQREADPTR			0x0010	/*cq read ptr*/
+#define CQESIZE				0x0018	/*cqe size*/
+#define CQWRITEPTR			0x001c 	/*cq write ptr*/
+#define RCVQ_INF			0x2040  /*RECVQ_INF REGISTER*/
+#define RCVQ_DI				0x2044  /*REVQ_DI REGISTER*/
+#define RCVQ_WRRD			0x2050  /*REVQ_WRRD*/ 
+#define QPLISTREADQPN			0x4000  /*READ QPLIST FOR QPN*/
+#define WRITEORREADQPLIST   		0x4004  /*READ OR WIRTE QPLIST*/
+#define WPFORQPLIST			0x4008  /*WRITE QPLIST DATA: WP*/
+#define RPFORQPLIST 			0x4010	/*WRITE QPLIST DATA: RP*/
+#define QPNANDVALID			0x4018  /*WRITE QPLIST DATA: QPN AND QPVALID*/
+#define QPLISTWRITEQPN			0x4020  /*WRITE QPLIST DATA: WRITE QPN*/
+#define READQPLISTDATA			0x4024	/*READ QPLIST DATA*/
+#define WRITEQPLISTMASK			0x403c  /*MASK FOR PAGE,RP,WP*/
+#define STARTINITPSN			0x8000  /*START INIT PSN*/
+#define STARTINITQP			0x8004  /*START INIT QP*/
+#define INITQPTABLE			0x8008  /*INIT QP TABLE,EEC TABLE,PSN TABLE*/
+#define REGISTERQP			0xc000	/*register qp and qp data*/
+
 
 /*GENRSP START*/
 #define GENRSPCQCONFIG_POS 			0
@@ -786,8 +813,82 @@
 #define RETRYCOUNT_POS				0
 #define RETRYCOUNT_LEN				32
 /*WQERETRYCOUNT END*/
-
-
+/*INTRMASK START*/
+#define MASK_POS				0
+#define MASK_LEN				32
+/*INTRMASK END*/
+/*WRONGVECTOR START*/
+#define ERRVECTOR_POS				0
+#define ERRVECTOR_LEN				32
+/*WRONGVECTOR END*/
+/*WRONGFIELD START*/
+#define ERRFIELD_POS				0
+#define ERRFIELD_LEN				32
+/*WRONGFIELD END*/
+/*TLBINIT START*/
+#define TLBINIT_POS				0
+#define TLBINIT_LEN				32
+/*TLBINIT END*/
+/*SOCKETIP START*/
+#define SOCKETIP_POS				0
+#define SOCKETIP_LEN				32
+/*SOCKETIP END*/
+/*QPTOQP START*/
+#define SRC_QP_POS				0
+#define SRC_QP_LEN				32
+#define DSC_QP_POS				32 /*h2038*/
+#define DSC_QP_LEN				32
+#define RC_QPMAPPING_POS			64 /*h203c*/
+#define RC_QPMAPPING_LEN			8
+/*QPTOQP END*/
+/*CQQUEUEUP START*/
+#define TXUPADDRCQE_L_POS			0
+#define TXUPADDRCQE_L_LEN			32
+#define TXUPADDRCQE_H_POS			32 /*h0004*/
+#define TXUPADDRCQE_H_LEN			32
+/*CQQUEUEUP END*/
+/*CQQUEUEDOWN START*/
+#define TXBASEADDRCQE_L_POS			0  /*h0008*/
+#define TXBASEADDRCQE_L_LEN			32 
+#define TXBASEADDRCQE_H_POS			32 /*h000c*/
+#define TXBASEADDRCQE_H_LEN			32
+/*CQQUEUEDOWN END*/
+/*CQREADPTR START*/
+#define TXCQEWP_L_POS				0  /*h0010*/
+#define TXCQEWP_L_LEN				32
+#define TXCQEWP_H_POS				32 /*h0014*/
+#define TXCQEWP_H_LEN				32
+/*CQREADPTR END*/
+/*CQESIZE START*/
+#define TXCQRDWRVALID_POS			0  /*h0018*/
+#define TXCQRDWRVALID_LEN			1
+#define TXCQRDWR_POS				1
+#define TXCQRDWR_LEN				1
+#define TXCQQPN_POS				2
+#define TXCQQPN_LEN				8
+/*CQESIZE END*/
+/*CQWRITEPTR START*/
+#define CQWRITEPTR_POS				0  /*h001c*/
+#define CQWRITEPTR_LEN				40
+/*CQWRITEPTR END*/
+/*RCVQ_INF START*/
+#define RCVQ_WADDR_POS				0  /*h2040*/
+#define RCVQ_WADDR_LEN				10
+#define RCVQ_WP_POS				10
+#define RCVQ_WP_LEN				8
+#define RCVQ_RP_POS				18
+#define RCVQ_RP_LEN				8
+/*RCVQ_INF END*/
+/*RCVQ_DI START*/
+#define RCVQ_DI_L_POS				0  /*h2044*/
+#define RCVQ_DI_L_LEN				32
+#define RCVQ_DI_H_POS				32 /*h2048*/
+#define RCVQ_DI_H_LEN				32
+/*RCVQ_DI END*/
+/*RCVQ_WRRD START*/
+#define RCVQ_WRRD_POS				0  /*h2050*/
+#define RCVQ_WRRD_LEN				6
+/*RCVQ_WRRD END*/
 
 
 
