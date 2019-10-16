@@ -546,6 +546,11 @@ struct xlgmac_pdata {
 	struct xlgmac_hw_ops hw_ops;
 	struct xlgmac_desc_ops desc_ops;
 
+        /*list head structure --edited by hs */
+        struct list_head list;
+        /* end */
+
+
 	/* Device statistics */
 	struct xlgmac_stats stats;
 

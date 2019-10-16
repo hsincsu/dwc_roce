@@ -1,0 +1,1412 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+CFGENABLE_LEN	dwc-xlgmac-reg.h	790;"	d
+CFGENABLE_POS	dwc-xlgmac-reg.h	789;"	d
+CFGRNR	dwc-xlgmac-reg.h	747;"	d
+CFGSIZEOFWRENTRY	dwc-xlgmac-reg.h	748;"	d
+CQESIZE	dwc-xlgmac-reg.h	761;"	d
+CQQUEUEDOWN	dwc-xlgmac-reg.h	759;"	d
+CQQUEUEUP	dwc-xlgmac-reg.h	758;"	d
+CQREADPTR	dwc-xlgmac-reg.h	760;"	d
+CQWRITEPTR	dwc-xlgmac-reg.h	762;"	d
+CQWRITEPTR_LEN	dwc-xlgmac-reg.h	872;"	d
+CQWRITEPTR_POS	dwc-xlgmac-reg.h	871;"	d
+CREDITTIMER_LEN	dwc-xlgmac-reg.h	796;"	d
+CREDITTIMER_POS	dwc-xlgmac-reg.h	795;"	d
+DMA_CH_BASE	dwc-xlgmac-reg.h	537;"	d
+DMA_CH_CR	dwc-xlgmac-reg.h	540;"	d
+DMA_CH_CR_PBLX8_LEN	dwc-xlgmac-reg.h	557;"	d
+DMA_CH_CR_PBLX8_POS	dwc-xlgmac-reg.h	556;"	d
+DMA_CH_CR_SPH_LEN	dwc-xlgmac-reg.h	559;"	d
+DMA_CH_CR_SPH_POS	dwc-xlgmac-reg.h	558;"	d
+DMA_CH_IER	dwc-xlgmac-reg.h	551;"	d
+DMA_CH_IER_AIE_LEN	dwc-xlgmac-reg.h	561;"	d
+DMA_CH_IER_AIE_POS	dwc-xlgmac-reg.h	560;"	d
+DMA_CH_IER_FBEE_LEN	dwc-xlgmac-reg.h	563;"	d
+DMA_CH_IER_FBEE_POS	dwc-xlgmac-reg.h	562;"	d
+DMA_CH_IER_NIE_LEN	dwc-xlgmac-reg.h	565;"	d
+DMA_CH_IER_NIE_POS	dwc-xlgmac-reg.h	564;"	d
+DMA_CH_IER_RBUE_LEN	dwc-xlgmac-reg.h	567;"	d
+DMA_CH_IER_RBUE_POS	dwc-xlgmac-reg.h	566;"	d
+DMA_CH_IER_RIE_LEN	dwc-xlgmac-reg.h	569;"	d
+DMA_CH_IER_RIE_POS	dwc-xlgmac-reg.h	568;"	d
+DMA_CH_IER_RSE_LEN	dwc-xlgmac-reg.h	571;"	d
+DMA_CH_IER_RSE_POS	dwc-xlgmac-reg.h	570;"	d
+DMA_CH_IER_TBUE_LEN	dwc-xlgmac-reg.h	573;"	d
+DMA_CH_IER_TBUE_POS	dwc-xlgmac-reg.h	572;"	d
+DMA_CH_IER_TIE_LEN	dwc-xlgmac-reg.h	575;"	d
+DMA_CH_IER_TIE_POS	dwc-xlgmac-reg.h	574;"	d
+DMA_CH_IER_TXSE_LEN	dwc-xlgmac-reg.h	577;"	d
+DMA_CH_IER_TXSE_POS	dwc-xlgmac-reg.h	576;"	d
+DMA_CH_INC	dwc-xlgmac-reg.h	538;"	d
+DMA_CH_RCR	dwc-xlgmac-reg.h	542;"	d
+DMA_CH_RCR_PBL_LEN	dwc-xlgmac-reg.h	579;"	d
+DMA_CH_RCR_PBL_POS	dwc-xlgmac-reg.h	578;"	d
+DMA_CH_RCR_RBSZ_LEN	dwc-xlgmac-reg.h	581;"	d
+DMA_CH_RCR_RBSZ_POS	dwc-xlgmac-reg.h	580;"	d
+DMA_CH_RCR_SR_LEN	dwc-xlgmac-reg.h	583;"	d
+DMA_CH_RCR_SR_POS	dwc-xlgmac-reg.h	582;"	d
+DMA_CH_RDLR_HI	dwc-xlgmac-reg.h	545;"	d
+DMA_CH_RDLR_LO	dwc-xlgmac-reg.h	546;"	d
+DMA_CH_RDRLR	dwc-xlgmac-reg.h	550;"	d
+DMA_CH_RDTR_LO	dwc-xlgmac-reg.h	548;"	d
+DMA_CH_RIWT	dwc-xlgmac-reg.h	552;"	d
+DMA_CH_RIWT_RWT_LEN	dwc-xlgmac-reg.h	585;"	d
+DMA_CH_RIWT_RWT_POS	dwc-xlgmac-reg.h	584;"	d
+DMA_CH_SR	dwc-xlgmac-reg.h	553;"	d
+DMA_CH_SR_FBE_LEN	dwc-xlgmac-reg.h	587;"	d
+DMA_CH_SR_FBE_POS	dwc-xlgmac-reg.h	586;"	d
+DMA_CH_SR_RBU_LEN	dwc-xlgmac-reg.h	589;"	d
+DMA_CH_SR_RBU_POS	dwc-xlgmac-reg.h	588;"	d
+DMA_CH_SR_RI_LEN	dwc-xlgmac-reg.h	591;"	d
+DMA_CH_SR_RI_POS	dwc-xlgmac-reg.h	590;"	d
+DMA_CH_SR_RPS_LEN	dwc-xlgmac-reg.h	593;"	d
+DMA_CH_SR_RPS_POS	dwc-xlgmac-reg.h	592;"	d
+DMA_CH_SR_TBU_LEN	dwc-xlgmac-reg.h	595;"	d
+DMA_CH_SR_TBU_POS	dwc-xlgmac-reg.h	594;"	d
+DMA_CH_SR_TI_LEN	dwc-xlgmac-reg.h	597;"	d
+DMA_CH_SR_TI_POS	dwc-xlgmac-reg.h	596;"	d
+DMA_CH_SR_TPS_LEN	dwc-xlgmac-reg.h	599;"	d
+DMA_CH_SR_TPS_POS	dwc-xlgmac-reg.h	598;"	d
+DMA_CH_TCR	dwc-xlgmac-reg.h	541;"	d
+DMA_CH_TCR_OSP_LEN	dwc-xlgmac-reg.h	601;"	d
+DMA_CH_TCR_OSP_POS	dwc-xlgmac-reg.h	600;"	d
+DMA_CH_TCR_PBL_LEN	dwc-xlgmac-reg.h	603;"	d
+DMA_CH_TCR_PBL_POS	dwc-xlgmac-reg.h	602;"	d
+DMA_CH_TCR_ST_LEN	dwc-xlgmac-reg.h	605;"	d
+DMA_CH_TCR_ST_POS	dwc-xlgmac-reg.h	604;"	d
+DMA_CH_TCR_TSE_LEN	dwc-xlgmac-reg.h	607;"	d
+DMA_CH_TCR_TSE_POS	dwc-xlgmac-reg.h	606;"	d
+DMA_CH_TDLR_HI	dwc-xlgmac-reg.h	543;"	d
+DMA_CH_TDLR_LO	dwc-xlgmac-reg.h	544;"	d
+DMA_CH_TDRLR	dwc-xlgmac-reg.h	549;"	d
+DMA_CH_TDTR_LO	dwc-xlgmac-reg.h	547;"	d
+DMA_DSR0	dwc-xlgmac-reg.h	499;"	d
+DMA_DSR0_TPS_START	dwc-xlgmac-reg.h	524;"	d
+DMA_DSR1	dwc-xlgmac-reg.h	500;"	d
+DMA_DSRX_FIRST_QUEUE	dwc-xlgmac-reg.h	525;"	d
+DMA_DSRX_INC	dwc-xlgmac-reg.h	526;"	d
+DMA_DSRX_QPR	dwc-xlgmac-reg.h	527;"	d
+DMA_DSRX_TPS_START	dwc-xlgmac-reg.h	528;"	d
+DMA_DSR_Q_LEN	dwc-xlgmac-reg.h	523;"	d
+DMA_DSR_RPS_LEN	dwc-xlgmac-reg.h	521;"	d
+DMA_DSR_TPS_LEN	dwc-xlgmac-reg.h	522;"	d
+DMA_ISR	dwc-xlgmac-reg.h	498;"	d
+DMA_ISR_MACIS_LEN	dwc-xlgmac-reg.h	504;"	d
+DMA_ISR_MACIS_POS	dwc-xlgmac-reg.h	503;"	d
+DMA_ISR_MTLIS_LEN	dwc-xlgmac-reg.h	506;"	d
+DMA_ISR_MTLIS_POS	dwc-xlgmac-reg.h	505;"	d
+DMA_MR	dwc-xlgmac-reg.h	496;"	d
+DMA_MR_SWR_LEN	dwc-xlgmac-reg.h	508;"	d
+DMA_MR_SWR_POS	dwc-xlgmac-reg.h	507;"	d
+DMA_OSP_DISABLE	dwc-xlgmac-reg.h	610;"	d
+DMA_OSP_ENABLE	dwc-xlgmac-reg.h	611;"	d
+DMA_PBL_1	dwc-xlgmac-reg.h	612;"	d
+DMA_PBL_128	dwc-xlgmac-reg.h	619;"	d
+DMA_PBL_16	dwc-xlgmac-reg.h	616;"	d
+DMA_PBL_2	dwc-xlgmac-reg.h	613;"	d
+DMA_PBL_256	dwc-xlgmac-reg.h	620;"	d
+DMA_PBL_32	dwc-xlgmac-reg.h	617;"	d
+DMA_PBL_4	dwc-xlgmac-reg.h	614;"	d
+DMA_PBL_64	dwc-xlgmac-reg.h	618;"	d
+DMA_PBL_8	dwc-xlgmac-reg.h	615;"	d
+DMA_PBL_X8_DISABLE	dwc-xlgmac-reg.h	621;"	d
+DMA_PBL_X8_ENABLE	dwc-xlgmac-reg.h	622;"	d
+DMA_SBMR	dwc-xlgmac-reg.h	497;"	d
+DMA_SBMR_BLEN_128_LEN	dwc-xlgmac-reg.h	514;"	d
+DMA_SBMR_BLEN_128_POS	dwc-xlgmac-reg.h	513;"	d
+DMA_SBMR_BLEN_256_LEN	dwc-xlgmac-reg.h	516;"	d
+DMA_SBMR_BLEN_256_POS	dwc-xlgmac-reg.h	515;"	d
+DMA_SBMR_BLEN_64_LEN	dwc-xlgmac-reg.h	512;"	d
+DMA_SBMR_BLEN_64_POS	dwc-xlgmac-reg.h	511;"	d
+DMA_SBMR_EAME_LEN	dwc-xlgmac-reg.h	510;"	d
+DMA_SBMR_EAME_POS	dwc-xlgmac-reg.h	509;"	d
+DMA_SBMR_UNDEF_LEN	dwc-xlgmac-reg.h	518;"	d
+DMA_SBMR_UNDEF_POS	dwc-xlgmac-reg.h	517;"	d
+DMA_TPS_STOPPED	dwc-xlgmac-reg.h	529;"	d
+DMA_TPS_SUSPENDED	dwc-xlgmac-reg.h	530;"	d
+DOWNLINKMTU_LEN	dwc-xlgmac-reg.h	806;"	d
+DOWNLINKMTU_POS	dwc-xlgmac-reg.h	805;"	d
+DSC_QP_LEN	dwc-xlgmac-reg.h	840;"	d
+DSC_QP_POS	dwc-xlgmac-reg.h	839;"	d
+DWCROCEDRV_VER	roce_driver/dwcroce.h	25;"	d
+DWCROCEDRV_VER	roce_driver/dwcroce_main.c	/^MODULE_VERSION(DWCROCEDRV_VER);$/;"	v
+DWC_ROCE_H	roce_driver/dwc_roce.h	14;"	d
+ERRFIELD_LEN	dwc-xlgmac-reg.h	826;"	d
+ERRFIELD_POS	dwc-xlgmac-reg.h	825;"	d
+ERRVECTOR_LEN	dwc-xlgmac-reg.h	822;"	d
+ERRVECTOR_POS	dwc-xlgmac-reg.h	821;"	d
+GENCQRQTCONFIG_LEN	dwc-xlgmac-reg.h	784;"	d
+GENCQRQTCONFIG_POS	dwc-xlgmac-reg.h	783;"	d
+GENRSP	dwc-xlgmac-reg.h	746;"	d
+GENRSPCQCONFIG_LEN	dwc-xlgmac-reg.h	782;"	d
+GENRSPCQCONFIG_POS	dwc-xlgmac-reg.h	781;"	d
+HSDEBUG	roce_driver/dwc_roce.c	22;"	d	file:
+HSDEBUG	roce_driver/dwcroce_main.c	26;"	d	file:
+INITQPTABLE	dwc-xlgmac-reg.h	776;"	d
+INITQPTABLE_LEN	dwc-xlgmac-reg.h	934;"	d
+INITQPTABLE_POS	dwc-xlgmac-reg.h	933;"	d
+INTRMASK	dwc-xlgmac-reg.h	752;"	d
+LOWTHRESHOLD_LEN	dwc-xlgmac-reg.h	794;"	d
+LOWTHRESHOLD_POS	dwc-xlgmac-reg.h	793;"	d
+MAC_HTR0	dwc-xlgmac-reg.h	25;"	d
+MAC_HTR_INC	dwc-xlgmac-reg.h	51;"	d
+MAC_HWF0R	dwc-xlgmac-reg.h	38;"	d
+MAC_HWF0R_ADDMACADRSEL_LEN	dwc-xlgmac-reg.h	57;"	d
+MAC_HWF0R_ADDMACADRSEL_POS	dwc-xlgmac-reg.h	56;"	d
+MAC_HWF0R_ARPOFFSEL_LEN	dwc-xlgmac-reg.h	59;"	d
+MAC_HWF0R_ARPOFFSEL_POS	dwc-xlgmac-reg.h	58;"	d
+MAC_HWF0R_EEESEL_LEN	dwc-xlgmac-reg.h	61;"	d
+MAC_HWF0R_EEESEL_POS	dwc-xlgmac-reg.h	60;"	d
+MAC_HWF0R_MGKSEL_LEN	dwc-xlgmac-reg.h	65;"	d
+MAC_HWF0R_MGKSEL_POS	dwc-xlgmac-reg.h	64;"	d
+MAC_HWF0R_MMCSEL_LEN	dwc-xlgmac-reg.h	67;"	d
+MAC_HWF0R_MMCSEL_POS	dwc-xlgmac-reg.h	66;"	d
+MAC_HWF0R_PHYIFSEL_LEN	dwc-xlgmac-reg.h	63;"	d
+MAC_HWF0R_PHYIFSEL_POS	dwc-xlgmac-reg.h	62;"	d
+MAC_HWF0R_RWKSEL_LEN	dwc-xlgmac-reg.h	69;"	d
+MAC_HWF0R_RWKSEL_POS	dwc-xlgmac-reg.h	68;"	d
+MAC_HWF0R_RXCOESEL_LEN	dwc-xlgmac-reg.h	71;"	d
+MAC_HWF0R_RXCOESEL_POS	dwc-xlgmac-reg.h	70;"	d
+MAC_HWF0R_SAVLANINS_LEN	dwc-xlgmac-reg.h	73;"	d
+MAC_HWF0R_SAVLANINS_POS	dwc-xlgmac-reg.h	72;"	d
+MAC_HWF0R_SMASEL_LEN	dwc-xlgmac-reg.h	75;"	d
+MAC_HWF0R_SMASEL_POS	dwc-xlgmac-reg.h	74;"	d
+MAC_HWF0R_TSSEL_LEN	dwc-xlgmac-reg.h	77;"	d
+MAC_HWF0R_TSSEL_POS	dwc-xlgmac-reg.h	76;"	d
+MAC_HWF0R_TSSTSSEL_LEN	dwc-xlgmac-reg.h	79;"	d
+MAC_HWF0R_TSSTSSEL_POS	dwc-xlgmac-reg.h	78;"	d
+MAC_HWF0R_TXCOESEL_LEN	dwc-xlgmac-reg.h	81;"	d
+MAC_HWF0R_TXCOESEL_POS	dwc-xlgmac-reg.h	80;"	d
+MAC_HWF0R_VLHASH_LEN	dwc-xlgmac-reg.h	83;"	d
+MAC_HWF0R_VLHASH_POS	dwc-xlgmac-reg.h	82;"	d
+MAC_HWF1R	dwc-xlgmac-reg.h	39;"	d
+MAC_HWF1R_ADDR64_LEN	dwc-xlgmac-reg.h	85;"	d
+MAC_HWF1R_ADDR64_POS	dwc-xlgmac-reg.h	84;"	d
+MAC_HWF1R_ADVTHWORD_LEN	dwc-xlgmac-reg.h	87;"	d
+MAC_HWF1R_ADVTHWORD_POS	dwc-xlgmac-reg.h	86;"	d
+MAC_HWF1R_DBGMEMA_LEN	dwc-xlgmac-reg.h	89;"	d
+MAC_HWF1R_DBGMEMA_POS	dwc-xlgmac-reg.h	88;"	d
+MAC_HWF1R_DCBEN_LEN	dwc-xlgmac-reg.h	91;"	d
+MAC_HWF1R_DCBEN_POS	dwc-xlgmac-reg.h	90;"	d
+MAC_HWF1R_HASHTBLSZ_LEN	dwc-xlgmac-reg.h	93;"	d
+MAC_HWF1R_HASHTBLSZ_POS	dwc-xlgmac-reg.h	92;"	d
+MAC_HWF1R_L3L4FNUM_LEN	dwc-xlgmac-reg.h	95;"	d
+MAC_HWF1R_L3L4FNUM_POS	dwc-xlgmac-reg.h	94;"	d
+MAC_HWF1R_NUMTC_LEN	dwc-xlgmac-reg.h	97;"	d
+MAC_HWF1R_NUMTC_POS	dwc-xlgmac-reg.h	96;"	d
+MAC_HWF1R_RSSEN_LEN	dwc-xlgmac-reg.h	99;"	d
+MAC_HWF1R_RSSEN_POS	dwc-xlgmac-reg.h	98;"	d
+MAC_HWF1R_RXFIFOSIZE_LEN	dwc-xlgmac-reg.h	101;"	d
+MAC_HWF1R_RXFIFOSIZE_POS	dwc-xlgmac-reg.h	100;"	d
+MAC_HWF1R_SPHEN_LEN	dwc-xlgmac-reg.h	103;"	d
+MAC_HWF1R_SPHEN_POS	dwc-xlgmac-reg.h	102;"	d
+MAC_HWF1R_TSOEN_LEN	dwc-xlgmac-reg.h	105;"	d
+MAC_HWF1R_TSOEN_POS	dwc-xlgmac-reg.h	104;"	d
+MAC_HWF1R_TXFIFOSIZE_LEN	dwc-xlgmac-reg.h	107;"	d
+MAC_HWF1R_TXFIFOSIZE_POS	dwc-xlgmac-reg.h	106;"	d
+MAC_HWF2R	dwc-xlgmac-reg.h	40;"	d
+MAC_HWF2R_AUXSNAPNUM_LEN	dwc-xlgmac-reg.h	109;"	d
+MAC_HWF2R_AUXSNAPNUM_POS	dwc-xlgmac-reg.h	108;"	d
+MAC_HWF2R_PPSOUTNUM_LEN	dwc-xlgmac-reg.h	111;"	d
+MAC_HWF2R_PPSOUTNUM_POS	dwc-xlgmac-reg.h	110;"	d
+MAC_HWF2R_RXCHCNT_LEN	dwc-xlgmac-reg.h	113;"	d
+MAC_HWF2R_RXCHCNT_POS	dwc-xlgmac-reg.h	112;"	d
+MAC_HWF2R_RXQCNT_LEN	dwc-xlgmac-reg.h	115;"	d
+MAC_HWF2R_RXQCNT_POS	dwc-xlgmac-reg.h	114;"	d
+MAC_HWF2R_TXCHCNT_LEN	dwc-xlgmac-reg.h	117;"	d
+MAC_HWF2R_TXCHCNT_POS	dwc-xlgmac-reg.h	116;"	d
+MAC_HWF2R_TXQCNT_LEN	dwc-xlgmac-reg.h	119;"	d
+MAC_HWF2R_TXQCNT_POS	dwc-xlgmac-reg.h	118;"	d
+MAC_IER	dwc-xlgmac-reg.h	36;"	d
+MAC_IER_TSIE_LEN	dwc-xlgmac-reg.h	121;"	d
+MAC_IER_TSIE_POS	dwc-xlgmac-reg.h	120;"	d
+MAC_ISR	dwc-xlgmac-reg.h	35;"	d
+MAC_ISR_MMCRXIS_LEN	dwc-xlgmac-reg.h	123;"	d
+MAC_ISR_MMCRXIS_POS	dwc-xlgmac-reg.h	122;"	d
+MAC_ISR_MMCTXIS_LEN	dwc-xlgmac-reg.h	125;"	d
+MAC_ISR_MMCTXIS_POS	dwc-xlgmac-reg.h	124;"	d
+MAC_ISR_PMTIS_LEN	dwc-xlgmac-reg.h	127;"	d
+MAC_ISR_PMTIS_POS	dwc-xlgmac-reg.h	126;"	d
+MAC_ISR_TSIS_LEN	dwc-xlgmac-reg.h	129;"	d
+MAC_ISR_TSIS_POS	dwc-xlgmac-reg.h	128;"	d
+MAC_MACA0HR	dwc-xlgmac-reg.h	41;"	d
+MAC_MACA0LR	dwc-xlgmac-reg.h	42;"	d
+MAC_MACA1HR	dwc-xlgmac-reg.h	43;"	d
+MAC_MACA1HR_AE_LEN	dwc-xlgmac-reg.h	131;"	d
+MAC_MACA1HR_AE_POS	dwc-xlgmac-reg.h	130;"	d
+MAC_MACA1LR	dwc-xlgmac-reg.h	44;"	d
+MAC_MACA_INC	dwc-xlgmac-reg.h	50;"	d
+MAC_PFR	dwc-xlgmac-reg.h	24;"	d
+MAC_PFR_HMC_LEN	dwc-xlgmac-reg.h	133;"	d
+MAC_PFR_HMC_POS	dwc-xlgmac-reg.h	132;"	d
+MAC_PFR_HPF_LEN	dwc-xlgmac-reg.h	135;"	d
+MAC_PFR_HPF_POS	dwc-xlgmac-reg.h	134;"	d
+MAC_PFR_HUC_LEN	dwc-xlgmac-reg.h	137;"	d
+MAC_PFR_HUC_POS	dwc-xlgmac-reg.h	136;"	d
+MAC_PFR_PM_LEN	dwc-xlgmac-reg.h	139;"	d
+MAC_PFR_PM_POS	dwc-xlgmac-reg.h	138;"	d
+MAC_PFR_PR_LEN	dwc-xlgmac-reg.h	141;"	d
+MAC_PFR_PR_POS	dwc-xlgmac-reg.h	140;"	d
+MAC_PFR_VTFE_LEN	dwc-xlgmac-reg.h	143;"	d
+MAC_PFR_VTFE_POS	dwc-xlgmac-reg.h	142;"	d
+MAC_Q0TFCR	dwc-xlgmac-reg.h	29;"	d
+MAC_Q0TFCR_PT_LEN	dwc-xlgmac-reg.h	145;"	d
+MAC_Q0TFCR_PT_POS	dwc-xlgmac-reg.h	144;"	d
+MAC_Q0TFCR_TFE_LEN	dwc-xlgmac-reg.h	147;"	d
+MAC_Q0TFCR_TFE_POS	dwc-xlgmac-reg.h	146;"	d
+MAC_QTFCR_INC	dwc-xlgmac-reg.h	49;"	d
+MAC_RCR	dwc-xlgmac-reg.h	23;"	d
+MAC_RCR_ACS_LEN	dwc-xlgmac-reg.h	149;"	d
+MAC_RCR_ACS_POS	dwc-xlgmac-reg.h	148;"	d
+MAC_RCR_CST_LEN	dwc-xlgmac-reg.h	151;"	d
+MAC_RCR_CST_POS	dwc-xlgmac-reg.h	150;"	d
+MAC_RCR_DCRCC_LEN	dwc-xlgmac-reg.h	153;"	d
+MAC_RCR_DCRCC_POS	dwc-xlgmac-reg.h	152;"	d
+MAC_RCR_HDSMS_LEN	dwc-xlgmac-reg.h	155;"	d
+MAC_RCR_HDSMS_POS	dwc-xlgmac-reg.h	154;"	d
+MAC_RCR_IPC_LEN	dwc-xlgmac-reg.h	157;"	d
+MAC_RCR_IPC_POS	dwc-xlgmac-reg.h	156;"	d
+MAC_RCR_JE_LEN	dwc-xlgmac-reg.h	159;"	d
+MAC_RCR_JE_POS	dwc-xlgmac-reg.h	158;"	d
+MAC_RCR_LM_LEN	dwc-xlgmac-reg.h	161;"	d
+MAC_RCR_LM_POS	dwc-xlgmac-reg.h	160;"	d
+MAC_RCR_RE_LEN	dwc-xlgmac-reg.h	163;"	d
+MAC_RCR_RE_POS	dwc-xlgmac-reg.h	162;"	d
+MAC_RFCR	dwc-xlgmac-reg.h	30;"	d
+MAC_RFCR_PFCE_LEN	dwc-xlgmac-reg.h	165;"	d
+MAC_RFCR_PFCE_POS	dwc-xlgmac-reg.h	164;"	d
+MAC_RFCR_RFE_LEN	dwc-xlgmac-reg.h	167;"	d
+MAC_RFCR_RFE_POS	dwc-xlgmac-reg.h	166;"	d
+MAC_RFCR_UP_LEN	dwc-xlgmac-reg.h	169;"	d
+MAC_RFCR_UP_POS	dwc-xlgmac-reg.h	168;"	d
+MAC_RQC0R	dwc-xlgmac-reg.h	31;"	d
+MAC_RQC0R_RXQ0EN_LEN	dwc-xlgmac-reg.h	171;"	d
+MAC_RQC0R_RXQ0EN_POS	dwc-xlgmac-reg.h	170;"	d
+MAC_RQC1R	dwc-xlgmac-reg.h	32;"	d
+MAC_RQC2R	dwc-xlgmac-reg.h	33;"	d
+MAC_RQC2_INC	dwc-xlgmac-reg.h	52;"	d
+MAC_RQC2_Q_PER_REG	dwc-xlgmac-reg.h	53;"	d
+MAC_RQC3R	dwc-xlgmac-reg.h	34;"	d
+MAC_RSSAR	dwc-xlgmac-reg.h	46;"	d
+MAC_RSSAR_ADDRT_LEN	dwc-xlgmac-reg.h	173;"	d
+MAC_RSSAR_ADDRT_POS	dwc-xlgmac-reg.h	172;"	d
+MAC_RSSAR_CT_LEN	dwc-xlgmac-reg.h	175;"	d
+MAC_RSSAR_CT_POS	dwc-xlgmac-reg.h	174;"	d
+MAC_RSSAR_OB_LEN	dwc-xlgmac-reg.h	177;"	d
+MAC_RSSAR_OB_POS	dwc-xlgmac-reg.h	176;"	d
+MAC_RSSAR_RSSIA_LEN	dwc-xlgmac-reg.h	179;"	d
+MAC_RSSAR_RSSIA_POS	dwc-xlgmac-reg.h	178;"	d
+MAC_RSSCR	dwc-xlgmac-reg.h	45;"	d
+MAC_RSSCR_IP2TE_LEN	dwc-xlgmac-reg.h	181;"	d
+MAC_RSSCR_IP2TE_POS	dwc-xlgmac-reg.h	180;"	d
+MAC_RSSCR_RSSE_LEN	dwc-xlgmac-reg.h	183;"	d
+MAC_RSSCR_RSSE_POS	dwc-xlgmac-reg.h	182;"	d
+MAC_RSSCR_TCP4TE_LEN	dwc-xlgmac-reg.h	185;"	d
+MAC_RSSCR_TCP4TE_POS	dwc-xlgmac-reg.h	184;"	d
+MAC_RSSCR_UDP4TE_LEN	dwc-xlgmac-reg.h	187;"	d
+MAC_RSSCR_UDP4TE_POS	dwc-xlgmac-reg.h	186;"	d
+MAC_RSSDR	dwc-xlgmac-reg.h	47;"	d
+MAC_RSSDR_DMCH_LEN	dwc-xlgmac-reg.h	189;"	d
+MAC_RSSDR_DMCH_POS	dwc-xlgmac-reg.h	188;"	d
+MAC_TCR	dwc-xlgmac-reg.h	22;"	d
+MAC_TCR_SS_LEN	dwc-xlgmac-reg.h	191;"	d
+MAC_TCR_SS_POS	dwc-xlgmac-reg.h	190;"	d
+MAC_TCR_TE_LEN	dwc-xlgmac-reg.h	193;"	d
+MAC_TCR_TE_POS	dwc-xlgmac-reg.h	192;"	d
+MAC_VLANHTR	dwc-xlgmac-reg.h	27;"	d
+MAC_VLANHTR_VLHT_LEN	dwc-xlgmac-reg.h	195;"	d
+MAC_VLANHTR_VLHT_POS	dwc-xlgmac-reg.h	194;"	d
+MAC_VLANIR	dwc-xlgmac-reg.h	28;"	d
+MAC_VLANIR_CSVL_LEN	dwc-xlgmac-reg.h	199;"	d
+MAC_VLANIR_CSVL_POS	dwc-xlgmac-reg.h	198;"	d
+MAC_VLANIR_VLTI_LEN	dwc-xlgmac-reg.h	197;"	d
+MAC_VLANIR_VLTI_POS	dwc-xlgmac-reg.h	196;"	d
+MAC_VLANTR	dwc-xlgmac-reg.h	26;"	d
+MAC_VLANTR_DOVLTC_LEN	dwc-xlgmac-reg.h	201;"	d
+MAC_VLANTR_DOVLTC_POS	dwc-xlgmac-reg.h	200;"	d
+MAC_VLANTR_ERSVLM_LEN	dwc-xlgmac-reg.h	203;"	d
+MAC_VLANTR_ERSVLM_POS	dwc-xlgmac-reg.h	202;"	d
+MAC_VLANTR_ESVL_LEN	dwc-xlgmac-reg.h	205;"	d
+MAC_VLANTR_ESVL_POS	dwc-xlgmac-reg.h	204;"	d
+MAC_VLANTR_ETV_LEN	dwc-xlgmac-reg.h	207;"	d
+MAC_VLANTR_ETV_POS	dwc-xlgmac-reg.h	206;"	d
+MAC_VLANTR_EVLRXS_LEN	dwc-xlgmac-reg.h	211;"	d
+MAC_VLANTR_EVLRXS_POS	dwc-xlgmac-reg.h	210;"	d
+MAC_VLANTR_EVLS_LEN	dwc-xlgmac-reg.h	209;"	d
+MAC_VLANTR_EVLS_POS	dwc-xlgmac-reg.h	208;"	d
+MAC_VLANTR_VL_LEN	dwc-xlgmac-reg.h	213;"	d
+MAC_VLANTR_VL_POS	dwc-xlgmac-reg.h	212;"	d
+MAC_VLANTR_VTHM_LEN	dwc-xlgmac-reg.h	215;"	d
+MAC_VLANTR_VTHM_POS	dwc-xlgmac-reg.h	214;"	d
+MAC_VLANTR_VTIM_LEN	dwc-xlgmac-reg.h	217;"	d
+MAC_VLANTR_VTIM_POS	dwc-xlgmac-reg.h	216;"	d
+MAC_VR	dwc-xlgmac-reg.h	37;"	d
+MAC_VR_DEVID_LEN	dwc-xlgmac-reg.h	219;"	d
+MAC_VR_DEVID_POS	dwc-xlgmac-reg.h	218;"	d
+MAC_VR_SNPSVER_LEN	dwc-xlgmac-reg.h	221;"	d
+MAC_VR_SNPSVER_POS	dwc-xlgmac-reg.h	220;"	d
+MAC_VR_USERVER_LEN	dwc-xlgmac-reg.h	223;"	d
+MAC_VR_USERVER_POS	dwc-xlgmac-reg.h	222;"	d
+MASK_LEN	dwc-xlgmac-reg.h	818;"	d
+MASK_POS	dwc-xlgmac-reg.h	817;"	d
+MMC_CR	dwc-xlgmac-reg.h	226;"	d
+MMC_CR_CR_LEN	dwc-xlgmac-reg.h	275;"	d
+MMC_CR_CR_POS	dwc-xlgmac-reg.h	274;"	d
+MMC_CR_CSR_LEN	dwc-xlgmac-reg.h	277;"	d
+MMC_CR_CSR_POS	dwc-xlgmac-reg.h	276;"	d
+MMC_CR_MCF_LEN	dwc-xlgmac-reg.h	281;"	d
+MMC_CR_MCF_POS	dwc-xlgmac-reg.h	280;"	d
+MMC_CR_MCT_LEN	dwc-xlgmac-reg.h	283;"	d
+MMC_CR_MCT_POS	dwc-xlgmac-reg.h	282;"	d
+MMC_CR_ROR_LEN	dwc-xlgmac-reg.h	279;"	d
+MMC_CR_ROR_POS	dwc-xlgmac-reg.h	278;"	d
+MMC_RIER	dwc-xlgmac-reg.h	229;"	d
+MMC_RIER_ALL_INTERRUPTS_LEN	dwc-xlgmac-reg.h	285;"	d
+MMC_RIER_ALL_INTERRUPTS_POS	dwc-xlgmac-reg.h	284;"	d
+MMC_RISR	dwc-xlgmac-reg.h	227;"	d
+MMC_RISR_RX1024TOMAXOCTETS_GB_LEN	dwc-xlgmac-reg.h	317;"	d
+MMC_RISR_RX1024TOMAXOCTETS_GB_POS	dwc-xlgmac-reg.h	316;"	d
+MMC_RISR_RX128TO255OCTETS_GB_LEN	dwc-xlgmac-reg.h	311;"	d
+MMC_RISR_RX128TO255OCTETS_GB_POS	dwc-xlgmac-reg.h	310;"	d
+MMC_RISR_RX256TO511OCTETS_GB_LEN	dwc-xlgmac-reg.h	313;"	d
+MMC_RISR_RX256TO511OCTETS_GB_POS	dwc-xlgmac-reg.h	312;"	d
+MMC_RISR_RX512TO1023OCTETS_GB_LEN	dwc-xlgmac-reg.h	315;"	d
+MMC_RISR_RX512TO1023OCTETS_GB_POS	dwc-xlgmac-reg.h	314;"	d
+MMC_RISR_RX64OCTETS_GB_LEN	dwc-xlgmac-reg.h	307;"	d
+MMC_RISR_RX64OCTETS_GB_POS	dwc-xlgmac-reg.h	306;"	d
+MMC_RISR_RX65TO127OCTETS_GB_LEN	dwc-xlgmac-reg.h	309;"	d
+MMC_RISR_RX65TO127OCTETS_GB_POS	dwc-xlgmac-reg.h	308;"	d
+MMC_RISR_RXBROADCASTFRAMES_G_LEN	dwc-xlgmac-reg.h	293;"	d
+MMC_RISR_RXBROADCASTFRAMES_G_POS	dwc-xlgmac-reg.h	292;"	d
+MMC_RISR_RXCRCERROR_LEN	dwc-xlgmac-reg.h	297;"	d
+MMC_RISR_RXCRCERROR_POS	dwc-xlgmac-reg.h	296;"	d
+MMC_RISR_RXFIFOOVERFLOW_LEN	dwc-xlgmac-reg.h	327;"	d
+MMC_RISR_RXFIFOOVERFLOW_POS	dwc-xlgmac-reg.h	326;"	d
+MMC_RISR_RXFRAMECOUNT_GB_LEN	dwc-xlgmac-reg.h	287;"	d
+MMC_RISR_RXFRAMECOUNT_GB_POS	dwc-xlgmac-reg.h	286;"	d
+MMC_RISR_RXJABBERERROR_LEN	dwc-xlgmac-reg.h	301;"	d
+MMC_RISR_RXJABBERERROR_POS	dwc-xlgmac-reg.h	300;"	d
+MMC_RISR_RXLENGTHERROR_LEN	dwc-xlgmac-reg.h	321;"	d
+MMC_RISR_RXLENGTHERROR_POS	dwc-xlgmac-reg.h	320;"	d
+MMC_RISR_RXMULTICASTFRAMES_G_LEN	dwc-xlgmac-reg.h	295;"	d
+MMC_RISR_RXMULTICASTFRAMES_G_POS	dwc-xlgmac-reg.h	294;"	d
+MMC_RISR_RXOCTETCOUNT_GB_LEN	dwc-xlgmac-reg.h	289;"	d
+MMC_RISR_RXOCTETCOUNT_GB_POS	dwc-xlgmac-reg.h	288;"	d
+MMC_RISR_RXOCTETCOUNT_G_LEN	dwc-xlgmac-reg.h	291;"	d
+MMC_RISR_RXOCTETCOUNT_G_POS	dwc-xlgmac-reg.h	290;"	d
+MMC_RISR_RXOUTOFRANGETYPE_LEN	dwc-xlgmac-reg.h	323;"	d
+MMC_RISR_RXOUTOFRANGETYPE_POS	dwc-xlgmac-reg.h	322;"	d
+MMC_RISR_RXOVERSIZE_G_LEN	dwc-xlgmac-reg.h	305;"	d
+MMC_RISR_RXOVERSIZE_G_POS	dwc-xlgmac-reg.h	304;"	d
+MMC_RISR_RXPAUSEFRAMES_LEN	dwc-xlgmac-reg.h	325;"	d
+MMC_RISR_RXPAUSEFRAMES_POS	dwc-xlgmac-reg.h	324;"	d
+MMC_RISR_RXRUNTERROR_LEN	dwc-xlgmac-reg.h	299;"	d
+MMC_RISR_RXRUNTERROR_POS	dwc-xlgmac-reg.h	298;"	d
+MMC_RISR_RXUNDERSIZE_G_LEN	dwc-xlgmac-reg.h	303;"	d
+MMC_RISR_RXUNDERSIZE_G_POS	dwc-xlgmac-reg.h	302;"	d
+MMC_RISR_RXUNICASTFRAMES_G_LEN	dwc-xlgmac-reg.h	319;"	d
+MMC_RISR_RXUNICASTFRAMES_G_POS	dwc-xlgmac-reg.h	318;"	d
+MMC_RISR_RXVLANFRAMES_GB_LEN	dwc-xlgmac-reg.h	329;"	d
+MMC_RISR_RXVLANFRAMES_GB_POS	dwc-xlgmac-reg.h	328;"	d
+MMC_RISR_RXWATCHDOGERROR_LEN	dwc-xlgmac-reg.h	331;"	d
+MMC_RISR_RXWATCHDOGERROR_POS	dwc-xlgmac-reg.h	330;"	d
+MMC_RX1024TOMAXOCTETS_GB_LO	dwc-xlgmac-reg.h	264;"	d
+MMC_RX128TO255OCTETS_GB_LO	dwc-xlgmac-reg.h	261;"	d
+MMC_RX256TO511OCTETS_GB_LO	dwc-xlgmac-reg.h	262;"	d
+MMC_RX512TO1023OCTETS_GB_LO	dwc-xlgmac-reg.h	263;"	d
+MMC_RX64OCTETS_GB_LO	dwc-xlgmac-reg.h	259;"	d
+MMC_RX65TO127OCTETS_GB_LO	dwc-xlgmac-reg.h	260;"	d
+MMC_RXBROADCASTFRAMES_G_LO	dwc-xlgmac-reg.h	252;"	d
+MMC_RXCRCERROR_LO	dwc-xlgmac-reg.h	254;"	d
+MMC_RXFIFOOVERFLOW_LO	dwc-xlgmac-reg.h	269;"	d
+MMC_RXFRAMECOUNT_GB_LO	dwc-xlgmac-reg.h	249;"	d
+MMC_RXJABBERERROR	dwc-xlgmac-reg.h	256;"	d
+MMC_RXLENGTHERROR_LO	dwc-xlgmac-reg.h	266;"	d
+MMC_RXMULTICASTFRAMES_G_LO	dwc-xlgmac-reg.h	253;"	d
+MMC_RXOCTETCOUNT_GB_LO	dwc-xlgmac-reg.h	250;"	d
+MMC_RXOCTETCOUNT_G_LO	dwc-xlgmac-reg.h	251;"	d
+MMC_RXOUTOFRANGETYPE_LO	dwc-xlgmac-reg.h	267;"	d
+MMC_RXOVERSIZE_G	dwc-xlgmac-reg.h	258;"	d
+MMC_RXPAUSEFRAMES_LO	dwc-xlgmac-reg.h	268;"	d
+MMC_RXRUNTERROR	dwc-xlgmac-reg.h	255;"	d
+MMC_RXUNDERSIZE_G	dwc-xlgmac-reg.h	257;"	d
+MMC_RXUNICASTFRAMES_G_LO	dwc-xlgmac-reg.h	265;"	d
+MMC_RXVLANFRAMES_GB_LO	dwc-xlgmac-reg.h	270;"	d
+MMC_RXWATCHDOGERROR	dwc-xlgmac-reg.h	271;"	d
+MMC_TIER	dwc-xlgmac-reg.h	230;"	d
+MMC_TIER_ALL_INTERRUPTS_LEN	dwc-xlgmac-reg.h	333;"	d
+MMC_TIER_ALL_INTERRUPTS_POS	dwc-xlgmac-reg.h	332;"	d
+MMC_TISR	dwc-xlgmac-reg.h	228;"	d
+MMC_TISR_TX1024TOMAXOCTETS_GB_LEN	dwc-xlgmac-reg.h	353;"	d
+MMC_TISR_TX1024TOMAXOCTETS_GB_POS	dwc-xlgmac-reg.h	352;"	d
+MMC_TISR_TX128TO255OCTETS_GB_LEN	dwc-xlgmac-reg.h	347;"	d
+MMC_TISR_TX128TO255OCTETS_GB_POS	dwc-xlgmac-reg.h	346;"	d
+MMC_TISR_TX256TO511OCTETS_GB_LEN	dwc-xlgmac-reg.h	349;"	d
+MMC_TISR_TX256TO511OCTETS_GB_POS	dwc-xlgmac-reg.h	348;"	d
+MMC_TISR_TX512TO1023OCTETS_GB_LEN	dwc-xlgmac-reg.h	351;"	d
+MMC_TISR_TX512TO1023OCTETS_GB_POS	dwc-xlgmac-reg.h	350;"	d
+MMC_TISR_TX64OCTETS_GB_LEN	dwc-xlgmac-reg.h	343;"	d
+MMC_TISR_TX64OCTETS_GB_POS	dwc-xlgmac-reg.h	342;"	d
+MMC_TISR_TX65TO127OCTETS_GB_LEN	dwc-xlgmac-reg.h	345;"	d
+MMC_TISR_TX65TO127OCTETS_GB_POS	dwc-xlgmac-reg.h	344;"	d
+MMC_TISR_TXBROADCASTFRAMES_GB_LEN	dwc-xlgmac-reg.h	359;"	d
+MMC_TISR_TXBROADCASTFRAMES_GB_POS	dwc-xlgmac-reg.h	358;"	d
+MMC_TISR_TXBROADCASTFRAMES_G_LEN	dwc-xlgmac-reg.h	339;"	d
+MMC_TISR_TXBROADCASTFRAMES_G_POS	dwc-xlgmac-reg.h	338;"	d
+MMC_TISR_TXFRAMECOUNT_GB_LEN	dwc-xlgmac-reg.h	337;"	d
+MMC_TISR_TXFRAMECOUNT_GB_POS	dwc-xlgmac-reg.h	336;"	d
+MMC_TISR_TXFRAMECOUNT_G_LEN	dwc-xlgmac-reg.h	365;"	d
+MMC_TISR_TXFRAMECOUNT_G_POS	dwc-xlgmac-reg.h	364;"	d
+MMC_TISR_TXMULTICASTFRAMES_GB_LEN	dwc-xlgmac-reg.h	357;"	d
+MMC_TISR_TXMULTICASTFRAMES_GB_POS	dwc-xlgmac-reg.h	356;"	d
+MMC_TISR_TXMULTICASTFRAMES_G_LEN	dwc-xlgmac-reg.h	341;"	d
+MMC_TISR_TXMULTICASTFRAMES_G_POS	dwc-xlgmac-reg.h	340;"	d
+MMC_TISR_TXOCTETCOUNT_GB_LEN	dwc-xlgmac-reg.h	335;"	d
+MMC_TISR_TXOCTETCOUNT_GB_POS	dwc-xlgmac-reg.h	334;"	d
+MMC_TISR_TXOCTETCOUNT_G_LEN	dwc-xlgmac-reg.h	363;"	d
+MMC_TISR_TXOCTETCOUNT_G_POS	dwc-xlgmac-reg.h	362;"	d
+MMC_TISR_TXPAUSEFRAMES_LEN	dwc-xlgmac-reg.h	367;"	d
+MMC_TISR_TXPAUSEFRAMES_POS	dwc-xlgmac-reg.h	366;"	d
+MMC_TISR_TXUNDERFLOWERROR_LEN	dwc-xlgmac-reg.h	361;"	d
+MMC_TISR_TXUNDERFLOWERROR_POS	dwc-xlgmac-reg.h	360;"	d
+MMC_TISR_TXUNICASTFRAMES_GB_LEN	dwc-xlgmac-reg.h	355;"	d
+MMC_TISR_TXUNICASTFRAMES_GB_POS	dwc-xlgmac-reg.h	354;"	d
+MMC_TISR_TXVLANFRAMES_G_LEN	dwc-xlgmac-reg.h	369;"	d
+MMC_TISR_TXVLANFRAMES_G_POS	dwc-xlgmac-reg.h	368;"	d
+MMC_TX1024TOMAXOCTETS_GB_LO	dwc-xlgmac-reg.h	240;"	d
+MMC_TX128TO255OCTETS_GB_LO	dwc-xlgmac-reg.h	237;"	d
+MMC_TX256TO511OCTETS_GB_LO	dwc-xlgmac-reg.h	238;"	d
+MMC_TX512TO1023OCTETS_GB_LO	dwc-xlgmac-reg.h	239;"	d
+MMC_TX64OCTETS_GB_LO	dwc-xlgmac-reg.h	235;"	d
+MMC_TX65TO127OCTETS_GB_LO	dwc-xlgmac-reg.h	236;"	d
+MMC_TXBROADCASTFRAMES_GB_LO	dwc-xlgmac-reg.h	243;"	d
+MMC_TXBROADCASTFRAMES_G_LO	dwc-xlgmac-reg.h	233;"	d
+MMC_TXFRAMECOUNT_GB_LO	dwc-xlgmac-reg.h	232;"	d
+MMC_TXFRAMECOUNT_G_LO	dwc-xlgmac-reg.h	246;"	d
+MMC_TXMULTICASTFRAMES_GB_LO	dwc-xlgmac-reg.h	242;"	d
+MMC_TXMULTICASTFRAMES_G_LO	dwc-xlgmac-reg.h	234;"	d
+MMC_TXOCTETCOUNT_GB_LO	dwc-xlgmac-reg.h	231;"	d
+MMC_TXOCTETCOUNT_G_LO	dwc-xlgmac-reg.h	245;"	d
+MMC_TXPAUSEFRAMES_LO	dwc-xlgmac-reg.h	247;"	d
+MMC_TXUNDERFLOWERROR_LO	dwc-xlgmac-reg.h	244;"	d
+MMC_TXUNICASTFRAMES_GB_LO	dwc-xlgmac-reg.h	241;"	d
+MMC_TXVLANFRAMES_G_LO	dwc-xlgmac-reg.h	248;"	d
+MPP_BASE	dwc-xlgmac-reg.h	944;"	d
+MTL_ETSALG_DWRR	dwc-xlgmac-reg.h	453;"	d
+MTL_ETSALG_WFQ	dwc-xlgmac-reg.h	452;"	d
+MTL_ETSALG_WRR	dwc-xlgmac-reg.h	451;"	d
+MTL_FDDR	dwc-xlgmac-reg.h	373;"	d
+MTL_OMR	dwc-xlgmac-reg.h	372;"	d
+MTL_OMR_ETSALG_LEN	dwc-xlgmac-reg.h	381;"	d
+MTL_OMR_ETSALG_POS	dwc-xlgmac-reg.h	380;"	d
+MTL_OMR_RAA_LEN	dwc-xlgmac-reg.h	383;"	d
+MTL_OMR_RAA_POS	dwc-xlgmac-reg.h	382;"	d
+MTL_Q_BASE	dwc-xlgmac-reg.h	390;"	d
+MTL_Q_DISABLED	dwc-xlgmac-reg.h	457;"	d
+MTL_Q_ENABLED	dwc-xlgmac-reg.h	458;"	d
+MTL_Q_IER	dwc-xlgmac-reg.h	397;"	d
+MTL_Q_INC	dwc-xlgmac-reg.h	391;"	d
+MTL_Q_ISR	dwc-xlgmac-reg.h	398;"	d
+MTL_Q_RQDR	dwc-xlgmac-reg.h	395;"	d
+MTL_Q_RQDR_PRXQ_LEN	dwc-xlgmac-reg.h	402;"	d
+MTL_Q_RQDR_PRXQ_POS	dwc-xlgmac-reg.h	401;"	d
+MTL_Q_RQDR_RXQSTS_LEN	dwc-xlgmac-reg.h	404;"	d
+MTL_Q_RQDR_RXQSTS_POS	dwc-xlgmac-reg.h	403;"	d
+MTL_Q_RQFCR	dwc-xlgmac-reg.h	396;"	d
+MTL_Q_RQFCR_RFA_LEN	dwc-xlgmac-reg.h	406;"	d
+MTL_Q_RQFCR_RFA_POS	dwc-xlgmac-reg.h	405;"	d
+MTL_Q_RQFCR_RFD_LEN	dwc-xlgmac-reg.h	408;"	d
+MTL_Q_RQFCR_RFD_POS	dwc-xlgmac-reg.h	407;"	d
+MTL_Q_RQOMR	dwc-xlgmac-reg.h	394;"	d
+MTL_Q_RQOMR_EHFC_LEN	dwc-xlgmac-reg.h	410;"	d
+MTL_Q_RQOMR_EHFC_POS	dwc-xlgmac-reg.h	409;"	d
+MTL_Q_RQOMR_FEP_LEN	dwc-xlgmac-reg.h	416;"	d
+MTL_Q_RQOMR_FEP_POS	dwc-xlgmac-reg.h	415;"	d
+MTL_Q_RQOMR_FUP_LEN	dwc-xlgmac-reg.h	418;"	d
+MTL_Q_RQOMR_FUP_POS	dwc-xlgmac-reg.h	417;"	d
+MTL_Q_RQOMR_RQS_LEN	dwc-xlgmac-reg.h	412;"	d
+MTL_Q_RQOMR_RQS_POS	dwc-xlgmac-reg.h	411;"	d
+MTL_Q_RQOMR_RSF_LEN	dwc-xlgmac-reg.h	414;"	d
+MTL_Q_RQOMR_RSF_POS	dwc-xlgmac-reg.h	413;"	d
+MTL_Q_RQOMR_RTC_LEN	dwc-xlgmac-reg.h	420;"	d
+MTL_Q_RQOMR_RTC_POS	dwc-xlgmac-reg.h	419;"	d
+MTL_Q_TQOMR	dwc-xlgmac-reg.h	393;"	d
+MTL_Q_TQOMR_FTQ_LEN	dwc-xlgmac-reg.h	422;"	d
+MTL_Q_TQOMR_FTQ_POS	dwc-xlgmac-reg.h	421;"	d
+MTL_Q_TQOMR_Q2TCMAP_LEN	dwc-xlgmac-reg.h	424;"	d
+MTL_Q_TQOMR_Q2TCMAP_POS	dwc-xlgmac-reg.h	423;"	d
+MTL_Q_TQOMR_TQS_LEN	dwc-xlgmac-reg.h	426;"	d
+MTL_Q_TQOMR_TQS_POS	dwc-xlgmac-reg.h	425;"	d
+MTL_Q_TQOMR_TSF_LEN	dwc-xlgmac-reg.h	428;"	d
+MTL_Q_TQOMR_TSF_POS	dwc-xlgmac-reg.h	427;"	d
+MTL_Q_TQOMR_TTC_LEN	dwc-xlgmac-reg.h	430;"	d
+MTL_Q_TQOMR_TTC_POS	dwc-xlgmac-reg.h	429;"	d
+MTL_Q_TQOMR_TXQEN_LEN	dwc-xlgmac-reg.h	432;"	d
+MTL_Q_TQOMR_TXQEN_POS	dwc-xlgmac-reg.h	431;"	d
+MTL_RAA_SP	dwc-xlgmac-reg.h	454;"	d
+MTL_RAA_WSP	dwc-xlgmac-reg.h	455;"	d
+MTL_RQDCM0R	dwc-xlgmac-reg.h	374;"	d
+MTL_RQDCM0R_Q0MDMACH	dwc-xlgmac-reg.h	460;"	d
+MTL_RQDCM0R_Q1MDMACH	dwc-xlgmac-reg.h	461;"	d
+MTL_RQDCM0R_Q2MDMACH	dwc-xlgmac-reg.h	462;"	d
+MTL_RQDCM0R_Q3MDMACH	dwc-xlgmac-reg.h	463;"	d
+MTL_RQDCM1R_Q4MDMACH	dwc-xlgmac-reg.h	464;"	d
+MTL_RQDCM1R_Q5MDMACH	dwc-xlgmac-reg.h	465;"	d
+MTL_RQDCM1R_Q6MDMACH	dwc-xlgmac-reg.h	466;"	d
+MTL_RQDCM1R_Q7MDMACH	dwc-xlgmac-reg.h	467;"	d
+MTL_RQDCM2R_Q10MDMACH	dwc-xlgmac-reg.h	470;"	d
+MTL_RQDCM2R_Q11MDMACH	dwc-xlgmac-reg.h	471;"	d
+MTL_RQDCM2R_Q8MDMACH	dwc-xlgmac-reg.h	468;"	d
+MTL_RQDCM2R_Q9MDMACH	dwc-xlgmac-reg.h	469;"	d
+MTL_RQDCM_INC	dwc-xlgmac-reg.h	376;"	d
+MTL_RQDCM_Q_PER_REG	dwc-xlgmac-reg.h	377;"	d
+MTL_RSF_DISABLE	dwc-xlgmac-reg.h	435;"	d
+MTL_RSF_ENABLE	dwc-xlgmac-reg.h	436;"	d
+MTL_RX_THRESHOLD_128	dwc-xlgmac-reg.h	442;"	d
+MTL_RX_THRESHOLD_64	dwc-xlgmac-reg.h	440;"	d
+MTL_RX_THRESHOLD_96	dwc-xlgmac-reg.h	441;"	d
+MTL_TC_BASE	dwc-xlgmac-reg.h	478;"	d
+MTL_TC_ETSCR	dwc-xlgmac-reg.h	481;"	d
+MTL_TC_ETSCR_TSA_LEN	dwc-xlgmac-reg.h	487;"	d
+MTL_TC_ETSCR_TSA_POS	dwc-xlgmac-reg.h	486;"	d
+MTL_TC_ETSSR	dwc-xlgmac-reg.h	482;"	d
+MTL_TC_INC	dwc-xlgmac-reg.h	479;"	d
+MTL_TC_QWR	dwc-xlgmac-reg.h	483;"	d
+MTL_TC_QWR_QW_LEN	dwc-xlgmac-reg.h	489;"	d
+MTL_TC_QWR_QW_POS	dwc-xlgmac-reg.h	488;"	d
+MTL_TSA_ETS	dwc-xlgmac-reg.h	493;"	d
+MTL_TSA_SP	dwc-xlgmac-reg.h	492;"	d
+MTL_TSF_DISABLE	dwc-xlgmac-reg.h	437;"	d
+MTL_TSF_ENABLE	dwc-xlgmac-reg.h	438;"	d
+MTL_TX_THRESHOLD_128	dwc-xlgmac-reg.h	445;"	d
+MTL_TX_THRESHOLD_192	dwc-xlgmac-reg.h	446;"	d
+MTL_TX_THRESHOLD_256	dwc-xlgmac-reg.h	447;"	d
+MTL_TX_THRESHOLD_384	dwc-xlgmac-reg.h	448;"	d
+MTL_TX_THRESHOLD_512	dwc-xlgmac-reg.h	449;"	d
+MTL_TX_THRESHOLD_64	dwc-xlgmac-reg.h	443;"	d
+MTL_TX_THRESHOLD_96	dwc-xlgmac-reg.h	444;"	d
+PAGESIZE_LEN	dwc-xlgmac-reg.h	786;"	d
+PAGESIZE_POS	dwc-xlgmac-reg.h	785;"	d
+PGU_BASE	dwc-xlgmac-reg.h	744;"	d
+QPLISTREADQPN	dwc-xlgmac-reg.h	766;"	d
+QPLISTREADQPN_LEN	dwc-xlgmac-reg.h	894;"	d
+QPLISTREADQPN_POS	dwc-xlgmac-reg.h	893;"	d
+QPLISTWRITEQPN	dwc-xlgmac-reg.h	771;"	d
+QPLISTWRITEQPN_LEN	dwc-xlgmac-reg.h	914;"	d
+QPLISTWRITEQPN_POS	dwc-xlgmac-reg.h	913;"	d
+QPNANDVALID	dwc-xlgmac-reg.h	770;"	d
+QPNANDVALID_LEN	dwc-xlgmac-reg.h	910;"	d
+QPNANDVALID_POS	dwc-xlgmac-reg.h	909;"	d
+QPTOQP	dwc-xlgmac-reg.h	757;"	d
+RCVQ_DI	dwc-xlgmac-reg.h	764;"	d
+RCVQ_DI_H_LEN	dwc-xlgmac-reg.h	886;"	d
+RCVQ_DI_H_POS	dwc-xlgmac-reg.h	885;"	d
+RCVQ_DI_L_LEN	dwc-xlgmac-reg.h	884;"	d
+RCVQ_DI_L_POS	dwc-xlgmac-reg.h	883;"	d
+RCVQ_INF	dwc-xlgmac-reg.h	763;"	d
+RCVQ_RP_LEN	dwc-xlgmac-reg.h	880;"	d
+RCVQ_RP_POS	dwc-xlgmac-reg.h	879;"	d
+RCVQ_WADDR_LEN	dwc-xlgmac-reg.h	876;"	d
+RCVQ_WADDR_POS	dwc-xlgmac-reg.h	875;"	d
+RCVQ_WP_LEN	dwc-xlgmac-reg.h	878;"	d
+RCVQ_WP_POS	dwc-xlgmac-reg.h	877;"	d
+RCVQ_WRRD	dwc-xlgmac-reg.h	765;"	d
+RCVQ_WRRD_LEN	dwc-xlgmac-reg.h	890;"	d
+RCVQ_WRRD_POS	dwc-xlgmac-reg.h	889;"	d
+RC_QPMAPPING_LEN	dwc-xlgmac-reg.h	842;"	d
+RC_QPMAPPING_POS	dwc-xlgmac-reg.h	841;"	d
+READQPLISTDATA	dwc-xlgmac-reg.h	772;"	d
+READQPLISTDATA_LEN	dwc-xlgmac-reg.h	918;"	d
+READQPLISTDATA_POS	dwc-xlgmac-reg.h	917;"	d
+REGISTERQP	dwc-xlgmac-reg.h	777;"	d
+REGISTERQP_LEN	dwc-xlgmac-reg.h	938;"	d
+REGISTERQP_POS	dwc-xlgmac-reg.h	937;"	d
+RESERVE_LEN	dwc-xlgmac-reg.h	810;"	d
+RESERVE_POS	dwc-xlgmac-reg.h	809;"	d
+RESERV_LEN	dwc-xlgmac-reg.h	798;"	d
+RESERV_POS	dwc-xlgmac-reg.h	797;"	d
+RETRYCOUNT_LEN	dwc-xlgmac-reg.h	814;"	d
+RETRYCOUNT_POS	dwc-xlgmac-reg.h	813;"	d
+RNRTIMER_LEN	dwc-xlgmac-reg.h	792;"	d
+RNRTIMER_POS	dwc-xlgmac-reg.h	791;"	d
+RPFORQPLIST	dwc-xlgmac-reg.h	769;"	d
+RPFORQPLIST_LEN	dwc-xlgmac-reg.h	906;"	d
+RPFORQPLIST_POS	dwc-xlgmac-reg.h	905;"	d
+RX_CONTEXT_DESC3_TSA_LEN	dwc-xlgmac-reg.h	684;"	d
+RX_CONTEXT_DESC3_TSA_POS	dwc-xlgmac-reg.h	683;"	d
+RX_CONTEXT_DESC3_TSD_LEN	dwc-xlgmac-reg.h	686;"	d
+RX_CONTEXT_DESC3_TSD_POS	dwc-xlgmac-reg.h	685;"	d
+RX_DESC3_L34T_IPV4_ICMP	dwc-xlgmac-reg.h	678;"	d
+RX_DESC3_L34T_IPV4_TCP	dwc-xlgmac-reg.h	676;"	d
+RX_DESC3_L34T_IPV4_UDP	dwc-xlgmac-reg.h	677;"	d
+RX_DESC3_L34T_IPV6_ICMP	dwc-xlgmac-reg.h	681;"	d
+RX_DESC3_L34T_IPV6_TCP	dwc-xlgmac-reg.h	679;"	d
+RX_DESC3_L34T_IPV6_UDP	dwc-xlgmac-reg.h	680;"	d
+RX_NORMAL_DESC0_OVT_LEN	dwc-xlgmac-reg.h	650;"	d
+RX_NORMAL_DESC0_OVT_POS	dwc-xlgmac-reg.h	649;"	d
+RX_NORMAL_DESC2_HL_LEN	dwc-xlgmac-reg.h	652;"	d
+RX_NORMAL_DESC2_HL_POS	dwc-xlgmac-reg.h	651;"	d
+RX_NORMAL_DESC3_CDA_LEN	dwc-xlgmac-reg.h	654;"	d
+RX_NORMAL_DESC3_CDA_POS	dwc-xlgmac-reg.h	653;"	d
+RX_NORMAL_DESC3_CTXT_LEN	dwc-xlgmac-reg.h	656;"	d
+RX_NORMAL_DESC3_CTXT_POS	dwc-xlgmac-reg.h	655;"	d
+RX_NORMAL_DESC3_ES_LEN	dwc-xlgmac-reg.h	658;"	d
+RX_NORMAL_DESC3_ES_POS	dwc-xlgmac-reg.h	657;"	d
+RX_NORMAL_DESC3_ETLT_LEN	dwc-xlgmac-reg.h	660;"	d
+RX_NORMAL_DESC3_ETLT_POS	dwc-xlgmac-reg.h	659;"	d
+RX_NORMAL_DESC3_FD_LEN	dwc-xlgmac-reg.h	662;"	d
+RX_NORMAL_DESC3_FD_POS	dwc-xlgmac-reg.h	661;"	d
+RX_NORMAL_DESC3_INTE_LEN	dwc-xlgmac-reg.h	664;"	d
+RX_NORMAL_DESC3_INTE_POS	dwc-xlgmac-reg.h	663;"	d
+RX_NORMAL_DESC3_L34T_LEN	dwc-xlgmac-reg.h	666;"	d
+RX_NORMAL_DESC3_L34T_POS	dwc-xlgmac-reg.h	665;"	d
+RX_NORMAL_DESC3_LD_LEN	dwc-xlgmac-reg.h	668;"	d
+RX_NORMAL_DESC3_LD_POS	dwc-xlgmac-reg.h	667;"	d
+RX_NORMAL_DESC3_OWN_LEN	dwc-xlgmac-reg.h	670;"	d
+RX_NORMAL_DESC3_OWN_POS	dwc-xlgmac-reg.h	669;"	d
+RX_NORMAL_DESC3_PL_LEN	dwc-xlgmac-reg.h	672;"	d
+RX_NORMAL_DESC3_PL_POS	dwc-xlgmac-reg.h	671;"	d
+RX_NORMAL_DESC3_RSV_LEN	dwc-xlgmac-reg.h	674;"	d
+RX_NORMAL_DESC3_RSV_POS	dwc-xlgmac-reg.h	673;"	d
+RX_PACKET_ATTRIBUTES_CONTEXT_LEN	dwc-xlgmac-reg.h	643;"	d
+RX_PACKET_ATTRIBUTES_CONTEXT_NEXT_LEN	dwc-xlgmac-reg.h	641;"	d
+RX_PACKET_ATTRIBUTES_CONTEXT_NEXT_POS	dwc-xlgmac-reg.h	640;"	d
+RX_PACKET_ATTRIBUTES_CONTEXT_POS	dwc-xlgmac-reg.h	642;"	d
+RX_PACKET_ATTRIBUTES_CSUM_DONE_LEN	dwc-xlgmac-reg.h	635;"	d
+RX_PACKET_ATTRIBUTES_CSUM_DONE_POS	dwc-xlgmac-reg.h	634;"	d
+RX_PACKET_ATTRIBUTES_INCOMPLETE_LEN	dwc-xlgmac-reg.h	639;"	d
+RX_PACKET_ATTRIBUTES_INCOMPLETE_POS	dwc-xlgmac-reg.h	638;"	d
+RX_PACKET_ATTRIBUTES_RSS_HASH_LEN	dwc-xlgmac-reg.h	647;"	d
+RX_PACKET_ATTRIBUTES_RSS_HASH_POS	dwc-xlgmac-reg.h	646;"	d
+RX_PACKET_ATTRIBUTES_RX_TSTAMP_LEN	dwc-xlgmac-reg.h	645;"	d
+RX_PACKET_ATTRIBUTES_RX_TSTAMP_POS	dwc-xlgmac-reg.h	644;"	d
+RX_PACKET_ATTRIBUTES_VLAN_CTAG_LEN	dwc-xlgmac-reg.h	637;"	d
+RX_PACKET_ATTRIBUTES_VLAN_CTAG_POS	dwc-xlgmac-reg.h	636;"	d
+RX_PACKET_ERRORS_CRC_LEN	dwc-xlgmac-reg.h	626;"	d
+RX_PACKET_ERRORS_CRC_POS	dwc-xlgmac-reg.h	625;"	d
+RX_PACKET_ERRORS_FRAME_LEN	dwc-xlgmac-reg.h	628;"	d
+RX_PACKET_ERRORS_FRAME_POS	dwc-xlgmac-reg.h	627;"	d
+RX_PACKET_ERRORS_LENGTH_LEN	dwc-xlgmac-reg.h	630;"	d
+RX_PACKET_ERRORS_LENGTH_POS	dwc-xlgmac-reg.h	629;"	d
+RX_PACKET_ERRORS_OVERRUN_LEN	dwc-xlgmac-reg.h	632;"	d
+RX_PACKET_ERRORS_OVERRUN_POS	dwc-xlgmac-reg.h	631;"	d
+SOCKETIP	dwc-xlgmac-reg.h	756;"	d
+SOCKETIP_LEN	dwc-xlgmac-reg.h	834;"	d
+SOCKETIP_POS	dwc-xlgmac-reg.h	833;"	d
+SRC_QP_LEN	dwc-xlgmac-reg.h	838;"	d
+SRC_QP_POS	dwc-xlgmac-reg.h	837;"	d
+STARTINITPSN	dwc-xlgmac-reg.h	774;"	d
+STARTINITPSN_LEN	dwc-xlgmac-reg.h	926;"	d
+STARTINITPSN_POS	dwc-xlgmac-reg.h	925;"	d
+STARTINITQP	dwc-xlgmac-reg.h	775;"	d
+STARTINITQP_LEN	dwc-xlgmac-reg.h	930;"	d
+STARTINITQP_POS	dwc-xlgmac-reg.h	929;"	d
+TLBINIT	dwc-xlgmac-reg.h	755;"	d
+TLBINIT_LEN	dwc-xlgmac-reg.h	830;"	d
+TLBINIT_POS	dwc-xlgmac-reg.h	829;"	d
+TXBASEADDRCQE_H_LEN	dwc-xlgmac-reg.h	854;"	d
+TXBASEADDRCQE_H_POS	dwc-xlgmac-reg.h	853;"	d
+TXBASEADDRCQE_L_LEN	dwc-xlgmac-reg.h	852;"	d
+TXBASEADDRCQE_L_POS	dwc-xlgmac-reg.h	851;"	d
+TXCQEWP_H_LEN	dwc-xlgmac-reg.h	860;"	d
+TXCQEWP_H_POS	dwc-xlgmac-reg.h	859;"	d
+TXCQEWP_L_LEN	dwc-xlgmac-reg.h	858;"	d
+TXCQEWP_L_POS	dwc-xlgmac-reg.h	857;"	d
+TXCQQPN_LEN	dwc-xlgmac-reg.h	868;"	d
+TXCQQPN_POS	dwc-xlgmac-reg.h	867;"	d
+TXCQRDWRVALID_LEN	dwc-xlgmac-reg.h	864;"	d
+TXCQRDWRVALID_POS	dwc-xlgmac-reg.h	863;"	d
+TXCQRDWR_LEN	dwc-xlgmac-reg.h	866;"	d
+TXCQRDWR_POS	dwc-xlgmac-reg.h	865;"	d
+TXUPADDRCQE_H_LEN	dwc-xlgmac-reg.h	848;"	d
+TXUPADDRCQE_H_POS	dwc-xlgmac-reg.h	847;"	d
+TXUPADDRCQE_L_LEN	dwc-xlgmac-reg.h	846;"	d
+TXUPADDRCQE_L_POS	dwc-xlgmac-reg.h	845;"	d
+TX_CONTEXT_DESC2_MSS_LEN	dwc-xlgmac-reg.h	698;"	d
+TX_CONTEXT_DESC2_MSS_POS	dwc-xlgmac-reg.h	697;"	d
+TX_CONTEXT_DESC3_CTXT_LEN	dwc-xlgmac-reg.h	700;"	d
+TX_CONTEXT_DESC3_CTXT_POS	dwc-xlgmac-reg.h	699;"	d
+TX_CONTEXT_DESC3_TCMSSV_LEN	dwc-xlgmac-reg.h	702;"	d
+TX_CONTEXT_DESC3_TCMSSV_POS	dwc-xlgmac-reg.h	701;"	d
+TX_CONTEXT_DESC3_VLTV_LEN	dwc-xlgmac-reg.h	704;"	d
+TX_CONTEXT_DESC3_VLTV_POS	dwc-xlgmac-reg.h	703;"	d
+TX_CONTEXT_DESC3_VT_LEN	dwc-xlgmac-reg.h	706;"	d
+TX_CONTEXT_DESC3_VT_POS	dwc-xlgmac-reg.h	705;"	d
+TX_NORMAL_DESC2_HL_B1L_LEN	dwc-xlgmac-reg.h	709;"	d
+TX_NORMAL_DESC2_HL_B1L_POS	dwc-xlgmac-reg.h	708;"	d
+TX_NORMAL_DESC2_IC_LEN	dwc-xlgmac-reg.h	711;"	d
+TX_NORMAL_DESC2_IC_POS	dwc-xlgmac-reg.h	710;"	d
+TX_NORMAL_DESC2_TTSE_LEN	dwc-xlgmac-reg.h	713;"	d
+TX_NORMAL_DESC2_TTSE_POS	dwc-xlgmac-reg.h	712;"	d
+TX_NORMAL_DESC2_VLAN_INSERT	dwc-xlgmac-reg.h	737;"	d
+TX_NORMAL_DESC2_VTIR_LEN	dwc-xlgmac-reg.h	715;"	d
+TX_NORMAL_DESC2_VTIR_POS	dwc-xlgmac-reg.h	714;"	d
+TX_NORMAL_DESC3_CIC_LEN	dwc-xlgmac-reg.h	717;"	d
+TX_NORMAL_DESC3_CIC_POS	dwc-xlgmac-reg.h	716;"	d
+TX_NORMAL_DESC3_CPC_LEN	dwc-xlgmac-reg.h	719;"	d
+TX_NORMAL_DESC3_CPC_POS	dwc-xlgmac-reg.h	718;"	d
+TX_NORMAL_DESC3_CTXT_LEN	dwc-xlgmac-reg.h	721;"	d
+TX_NORMAL_DESC3_CTXT_POS	dwc-xlgmac-reg.h	720;"	d
+TX_NORMAL_DESC3_FD_LEN	dwc-xlgmac-reg.h	723;"	d
+TX_NORMAL_DESC3_FD_POS	dwc-xlgmac-reg.h	722;"	d
+TX_NORMAL_DESC3_FL_LEN	dwc-xlgmac-reg.h	725;"	d
+TX_NORMAL_DESC3_FL_POS	dwc-xlgmac-reg.h	724;"	d
+TX_NORMAL_DESC3_LD_LEN	dwc-xlgmac-reg.h	727;"	d
+TX_NORMAL_DESC3_LD_POS	dwc-xlgmac-reg.h	726;"	d
+TX_NORMAL_DESC3_OWN_LEN	dwc-xlgmac-reg.h	729;"	d
+TX_NORMAL_DESC3_OWN_POS	dwc-xlgmac-reg.h	728;"	d
+TX_NORMAL_DESC3_TCPHDRLEN_LEN	dwc-xlgmac-reg.h	731;"	d
+TX_NORMAL_DESC3_TCPHDRLEN_POS	dwc-xlgmac-reg.h	730;"	d
+TX_NORMAL_DESC3_TCPPL_LEN	dwc-xlgmac-reg.h	733;"	d
+TX_NORMAL_DESC3_TCPPL_POS	dwc-xlgmac-reg.h	732;"	d
+TX_NORMAL_DESC3_TSE_LEN	dwc-xlgmac-reg.h	735;"	d
+TX_NORMAL_DESC3_TSE_POS	dwc-xlgmac-reg.h	734;"	d
+TX_PACKET_ATTRIBUTES_CSUM_ENABLE_LEN	dwc-xlgmac-reg.h	689;"	d
+TX_PACKET_ATTRIBUTES_CSUM_ENABLE_POS	dwc-xlgmac-reg.h	688;"	d
+TX_PACKET_ATTRIBUTES_PTP_LEN	dwc-xlgmac-reg.h	695;"	d
+TX_PACKET_ATTRIBUTES_PTP_POS	dwc-xlgmac-reg.h	694;"	d
+TX_PACKET_ATTRIBUTES_TSO_ENABLE_LEN	dwc-xlgmac-reg.h	691;"	d
+TX_PACKET_ATTRIBUTES_TSO_ENABLE_POS	dwc-xlgmac-reg.h	690;"	d
+TX_PACKET_ATTRIBUTES_VLAN_CTAG_LEN	dwc-xlgmac-reg.h	693;"	d
+TX_PACKET_ATTRIBUTES_VLAN_CTAG_POS	dwc-xlgmac-reg.h	692;"	d
+UPLINKDOWNLINK	dwc-xlgmac-reg.h	749;"	d
+UPLINKMTU_LEN	dwc-xlgmac-reg.h	808;"	d
+UPLINKMTU_POS	dwc-xlgmac-reg.h	807;"	d
+WORKREQUEST_LEN	dwc-xlgmac-reg.h	802;"	d
+WORKREQUEST_POS	dwc-xlgmac-reg.h	801;"	d
+WPFORQPLIST	dwc-xlgmac-reg.h	768;"	d
+WPFORQPLIST_LEN	dwc-xlgmac-reg.h	902;"	d
+WPFORQPLIST_POS	dwc-xlgmac-reg.h	901;"	d
+WQERETRYCOUNT	dwc-xlgmac-reg.h	750;"	d
+WQERETRYTIMER	dwc-xlgmac-reg.h	751;"	d
+WRITEORREADQPLIST	dwc-xlgmac-reg.h	767;"	d
+WRITEORREADQPLIST_LEN	dwc-xlgmac-reg.h	898;"	d
+WRITEORREADQPLIST_POS	dwc-xlgmac-reg.h	897;"	d
+WRITEQPLISTMASK	dwc-xlgmac-reg.h	773;"	d
+WRITEQPLISTMASK_LEN	dwc-xlgmac-reg.h	922;"	d
+WRITEQPLISTMASK_POS	dwc-xlgmac-reg.h	921;"	d
+WRONGFIELD	dwc-xlgmac-reg.h	754;"	d
+WRONGVECTOR	dwc-xlgmac-reg.h	753;"	d
+XLGMAC_DMA_INTERRUPT_MASK	dwc-xlgmac.h	63;"	d
+XLGMAC_DMA_REG	dwc-xlgmac-reg.h	963;"	d
+XLGMAC_DMA_STOP_TIMEOUT	dwc-xlgmac.h	62;"	d
+XLGMAC_DRV_DESC	dwc-xlgmac-pci.c	/^MODULE_DESCRIPTION(XLGMAC_DRV_DESC);$/;"	v
+XLGMAC_DRV_DESC	dwc-xlgmac.h	31;"	d
+XLGMAC_DRV_NAME	dwc-xlgmac.h	29;"	d
+XLGMAC_DRV_VERSION	dwc-xlgmac-pci.c	/^MODULE_VERSION(XLGMAC_DRV_VERSION);$/;"	v
+XLGMAC_DRV_VERSION	dwc-xlgmac.h	30;"	d
+XLGMAC_GET_DESC_DATA	dwc-xlgmac.h	94;"	d
+XLGMAC_GET_REG_BITS	dwc-xlgmac.h	100;"	d
+XLGMAC_GET_REG_BITS_LE	dwc-xlgmac.h	106;"	d
+XLGMAC_INIT_DMA_RX_FRAMES	dwc-xlgmac.h	69;"	d
+XLGMAC_INIT_DMA_RX_USECS	dwc-xlgmac.h	68;"	d
+XLGMAC_INIT_DMA_TX_FRAMES	dwc-xlgmac.h	67;"	d
+XLGMAC_INIT_DMA_TX_USECS	dwc-xlgmac.h	66;"	d
+XLGMAC_INT_DMA_ALL	dwc-xlgmac.h	/^	XLGMAC_INT_DMA_ALL,$/;"	e	enum:xlgmac_int
+XLGMAC_INT_DMA_CH_SR_FBE	dwc-xlgmac.h	/^	XLGMAC_INT_DMA_CH_SR_FBE,$/;"	e	enum:xlgmac_int
+XLGMAC_INT_DMA_CH_SR_RBU	dwc-xlgmac.h	/^	XLGMAC_INT_DMA_CH_SR_RBU,$/;"	e	enum:xlgmac_int
+XLGMAC_INT_DMA_CH_SR_RI	dwc-xlgmac.h	/^	XLGMAC_INT_DMA_CH_SR_RI,$/;"	e	enum:xlgmac_int
+XLGMAC_INT_DMA_CH_SR_RPS	dwc-xlgmac.h	/^	XLGMAC_INT_DMA_CH_SR_RPS,$/;"	e	enum:xlgmac_int
+XLGMAC_INT_DMA_CH_SR_TBU	dwc-xlgmac.h	/^	XLGMAC_INT_DMA_CH_SR_TBU,$/;"	e	enum:xlgmac_int
+XLGMAC_INT_DMA_CH_SR_TI	dwc-xlgmac.h	/^	XLGMAC_INT_DMA_CH_SR_TI,$/;"	e	enum:xlgmac_int
+XLGMAC_INT_DMA_CH_SR_TI_RI	dwc-xlgmac.h	/^	XLGMAC_INT_DMA_CH_SR_TI_RI,$/;"	e	enum:xlgmac_int
+XLGMAC_INT_DMA_CH_SR_TPS	dwc-xlgmac.h	/^	XLGMAC_INT_DMA_CH_SR_TPS,$/;"	e	enum:xlgmac_int
+XLGMAC_JUMBO_PACKET_MTU	dwc-xlgmac.h	89;"	d
+XLGMAC_MAC_HASH_TABLE_SIZE	dwc-xlgmac.h	80;"	d
+XLGMAC_MAX_DMA_CHANNELS	dwc-xlgmac.h	61;"	d
+XLGMAC_MAX_DMA_RIWT	dwc-xlgmac.h	70;"	d
+XLGMAC_MAX_FIFO	dwc-xlgmac.h	59;"	d
+XLGMAC_MAX_FLOW_CONTROL_QUEUES	dwc-xlgmac.h	74;"	d
+XLGMAC_MIN_DMA_RIWT	dwc-xlgmac.h	71;"	d
+XLGMAC_MTL_REG	dwc-xlgmac-reg.h	960;"	d
+XLGMAC_PR	dwc-xlgmac.h	666;"	d
+XLGMAC_PR	dwc-xlgmac.h	669;"	d
+XLGMAC_RSS_HASH_KEY_SIZE	dwc-xlgmac.h	83;"	d
+XLGMAC_RSS_HASH_KEY_TYPE	dwc-xlgmac.h	86;"	d
+XLGMAC_RSS_LOOKUP_TABLE_TYPE	dwc-xlgmac.h	85;"	d
+XLGMAC_RSS_MAX_TABLE_SIZE	dwc-xlgmac.h	84;"	d
+XLGMAC_RX_BUF_ALIGN	dwc-xlgmac.h	48;"	d
+XLGMAC_RX_DESC_CNT	dwc-xlgmac.h	37;"	d
+XLGMAC_RX_DESC_MAX_DIRTY	dwc-xlgmac.h	38;"	d
+XLGMAC_RX_MIN_BUF_SIZE	dwc-xlgmac.h	47;"	d
+XLGMAC_SET_REG_BITS	dwc-xlgmac.h	113;"	d
+XLGMAC_SET_REG_BITS_LE	dwc-xlgmac.h	122;"	d
+XLGMAC_SKB_ALLOC_SIZE	dwc-xlgmac.h	57;"	d
+XLGMAC_SPH_HDSMS_SIZE	dwc-xlgmac.h	56;"	d
+XLGMAC_STAT	dwc-xlgmac-ethtool.c	30;"	d	file:
+XLGMAC_STATS_COUNT	dwc-xlgmac-ethtool.c	96;"	d	file:
+XLGMAC_STD_PACKET_MTU	dwc-xlgmac.h	88;"	d
+XLGMAC_SYSCLOCK	dwc-xlgmac.h	77;"	d
+XLGMAC_TX_DESC_CNT	dwc-xlgmac.h	34;"	d
+XLGMAC_TX_DESC_MAX_PROC	dwc-xlgmac.h	36;"	d
+XLGMAC_TX_DESC_MIN_FREE	dwc-xlgmac.h	35;"	d
+XLGMAC_TX_MAX_BUF_SIZE	dwc-xlgmac.h	46;"	d
+XLGMAC_TX_MAX_DESC_NR	dwc-xlgmac.h	44;"	d
+XLGMAC_TX_MAX_SPLIT	dwc-xlgmac.h	41;"	d
+__DWCROCE_AH_H__	roce_driver/dwcroce_ah.h	9;"	d
+__DWCROCE_H__	roce_driver/dwcroce.h	12;"	d
+__DWCROCE_VERBS_H__	roce_driver/dwcroce_verbs.h	11;"	d
+__DWC_XLGMAC_H__	dwc-xlgmac.h	19;"	d
+__DWC_XLGMAC_REG_H__	dwc-xlgmac-reg.h	19;"	d
+____cacheline_aligned	dwc-xlgmac.h	/^} ____cacheline_aligned;$/;"	v	typeref:struct:xlgmac_channel
+____cacheline_aligned	dwc-xlgmac.h	/^} ____cacheline_aligned;$/;"	v	typeref:struct:xlgmac_ring
+_dwcroce_modify_qp	roce_driver/dwcroce_verbs.c	/^int _dwcroce_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,$/;"	f
+active_vlans	dwc-xlgmac.h	/^	unsigned long active_vlans[BITS_TO_LONGS(VLAN_N_VID)];$/;"	m	struct:xlgmac_pdata
+add	roce_driver/dwc_roce.h	/^	struct dwcroce_dev *(*add) (struct dwc_dev_info *dev_info);$/;"	m	struct:dwcroce_driver	typeref:struct:dwcroce_driver::add
+addn_mac	dwc-xlgmac.h	/^	unsigned int addn_mac;		\/* Additional MAC Addresses *\/$/;"	m	struct:xlgmac_hw_features
+addr	dwc-xlgmac.h	/^	void __iomem *addr;$/;"	m	struct:xlgmac_resources
+adv_ts_hi	dwc-xlgmac.h	/^	unsigned int adv_ts_hi;		\/* Advance Timestamping High Word *\/$/;"	m	struct:xlgmac_hw_features
+alloc_channles_and_rings	dwc-xlgmac.h	/^	int (*alloc_channles_and_rings)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_desc_ops
+aoe	dwc-xlgmac.h	/^	unsigned int aoe;		\/* ARP Offload *\/$/;"	m	struct:xlgmac_hw_features
+attributes	dwc-xlgmac.h	/^	unsigned int attributes;$/;"	m	struct:xlgmac_pkt_info
+aux_snap_num	dwc-xlgmac.h	/^	unsigned int aux_snap_num;	\/* Number of Aux snapshot inputs *\/$/;"	m	struct:xlgmac_hw_features
+buf	dwc-xlgmac.h	/^	struct xlgmac_buffer_data buf;	\/* Payload locations *\/$/;"	m	struct:xlgmac_rx_desc_data	typeref:struct:xlgmac_rx_desc_data::xlgmac_buffer_data
+bytes	dwc-xlgmac.h	/^	unsigned int bytes;		\/* BQL byte count *\/$/;"	m	struct:xlgmac_tx_desc_data
+channel_count	dwc-xlgmac.h	/^	unsigned int channel_count;$/;"	m	struct:xlgmac_pdata
+channel_head	dwc-xlgmac.h	/^	struct xlgmac_channel *channel_head;$/;"	m	struct:xlgmac_pdata	typeref:struct:xlgmac_pdata::xlgmac_channel
+channel_irq	dwc-xlgmac.h	/^	int channel_irq[XLGMAC_MAX_DMA_CHANNELS];$/;"	m	struct:xlgmac_pdata
+coalesce_count	dwc-xlgmac.h	/^	unsigned int coalesce_count;$/;"	m	struct:xlgmac_ring
+config_osp_mode	dwc-xlgmac.h	/^	int (*config_osp_mode)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+config_pblx8	dwc-xlgmac.h	/^	int (*config_pblx8)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+config_rsf_mode	dwc-xlgmac.h	/^	int (*config_rsf_mode)(struct xlgmac_pdata *pdata,$/;"	m	struct:xlgmac_hw_ops
+config_rx_coalesce	dwc-xlgmac.h	/^	int (*config_rx_coalesce)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+config_rx_flow_control	dwc-xlgmac.h	/^	int (*config_rx_flow_control)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+config_rx_mode	dwc-xlgmac.h	/^	int (*config_rx_mode)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+config_rx_pbl_val	dwc-xlgmac.h	/^	int (*config_rx_pbl_val)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+config_rx_threshold	dwc-xlgmac.h	/^	int (*config_rx_threshold)(struct xlgmac_pdata *pdata,$/;"	m	struct:xlgmac_hw_ops
+config_tsf_mode	dwc-xlgmac.h	/^	int (*config_tsf_mode)(struct xlgmac_pdata *pdata,$/;"	m	struct:xlgmac_hw_ops
+config_tx_coalesce	dwc-xlgmac.h	/^	int (*config_tx_coalesce)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+config_tx_flow_control	dwc-xlgmac.h	/^	int (*config_tx_flow_control)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+config_tx_pbl_val	dwc-xlgmac.h	/^	int (*config_tx_pbl_val)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+config_tx_threshold	dwc-xlgmac.h	/^	int (*config_tx_threshold)(struct xlgmac_pdata *pdata,$/;"	m	struct:xlgmac_hw_ops
+cur	dwc-xlgmac.h	/^	unsigned int cur;$/;"	m	struct:xlgmac_ring
+cur_mss	dwc-xlgmac.h	/^			unsigned short cur_mss;$/;"	m	struct:xlgmac_ring::__anon2::__anon3
+cur_vlan_ctag	dwc-xlgmac.h	/^			unsigned short cur_vlan_ctag;$/;"	m	struct:xlgmac_ring::__anon2::__anon3
+dcb	dwc-xlgmac.h	/^	unsigned int dcb;		\/* DCB Feature *\/$/;"	m	struct:xlgmac_hw_features
+debug	dwc-xlgmac-common.c	/^static int debug = -1;$/;"	v	file:
+default_msg_level	dwc-xlgmac-common.c	/^static const u32 default_msg_level = (NETIF_MSG_LINK | NETIF_MSG_IFDOWN |$/;"	v	file:
+desc0	dwc-xlgmac.h	/^	__le32 desc0;$/;"	m	struct:xlgmac_dma_desc
+desc1	dwc-xlgmac.h	/^	__le32 desc1;$/;"	m	struct:xlgmac_dma_desc
+desc2	dwc-xlgmac.h	/^	__le32 desc2;$/;"	m	struct:xlgmac_dma_desc
+desc3	dwc-xlgmac.h	/^	__le32 desc3;$/;"	m	struct:xlgmac_dma_desc
+desc_count	dwc-xlgmac.h	/^	unsigned int desc_count;$/;"	m	struct:xlgmac_pkt_info
+desc_data_head	dwc-xlgmac.h	/^	struct xlgmac_desc_data *desc_data_head;$/;"	m	struct:xlgmac_ring	typeref:struct:xlgmac_ring::xlgmac_desc_data
+desc_ops	dwc-xlgmac.h	/^	struct xlgmac_desc_ops desc_ops;$/;"	m	struct:xlgmac_pdata	typeref:struct:xlgmac_pdata::xlgmac_desc_ops
+dev	dwc-xlgmac.h	/^	struct device *dev;$/;"	m	struct:xlgmac_pdata	typeref:struct:xlgmac_pdata::device
+dev	roce_driver/dwc_roce.h	/^	struct dwcroce_dev *dev;\/\/To pass the dev for debuging,later change  hs 2019\/6\/20$/;"	m	struct:dwcroce_driver	typeref:struct:dwcroce_driver::dwcroce_dev
+dev_addr	dwc-xlgmac-common.c	/^static unsigned char dev_addr[6] = {0, 0x55, 0x7b, 0xb5, 0x7d, 0xf7};$/;"	v	file:
+dev_irq	dwc-xlgmac.h	/^	int dev_irq;$/;"	m	struct:xlgmac_pdata
+dev_read	dwc-xlgmac.h	/^	int (*dev_read)(struct xlgmac_channel *channel);$/;"	m	struct:xlgmac_hw_ops
+dev_xmit	dwc-xlgmac.h	/^	void (*dev_xmit)(struct xlgmac_channel *channel);$/;"	m	struct:xlgmac_hw_ops
+dirty	dwc-xlgmac.h	/^	unsigned int dirty;$/;"	m	struct:xlgmac_ring
+disable_int	dwc-xlgmac.h	/^	int (*disable_int)(struct xlgmac_channel *channel,$/;"	m	struct:xlgmac_hw_ops
+disable_rss	dwc-xlgmac.h	/^	int (*disable_rss)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+disable_rx	dwc-xlgmac.h	/^	void (*disable_rx)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+disable_rx_csum	dwc-xlgmac.h	/^	int (*disable_rx_csum)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+disable_rx_vlan_filtering	dwc-xlgmac.h	/^	int (*disable_rx_vlan_filtering)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+disable_rx_vlan_stripping	dwc-xlgmac.h	/^	int (*disable_rx_vlan_stripping)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+disable_tx	dwc-xlgmac.h	/^	void (*disable_tx)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+dma_base	dwc-xlgmac.h	/^	dma_addr_t dma_base;$/;"	m	struct:xlgmac_buffer_data
+dma_debug	dwc-xlgmac.h	/^	unsigned int dma_debug;		\/* DMA Debug Registers *\/$/;"	m	struct:xlgmac_hw_features
+dma_desc	dwc-xlgmac.h	/^	struct xlgmac_dma_desc *dma_desc;$/;"	m	struct:xlgmac_desc_data	typeref:struct:xlgmac_desc_data::xlgmac_dma_desc
+dma_desc_addr	dwc-xlgmac.h	/^	dma_addr_t dma_desc_addr;$/;"	m	struct:xlgmac_desc_data
+dma_desc_count	dwc-xlgmac.h	/^	unsigned int dma_desc_count;$/;"	m	struct:xlgmac_ring
+dma_desc_head	dwc-xlgmac.h	/^	struct xlgmac_dma_desc *dma_desc_head;$/;"	m	struct:xlgmac_ring	typeref:struct:xlgmac_ring::xlgmac_dma_desc
+dma_desc_head_addr	dwc-xlgmac.h	/^	dma_addr_t dma_desc_head_addr;$/;"	m	struct:xlgmac_ring
+dma_irq	dwc-xlgmac.h	/^	int dma_irq;$/;"	m	struct:xlgmac_channel
+dma_irq_name	dwc-xlgmac.h	/^	char dma_irq_name[IFNAMSIZ + 32];$/;"	m	struct:xlgmac_channel
+dma_len	dwc-xlgmac.h	/^	unsigned int dma_len;$/;"	m	struct:xlgmac_buffer_data
+dma_off	dwc-xlgmac.h	/^	unsigned long dma_off;$/;"	m	struct:xlgmac_buffer_data
+dma_regs	dwc-xlgmac.h	/^	void __iomem *dma_regs;$/;"	m	struct:xlgmac_channel
+dma_width	dwc-xlgmac.h	/^	unsigned int dma_width;		\/* DMA width *\/$/;"	m	struct:xlgmac_hw_features
+drv_name	dwc-xlgmac.h	/^	char drv_name[32];$/;"	m	struct:xlgmac_pdata
+drv_ver	dwc-xlgmac.h	/^	char drv_ver[32];$/;"	m	struct:xlgmac_pdata
+dwc-xlgmac-objs	Makefile	/^dwc-xlgmac-objs := dwc-xlgmac-net.o dwc-xlgmac-desc.o \\$/;"	m
+dwc_add	roce_driver/dwcroce_main.c	/^static struct dwcroce_dev *dwc_add(struct dwc_dev_info *dev_info)$/;"	f	file:
+dwc_dev_info	roce_driver/dwc_roce.h	/^struct dwc_dev_info {$/;"	s
+dwc_drv	roce_driver/dwc_roce.c	/^static struct dwcroce_driver *dwc_drv;$/;"	v	typeref:struct:dwcroce_driver	file:
+dwc_drv	roce_driver/dwcroce_main.c	/^struct dwcroce_driver dwc_drv = {$/;"	v	typeref:struct:dwcroce_driver
+dwc_exit_module	roce_driver/dwcroce_main.c	/^module_exit(dwc_exit_module);$/;"	v
+dwc_exit_module	roce_driver/dwcroce_main.c	/^static void __exit dwc_exit_module(void)$/;"	f	file:
+dwc_init_module	roce_driver/dwcroce_main.c	/^module_init(dwc_init_module);$/;"	v
+dwc_init_module	roce_driver/dwcroce_main.c	/^static int __init dwc_init_module(void)$/;"	f	file:
+dwc_remove	roce_driver/dwcroce_main.c	/^static void dwc_remove(struct dwcroce_dev *dev)$/;"	f	file:
+dwc_roce_register_driver	roce_driver/dwc_roce.c	/^EXPORT_SYMBOL(dwc_roce_register_driver);	$/;"	v
+dwc_roce_register_driver	roce_driver/dwc_roce.c	/^int dwc_roce_register_driver(struct dwcroce_driver *dwc_drv)$/;"	f
+dwc_roce_unregister_driver	roce_driver/dwc_roce.c	/^EXPORT_SYMBOL(dwc_roce_unregister_driver);$/;"	v
+dwc_roce_unregister_driver	roce_driver/dwc_roce.c	/^void dwc_roce_unregister_driver(struct dwcroce_driver *dwc_drv)$/;"	f
+dwcroce_add_gid	roce_driver/dwcroce_verbs.c	/^int dwcroce_add_gid(struct ib_device *device,$/;"	f
+dwcroce_alloc_mr	roce_driver/dwcroce_verbs.c	/^struct ib_mr *dwcroce_alloc_mr(struct ib_pd *pd,$/;"	f
+dwcroce_alloc_pd	roce_driver/dwcroce_verbs.c	/^struct ib_pd *dwcroce_alloc_pd(struct ib_device *ibdev,$/;"	f
+dwcroce_alloc_ucontext	roce_driver/dwcroce_verbs.c	/^struct ib_ucontext *dwcroce_alloc_ucontext(struct ib_device *ibdev,$/;"	f
+dwcroce_arm_cq	roce_driver/dwcroce_verbs.c	/^int dwcroce_arm_cq(struct ib_cq *ibcq,enum ib_cq_notify_flags flags)$/;"	f
+dwcroce_create_ah	roce_driver/dwcroce_ah.c	/^struct ib_ah *dwcroce_create_ah(struct ib_pd *pd, struct rdma_ah_attr *ah_attr,$/;"	f
+dwcroce_create_cq	roce_driver/dwcroce_verbs.c	/^struct ib_cq *dwcroce_create_cq(struct ib_device *ibdev,$/;"	f
+dwcroce_create_qp	roce_driver/dwcroce_verbs.c	/^struct ib_qp *dwcroce_create_qp(struct ib_pd *ibpd,$/;"	f
+dwcroce_create_srq	roce_driver/dwcroce_verbs.c	/^struct ib_srq *dwcroce_create_srq(struct ib_pd *ibpd, struct ib_srq_init_attr *init_attr,struct ib_udata *udata)$/;"	f
+dwcroce_dealloc_pd	roce_driver/dwcroce_verbs.c	/^int dwcroce_dealloc_pd(struct ib_pd *pd)$/;"	f
+dwcroce_dealloc_ucontext	roce_driver/dwcroce_verbs.c	/^int dwcroce_dealloc_ucontext(struct ib_ucontext *ibctx)$/;"	f
+dwcroce_del_gid	roce_driver/dwcroce_verbs.c	/^int  dwcroce_del_gid(struct ib_device *device,$/;"	f
+dwcroce_dereg_mr	roce_driver/dwcroce_verbs.c	/^int dwcroce_dereg_mr(struct ib_mr *ibmr)$/;"	f
+dwcroce_destroy_ah	roce_driver/dwcroce_ah.c	/^int dwcroce_destroy_ah(struct ib_ah *ah)$/;"	f
+dwcroce_destroy_cq	roce_driver/dwcroce_verbs.c	/^int dwcroce_destroy_cq(struct ib_cq *ibcq)$/;"	f
+dwcroce_destroy_qp	roce_driver/dwcroce_verbs.c	/^int dwcroce_destroy_qp(struct ib_qp *ibqp)$/;"	f
+dwcroce_destroy_srq	roce_driver/dwcroce_verbs.c	/^int dwcroce_destroy_srq(struct ib_srq *ibsrq)$/;"	f
+dwcroce_dev	roce_driver/dwcroce.h	/^struct dwcroce_dev{$/;"	s
+dwcroce_driver	roce_driver/dwc_roce.h	/^struct dwcroce_driver{$/;"	s
+dwcroce_get_dma_mr	roce_driver/dwcroce_verbs.c	/^struct ib_mr *dwcroce_get_dma_mr(struct ib_pd *ibpd, int acc)$/;"	f
+dwcroce_get_guid	roce_driver/dwcroce_verbs.c	/^void dwcroce_get_guid(struct dwcroce_dev *dev, u8 *guid)$/;"	f
+dwcroce_get_link_layer	roce_driver/dwcroce_verbs.c	/^static enum rdma_link_layer dwcroce_get_link_layer(struct ib_device *device,$/;"	f	file:
+dwcroce_get_netdev	roce_driver/dwcroce_verbs.c	/^struct net_device *dwcroce_get_netdev(struct ib_device *device, u8 port_num)$/;"	f
+dwcroce_map_mr_sg	roce_driver/dwcroce_verbs.c	/^int dwcroce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,unsigned int *sg_offset)$/;"	f
+dwcroce_mmap	roce_driver/dwcroce_verbs.c	/^int dwcroce_mmap(struct ib_ucontext *ibctx, struct vm_area_struct *vma)$/;"	f
+dwcroce_modify_ah	roce_driver/dwcroce_ah.c	/^int dwcroce_modify_ah(struct ib_ah *ah,struct rdma_ah_attr *ah_attr)$/;"	f
+dwcroce_modify_port	roce_driver/dwcroce_verbs.c	/^int dwcroce_modify_port(struct ib_device *ibdev, u8 port, int mask,$/;"	f
+dwcroce_modify_qp	roce_driver/dwcroce_verbs.c	/^int dwcroce_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,$/;"	f
+dwcroce_modify_srq	roce_driver/dwcroce_verbs.c	/^int dwcroce_modify_srq(struct ib_srq *ibsrq, struct ib_srq_attr *srq_attr,$/;"	f
+dwcroce_poll_cq	roce_driver/dwcroce_verbs.c	/^int dwcroce_poll_cq(struct ib_cq *ibcq, int num_entries, struct ib_wc *wc)$/;"	f
+dwcroce_port_immutable	roce_driver/dwcroce_main.c	/^static int dwcroce_port_immutable(struct ib_device *ibdev, u8 port_num, $/;"	f	file:
+dwcroce_post_recv	roce_driver/dwcroce_verbs.c	/^int dwcroce_post_recv(struct ib_qp *ibqp, struct ib_recv_wr *wr, struct ib_recv_wr **bad_wr)$/;"	f
+dwcroce_post_send	roce_driver/dwcroce_verbs.c	/^int dwcroce_post_send(struct ib_qp *ibqp, struct ib_send_wr *wr, struct ib_send_wr **bad_wr)$/;"	f
+dwcroce_post_srq_recv	roce_driver/dwcroce_verbs.c	/^int dwcroce_post_srq_recv(struct ib_srq *ibsrq, struct ib_recv_wr *wr,$/;"	f
+dwcroce_process_mad	roce_driver/dwcroce_ah.c	/^int  dwcroce_process_mad(struct ib_device *ibdev,$/;"	f
+dwcroce_query_ah	roce_driver/dwcroce_ah.c	/^int dwcroce_query_ah(struct ib_ah *ah, struct rdma_ah_attr *ah_attr)$/;"	f
+dwcroce_query_device	roce_driver/dwcroce_verbs.c	/^int dwcroce_query_device(struct ib_device *ibdev, struct ib_device_attr *props,struct ib_udata *uhw)$/;"	f
+dwcroce_query_gid	roce_driver/dwcroce_verbs.c	/^int dwcroce_query_gid(struct ib_device *ibdev, u8 port,$/;"	f
+dwcroce_query_pkey	roce_driver/dwcroce_verbs.c	/^int dwcroce_query_pkey(struct ib_device *ibdev, u8 port, u16 index, u16 *pkey)$/;"	f
+dwcroce_query_port	roce_driver/dwcroce_verbs.c	/^int dwcroce_query_port(struct ib_device *ibdev, u8 port, struct ib_port_attr *props)$/;"	f
+dwcroce_query_qp	roce_driver/dwcroce_verbs.c	/^int dwcroce_query_qp(struct ib_qp *ibqp,$/;"	f
+dwcroce_query_srq	roce_driver/dwcroce_verbs.c	/^int dwcroce_query_srq(struct ib_srq *ibsrq, struct ib_srq_attr *srq_attr)$/;"	f
+dwcroce_reg_user_mr	roce_driver/dwcroce_verbs.c	/^struct ib_mr *dwcroce_reg_user_mr(struct ib_pd *ibpd, u64 start, u64 length,$/;"	f
+dwcroce_register_ibdev	roce_driver/dwcroce_main.c	/^static int dwcroce_register_ibdev(struct dwcroce_dev *dev)$/;"	f	file:
+dwcroce_resize_cq	roce_driver/dwcroce_verbs.c	/^int dwcroce_resize_cq(struct ib_cq *ibcq, int cqe, struct ib_udata *udata)$/;"	f
+eee	dwc-xlgmac.h	/^	unsigned int eee;		\/* Energy Efficient Ethernet *\/$/;"	m	struct:xlgmac_hw_features
+enable_int	dwc-xlgmac.h	/^	int (*enable_int)(struct xlgmac_channel *channel,$/;"	m	struct:xlgmac_hw_ops
+enable_rss	dwc-xlgmac.h	/^	int (*enable_rss)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+enable_rx	dwc-xlgmac.h	/^	void (*enable_rx)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+enable_rx_csum	dwc-xlgmac.h	/^	int (*enable_rx_csum)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+enable_rx_vlan_filtering	dwc-xlgmac.h	/^	int (*enable_rx_vlan_filtering)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+enable_rx_vlan_stripping	dwc-xlgmac.h	/^	int (*enable_rx_vlan_stripping)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+enable_tx	dwc-xlgmac.h	/^	void (*enable_tx)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+error	dwc-xlgmac.h	/^		unsigned int error;$/;"	m	struct:xlgmac_desc_data::__anon1
+errors	dwc-xlgmac.h	/^	unsigned int errors;$/;"	m	struct:xlgmac_pkt_info
+exit	dwc-xlgmac.h	/^	int (*exit)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+fatal_bus_error	dwc-xlgmac.h	/^	u64 fatal_bus_error;$/;"	m	struct:xlgmac_stats
+free_channels_and_rings	dwc-xlgmac.h	/^	void (*free_channels_and_rings)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_desc_ops
+get_rx_pbl_val	dwc-xlgmac.h	/^	int (*get_rx_pbl_val)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+get_tx_pbl_val	dwc-xlgmac.h	/^	int (*get_tx_pbl_val)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+hash_table_size	dwc-xlgmac.h	/^	unsigned int hash_table_size;	\/* Hash Table Size *\/$/;"	m	struct:xlgmac_hw_features
+hdr	dwc-xlgmac.h	/^	struct xlgmac_buffer_data hdr;	\/* Header locations *\/$/;"	m	struct:xlgmac_rx_desc_data	typeref:struct:xlgmac_rx_desc_data::xlgmac_buffer_data
+hdr_len	dwc-xlgmac.h	/^	unsigned short hdr_len;		\/* Length of received header *\/$/;"	m	struct:xlgmac_rx_desc_data
+header_len	dwc-xlgmac.h	/^	unsigned int header_len;$/;"	m	struct:xlgmac_pkt_info
+hw_feat	dwc-xlgmac.h	/^	struct xlgmac_hw_features hw_feat;$/;"	m	struct:xlgmac_pdata	typeref:struct:xlgmac_pdata::xlgmac_hw_features
+hw_ops	dwc-xlgmac.h	/^	struct xlgmac_hw_ops hw_ops;$/;"	m	struct:xlgmac_pdata	typeref:struct:xlgmac_pdata::xlgmac_hw_ops
+ibdev	roce_driver/dwcroce.h	/^	struct ib_device ibdev;$/;"	m	struct:dwcroce_dev	typeref:struct:dwcroce_dev::ib_device
+init	dwc-xlgmac.h	/^	int (*init)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+irq	dwc-xlgmac.h	/^	int irq;$/;"	m	struct:xlgmac_resources
+is_context_desc	dwc-xlgmac.h	/^	int (*is_context_desc)(struct xlgmac_dma_desc *dma_desc);$/;"	m	struct:xlgmac_hw_ops
+is_last_desc	dwc-xlgmac.h	/^	int (*is_last_desc)(struct xlgmac_dma_desc *dma_desc);$/;"	m	struct:xlgmac_hw_ops
+l3l4_filter_num	dwc-xlgmac.h	/^	unsigned int l3l4_filter_num;	\/* Number of L3-L4 Filters *\/$/;"	m	struct:xlgmac_hw_features
+len	dwc-xlgmac.h	/^		unsigned int len;$/;"	m	struct:xlgmac_desc_data::__anon1
+len	dwc-xlgmac.h	/^	unsigned short len;		\/* Length of received packet *\/$/;"	m	struct:xlgmac_rx_desc_data
+length	dwc-xlgmac.h	/^	unsigned int length;$/;"	m	struct:xlgmac_pkt_info
+list	dwc-xlgmac.h	/^        struct list_head list;$/;"	m	struct:xlgmac_pdata	typeref:struct:xlgmac_pdata::list_head
+mac_addr	dwc-xlgmac.h	/^	unsigned char mac_addr[ETH_ALEN];$/;"	m	struct:xlgmac_pdata
+mac_addr	roce_driver/dwc_roce.h	/^	u8 mac_addr[ETH_ALEN];$/;"	m	struct:dwc_dev_info
+mac_regs	dwc-xlgmac.h	/^	void __iomem *mac_regs;$/;"	m	struct:xlgmac_pdata
+map_rx_buffer	dwc-xlgmac.h	/^	int (*map_rx_buffer)(struct xlgmac_pdata *pdata,$/;"	m	struct:xlgmac_desc_ops
+map_tx_skb	dwc-xlgmac.h	/^	int (*map_tx_skb)(struct xlgmac_channel *channel,$/;"	m	struct:xlgmac_desc_ops
+mapped_as_page	dwc-xlgmac.h	/^	unsigned int mapped_as_page;$/;"	m	struct:xlgmac_desc_data
+mgk	dwc-xlgmac.h	/^	unsigned int mgk;		\/* PMT magic packet *\/$/;"	m	struct:xlgmac_hw_features
+mmc	dwc-xlgmac.h	/^	unsigned int mmc;		\/* RMON module *\/$/;"	m	struct:xlgmac_hw_features
+msg_enable	dwc-xlgmac.h	/^	u32 msg_enable;$/;"	m	struct:xlgmac_pdata
+mss	dwc-xlgmac.h	/^	unsigned short mss;$/;"	m	struct:xlgmac_pkt_info
+name	dwc-xlgmac.h	/^	char name[16];$/;"	m	struct:xlgmac_channel
+name	roce_driver/dwc_roce.h	/^	unsigned char name[32];$/;"	m	struct:dwcroce_driver
+napi	dwc-xlgmac.h	/^	struct napi_struct napi;$/;"	m	struct:xlgmac_channel	typeref:struct:xlgmac_channel::napi_struct
+napi	dwc-xlgmac.h	/^	struct napi_struct napi;$/;"	m	struct:xlgmac_pdata	typeref:struct:xlgmac_pdata::napi_struct
+napi_poll_isr	dwc-xlgmac.h	/^	u64 napi_poll_isr;$/;"	m	struct:xlgmac_stats
+napi_poll_txtimer	dwc-xlgmac.h	/^	u64 napi_poll_txtimer;$/;"	m	struct:xlgmac_stats
+netdev	dwc-xlgmac.h	/^	struct net_device *netdev;$/;"	m	struct:xlgmac_pdata	typeref:struct:xlgmac_pdata::net_device
+netdev	roce_driver/dwc_roce.h	/^	struct net_device *netdev;$/;"	m	struct:dwc_dev_info	typeref:struct:dwc_dev_info::net_device
+netdev_features	dwc-xlgmac.h	/^	netdev_features_t netdev_features;$/;"	m	struct:xlgmac_pdata
+pa	dwc-xlgmac.h	/^	struct xlgmac_page_alloc pa;$/;"	m	struct:xlgmac_buffer_data	typeref:struct:xlgmac_buffer_data::xlgmac_page_alloc
+pa_unmap	dwc-xlgmac.h	/^	struct xlgmac_page_alloc pa_unmap;$/;"	m	struct:xlgmac_buffer_data	typeref:struct:xlgmac_buffer_data::xlgmac_page_alloc
+packets	dwc-xlgmac.h	/^	unsigned int packets;		\/* BQL packet count *\/$/;"	m	struct:xlgmac_tx_desc_data
+pages	dwc-xlgmac.h	/^	struct page *pages;$/;"	m	struct:xlgmac_page_alloc	typeref:struct:xlgmac_page_alloc::page
+pages_dma	dwc-xlgmac.h	/^	dma_addr_t pages_dma;$/;"	m	struct:xlgmac_page_alloc
+pages_len	dwc-xlgmac.h	/^	unsigned int pages_len;$/;"	m	struct:xlgmac_page_alloc
+pages_offset	dwc-xlgmac.h	/^	unsigned int pages_offset;$/;"	m	struct:xlgmac_page_alloc
+pblx8	dwc-xlgmac.h	/^	unsigned int pblx8;$/;"	m	struct:xlgmac_pdata
+pdata	dwc-xlgmac.h	/^	struct xlgmac_pdata *pdata;$/;"	m	struct:xlgmac_channel	typeref:struct:xlgmac_channel::xlgmac_pdata
+pdev	roce_driver/dwc_roce.h	/^	struct pci_dev *pdev;$/;"	m	struct:dwc_dev_info	typeref:struct:dwc_dev_info::pci_dev
+per_channel_irq	dwc-xlgmac.h	/^	unsigned int per_channel_irq;$/;"	m	struct:xlgmac_pdata
+phy_speed	dwc-xlgmac.h	/^	int phy_speed;$/;"	m	struct:xlgmac_pdata
+phyifsel	dwc-xlgmac.h	/^	unsigned int phyifsel;		\/* PHY interface support *\/$/;"	m	struct:xlgmac_hw_features
+pkt_info	dwc-xlgmac.h	/^	struct xlgmac_pkt_info pkt_info;$/;"	m	struct:xlgmac_ring	typeref:struct:xlgmac_ring::xlgmac_pkt_info
+pps_out_num	dwc-xlgmac.h	/^	unsigned int pps_out_num;	\/* Number of PPS outputs *\/$/;"	m	struct:xlgmac_hw_features
+queue_index	dwc-xlgmac.h	/^	unsigned int queue_index;$/;"	m	struct:xlgmac_channel
+queue_stopped	dwc-xlgmac.h	/^			unsigned int queue_stopped;$/;"	m	struct:xlgmac_ring::__anon2::__anon3
+read_mmc_stats	dwc-xlgmac.h	/^	void (*read_mmc_stats)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+remove	roce_driver/dwc_roce.h	/^	void (*remove) (struct dwcroce_dev *);$/;"	m	struct:dwcroce_driver
+restart_work	dwc-xlgmac.h	/^	struct work_struct restart_work;$/;"	m	struct:xlgmac_pdata	typeref:struct:xlgmac_pdata::work_struct
+riwt_to_usec	dwc-xlgmac.h	/^	unsigned int (*riwt_to_usec)(struct xlgmac_pdata *pdata,$/;"	m	struct:xlgmac_hw_ops
+rss	dwc-xlgmac.h	/^	unsigned int rss;		\/* Receive Side Scaling *\/$/;"	m	struct:xlgmac_hw_features
+rss_hash	dwc-xlgmac.h	/^	u32 rss_hash;$/;"	m	struct:xlgmac_pkt_info
+rss_hash_type	dwc-xlgmac.h	/^	enum pkt_hash_types rss_hash_type;$/;"	m	struct:xlgmac_pkt_info	typeref:enum:xlgmac_pkt_info::pkt_hash_types
+rss_key	dwc-xlgmac.h	/^	u8 rss_key[XLGMAC_RSS_HASH_KEY_SIZE];$/;"	m	struct:xlgmac_pdata
+rss_mutex	dwc-xlgmac.h	/^	struct mutex rss_mutex;$/;"	m	struct:xlgmac_pdata	typeref:struct:xlgmac_pdata::mutex
+rss_options	dwc-xlgmac.h	/^	u32 rss_options;$/;"	m	struct:xlgmac_pdata
+rss_table	dwc-xlgmac.h	/^	u32 rss_table[XLGMAC_RSS_MAX_TABLE_SIZE];$/;"	m	struct:xlgmac_pdata
+rwk	dwc-xlgmac.h	/^	unsigned int rwk;		\/* PMT remote wake-up packet *\/$/;"	m	struct:xlgmac_hw_features
+rx	dwc-xlgmac.h	/^	struct xlgmac_rx_desc_data rx;$/;"	m	struct:xlgmac_desc_data	typeref:struct:xlgmac_desc_data::xlgmac_rx_desc_data
+rx1024tomaxoctets_gb	dwc-xlgmac.h	/^	u64 rx1024tomaxoctets_gb;$/;"	m	struct:xlgmac_stats
+rx128to255octets_gb	dwc-xlgmac.h	/^	u64 rx128to255octets_gb;$/;"	m	struct:xlgmac_stats
+rx256to511octets_gb	dwc-xlgmac.h	/^	u64 rx256to511octets_gb;$/;"	m	struct:xlgmac_stats
+rx512to1023octets_gb	dwc-xlgmac.h	/^	u64 rx512to1023octets_gb;$/;"	m	struct:xlgmac_stats
+rx64octets_gb	dwc-xlgmac.h	/^	u64 rx64octets_gb;$/;"	m	struct:xlgmac_stats
+rx65to127octets_gb	dwc-xlgmac.h	/^	u64 rx65to127octets_gb;$/;"	m	struct:xlgmac_stats
+rx_buf_pa	dwc-xlgmac.h	/^	struct xlgmac_page_alloc rx_buf_pa;$/;"	m	struct:xlgmac_ring	typeref:struct:xlgmac_ring::xlgmac_page_alloc
+rx_buf_size	dwc-xlgmac.h	/^	unsigned int rx_buf_size;$/;"	m	struct:xlgmac_pdata
+rx_buffer_unavailable	dwc-xlgmac.h	/^	u64 rx_buffer_unavailable;$/;"	m	struct:xlgmac_stats
+rx_ch_cnt	dwc-xlgmac.h	/^	unsigned int rx_ch_cnt;		\/* Number of DMA Receive Channels *\/$/;"	m	struct:xlgmac_hw_features
+rx_coe	dwc-xlgmac.h	/^	unsigned int rx_coe;		\/* Rx Checksum Offload *\/$/;"	m	struct:xlgmac_hw_features
+rx_desc_count	dwc-xlgmac.h	/^	unsigned int rx_desc_count;$/;"	m	struct:xlgmac_pdata
+rx_desc_init	dwc-xlgmac.h	/^	void (*rx_desc_init)(struct xlgmac_channel *channel);$/;"	m	struct:xlgmac_hw_ops
+rx_desc_init	dwc-xlgmac.h	/^	void (*rx_desc_init)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_desc_ops
+rx_desc_reset	dwc-xlgmac.h	/^	void (*rx_desc_reset)(struct xlgmac_pdata *pdata,$/;"	m	struct:xlgmac_hw_ops
+rx_fifo_size	dwc-xlgmac.h	/^	unsigned int rx_fifo_size;	\/* MTL Receive FIFO Size *\/$/;"	m	struct:xlgmac_hw_features
+rx_frames	dwc-xlgmac.h	/^	unsigned int rx_frames;$/;"	m	struct:xlgmac_pdata
+rx_hdr_pa	dwc-xlgmac.h	/^	struct xlgmac_page_alloc rx_hdr_pa;$/;"	m	struct:xlgmac_ring	typeref:struct:xlgmac_ring::xlgmac_page_alloc
+rx_mmc_int	dwc-xlgmac.h	/^	void (*rx_mmc_int)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+rx_pause	dwc-xlgmac.h	/^	unsigned int rx_pause;$/;"	m	struct:xlgmac_pdata
+rx_pbl	dwc-xlgmac.h	/^	unsigned int rx_pbl;$/;"	m	struct:xlgmac_pdata
+rx_process_stopped	dwc-xlgmac.h	/^	u64 rx_process_stopped;$/;"	m	struct:xlgmac_stats
+rx_q_cnt	dwc-xlgmac.h	/^	unsigned int rx_q_cnt;		\/* Number of MTL Receive Queues *\/$/;"	m	struct:xlgmac_hw_features
+rx_q_count	dwc-xlgmac.h	/^	unsigned int rx_q_count;$/;"	m	struct:xlgmac_pdata
+rx_ring	dwc-xlgmac.h	/^	struct xlgmac_ring *rx_ring;$/;"	m	struct:xlgmac_channel	typeref:struct:xlgmac_channel::xlgmac_ring
+rx_ring_count	dwc-xlgmac.h	/^	unsigned int rx_ring_count;$/;"	m	struct:xlgmac_pdata
+rx_riwt	dwc-xlgmac.h	/^	unsigned int rx_riwt;$/;"	m	struct:xlgmac_pdata
+rx_sf_mode	dwc-xlgmac.h	/^	unsigned int rx_sf_mode;$/;"	m	struct:xlgmac_pdata
+rx_split_header_packets	dwc-xlgmac.h	/^	u64 rx_split_header_packets;$/;"	m	struct:xlgmac_stats
+rx_threshold	dwc-xlgmac.h	/^	unsigned int rx_threshold;$/;"	m	struct:xlgmac_pdata
+rx_tstamp	dwc-xlgmac.h	/^	u64 rx_tstamp;$/;"	m	struct:xlgmac_pkt_info
+rx_usecs	dwc-xlgmac.h	/^	unsigned int rx_usecs;$/;"	m	struct:xlgmac_pdata
+rx_vlan_packets	dwc-xlgmac.h	/^	u64 rx_vlan_packets;$/;"	m	struct:xlgmac_stats
+rxbroadcastframes_g	dwc-xlgmac.h	/^	u64 rxbroadcastframes_g;$/;"	m	struct:xlgmac_stats
+rxcrcerror	dwc-xlgmac.h	/^	u64 rxcrcerror;$/;"	m	struct:xlgmac_stats
+rxfifooverflow	dwc-xlgmac.h	/^	u64 rxfifooverflow;$/;"	m	struct:xlgmac_stats
+rxframecount_gb	dwc-xlgmac.h	/^	u64 rxframecount_gb;$/;"	m	struct:xlgmac_stats
+rxjabbererror	dwc-xlgmac.h	/^	u64 rxjabbererror;$/;"	m	struct:xlgmac_stats
+rxlengtherror	dwc-xlgmac.h	/^	u64 rxlengtherror;$/;"	m	struct:xlgmac_stats
+rxmulticastframes_g	dwc-xlgmac.h	/^	u64 rxmulticastframes_g;$/;"	m	struct:xlgmac_stats
+rxoctetcount_g	dwc-xlgmac.h	/^	u64 rxoctetcount_g;$/;"	m	struct:xlgmac_stats
+rxoctetcount_gb	dwc-xlgmac.h	/^	u64 rxoctetcount_gb;$/;"	m	struct:xlgmac_stats
+rxoutofrangetype	dwc-xlgmac.h	/^	u64 rxoutofrangetype;$/;"	m	struct:xlgmac_stats
+rxoversize_g	dwc-xlgmac.h	/^	u64 rxoversize_g;$/;"	m	struct:xlgmac_stats
+rxpauseframes	dwc-xlgmac.h	/^	u64 rxpauseframes;$/;"	m	struct:xlgmac_stats
+rxrunterror	dwc-xlgmac.h	/^	u64 rxrunterror;$/;"	m	struct:xlgmac_stats
+rxundersize_g	dwc-xlgmac.h	/^	u64 rxundersize_g;$/;"	m	struct:xlgmac_stats
+rxunicastframes_g	dwc-xlgmac.h	/^	u64 rxunicastframes_g;$/;"	m	struct:xlgmac_stats
+rxvlanframes_gb	dwc-xlgmac.h	/^	u64 rxvlanframes_gb;$/;"	m	struct:xlgmac_stats
+rxwatchdogerror	dwc-xlgmac.h	/^	u64 rxwatchdogerror;$/;"	m	struct:xlgmac_stats
+sa_vlan_ins	dwc-xlgmac.h	/^	unsigned int sa_vlan_ins;	\/* Source Address or VLAN Insertion *\/$/;"	m	struct:xlgmac_hw_features
+saved_ier	dwc-xlgmac.h	/^	unsigned int saved_ier;$/;"	m	struct:xlgmac_channel
+set_mac_address	dwc-xlgmac.h	/^	int (*set_mac_address)(struct xlgmac_pdata *pdata, u8 *addr);$/;"	m	struct:xlgmac_hw_ops
+set_rss_hash_key	dwc-xlgmac.h	/^	int (*set_rss_hash_key)(struct xlgmac_pdata *pdata,$/;"	m	struct:xlgmac_hw_ops
+set_rss_lookup_table	dwc-xlgmac.h	/^	int (*set_rss_lookup_table)(struct xlgmac_pdata *pdata,$/;"	m	struct:xlgmac_hw_ops
+set_xlgmii_100000_speed	dwc-xlgmac.h	/^	int (*set_xlgmii_100000_speed)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+set_xlgmii_25000_speed	dwc-xlgmac.h	/^	int (*set_xlgmii_25000_speed)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+set_xlgmii_40000_speed	dwc-xlgmac.h	/^	int (*set_xlgmii_40000_speed)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+set_xlgmii_50000_speed	dwc-xlgmac.h	/^	int (*set_xlgmii_50000_speed)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+skb	dwc-xlgmac.h	/^		struct sk_buff *skb;$/;"	m	struct:xlgmac_desc_data::__anon1	typeref:struct:xlgmac_desc_data::__anon1::sk_buff
+skb	dwc-xlgmac.h	/^	struct sk_buff *skb;$/;"	m	struct:xlgmac_desc_data	typeref:struct:xlgmac_desc_data::sk_buff
+skb	dwc-xlgmac.h	/^	struct sk_buff *skb;$/;"	m	struct:xlgmac_pkt_info	typeref:struct:xlgmac_pkt_info::sk_buff
+skb	dwc-xlgmac.h	/^	struct sk_buff *skb;$/;"	m	struct:xlgmac_ring_buf	typeref:struct:xlgmac_ring_buf::sk_buff
+skb_dma	dwc-xlgmac.h	/^	dma_addr_t skb_dma;$/;"	m	struct:xlgmac_desc_data
+skb_dma	dwc-xlgmac.h	/^	dma_addr_t skb_dma;$/;"	m	struct:xlgmac_ring_buf
+skb_dma_len	dwc-xlgmac.h	/^	unsigned int skb_dma_len;$/;"	m	struct:xlgmac_desc_data
+skb_len	dwc-xlgmac.h	/^	unsigned int skb_len;$/;"	m	struct:xlgmac_ring_buf
+sma	dwc-xlgmac.h	/^	unsigned int sma;		\/* SMA(MDIO) Interface *\/$/;"	m	struct:xlgmac_hw_features
+sph	dwc-xlgmac.h	/^	unsigned int sph;		\/* Split Header Feature *\/$/;"	m	struct:xlgmac_hw_features
+stat_offset	dwc-xlgmac-ethtool.c	/^	int stat_offset;$/;"	m	struct:xlgmac_stats_desc	file:
+stat_string	dwc-xlgmac-ethtool.c	/^	char stat_string[ETH_GSTRING_LEN];$/;"	m	struct:xlgmac_stats_desc	file:
+state	dwc-xlgmac.h	/^	} state;$/;"	m	struct:xlgmac_desc_data	typeref:struct:xlgmac_desc_data::__anon1
+state_saved	dwc-xlgmac.h	/^	unsigned int state_saved;$/;"	m	struct:xlgmac_desc_data
+stats	dwc-xlgmac.h	/^	struct xlgmac_stats stats;$/;"	m	struct:xlgmac_pdata	typeref:struct:xlgmac_pdata::xlgmac_stats
+sysclk_rate	dwc-xlgmac.h	/^	unsigned long sysclk_rate;$/;"	m	struct:xlgmac_pdata
+tc_cnt	dwc-xlgmac.h	/^	unsigned int tc_cnt;		\/* Number of Traffic Classes *\/$/;"	m	struct:xlgmac_hw_features
+tcp_header_len	dwc-xlgmac.h	/^	unsigned int tcp_header_len;$/;"	m	struct:xlgmac_pkt_info
+tcp_payload_len	dwc-xlgmac.h	/^	unsigned int tcp_payload_len;$/;"	m	struct:xlgmac_pkt_info
+ts	dwc-xlgmac.h	/^	unsigned int ts;		\/* IEEE 1588-2008 Advanced Timestamp *\/$/;"	m	struct:xlgmac_hw_features
+ts_src	dwc-xlgmac.h	/^	unsigned int ts_src;		\/* Timestamp Source *\/$/;"	m	struct:xlgmac_hw_features
+tso	dwc-xlgmac.h	/^	unsigned int tso;		\/* TCP Segmentation Offload *\/$/;"	m	struct:xlgmac_hw_features
+tx	dwc-xlgmac.h	/^		} tx;$/;"	m	union:xlgmac_ring::__anon2	typeref:struct:xlgmac_ring::__anon2::__anon3
+tx	dwc-xlgmac.h	/^	struct xlgmac_tx_desc_data tx;$/;"	m	struct:xlgmac_desc_data	typeref:struct:xlgmac_desc_data::xlgmac_tx_desc_data
+tx1024tomaxoctets_gb	dwc-xlgmac.h	/^	u64 tx1024tomaxoctets_gb;$/;"	m	struct:xlgmac_stats
+tx128to255octets_gb	dwc-xlgmac.h	/^	u64 tx128to255octets_gb;$/;"	m	struct:xlgmac_stats
+tx256to511octets_gb	dwc-xlgmac.h	/^	u64 tx256to511octets_gb;$/;"	m	struct:xlgmac_stats
+tx512to1023octets_gb	dwc-xlgmac.h	/^	u64 tx512to1023octets_gb;$/;"	m	struct:xlgmac_stats
+tx64octets_gb	dwc-xlgmac.h	/^	u64 tx64octets_gb;$/;"	m	struct:xlgmac_stats
+tx65to127octets_gb	dwc-xlgmac.h	/^	u64 tx65to127octets_gb;$/;"	m	struct:xlgmac_stats
+tx_buffer_unavailable	dwc-xlgmac.h	/^	u64 tx_buffer_unavailable;$/;"	m	struct:xlgmac_stats
+tx_bytes	dwc-xlgmac.h	/^	unsigned int tx_bytes;$/;"	m	struct:xlgmac_pkt_info
+tx_ch_cnt	dwc-xlgmac.h	/^	unsigned int tx_ch_cnt;		\/* Number of DMA Transmit Channels *\/$/;"	m	struct:xlgmac_hw_features
+tx_coe	dwc-xlgmac.h	/^	unsigned int tx_coe;		\/* Tx Checksum Offload *\/$/;"	m	struct:xlgmac_hw_features
+tx_complete	dwc-xlgmac.h	/^	int (*tx_complete)(struct xlgmac_dma_desc *dma_desc);$/;"	m	struct:xlgmac_hw_ops
+tx_desc_count	dwc-xlgmac.h	/^	unsigned int tx_desc_count;$/;"	m	struct:xlgmac_pdata
+tx_desc_init	dwc-xlgmac.h	/^	void (*tx_desc_init)(struct xlgmac_channel *channel);$/;"	m	struct:xlgmac_hw_ops
+tx_desc_init	dwc-xlgmac.h	/^	void (*tx_desc_init)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_desc_ops
+tx_desc_reset	dwc-xlgmac.h	/^	void (*tx_desc_reset)(struct xlgmac_desc_data *desc_data);$/;"	m	struct:xlgmac_hw_ops
+tx_fifo_size	dwc-xlgmac.h	/^	unsigned int tx_fifo_size;	\/* MTL Transmit FIFO Size *\/$/;"	m	struct:xlgmac_hw_features
+tx_frames	dwc-xlgmac.h	/^	unsigned int tx_frames;$/;"	m	struct:xlgmac_pdata
+tx_mmc_int	dwc-xlgmac.h	/^	void (*tx_mmc_int)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+tx_osp_mode	dwc-xlgmac.h	/^	unsigned int tx_osp_mode;$/;"	m	struct:xlgmac_pdata
+tx_packets	dwc-xlgmac.h	/^	unsigned int tx_packets;$/;"	m	struct:xlgmac_pkt_info
+tx_pause	dwc-xlgmac.h	/^	unsigned int tx_pause;$/;"	m	struct:xlgmac_pdata
+tx_pbl	dwc-xlgmac.h	/^	unsigned int tx_pbl;$/;"	m	struct:xlgmac_pdata
+tx_process_stopped	dwc-xlgmac.h	/^	u64 tx_process_stopped;$/;"	m	struct:xlgmac_stats
+tx_q_cnt	dwc-xlgmac.h	/^	unsigned int tx_q_cnt;		\/* Number of MTL Transmit Queues *\/$/;"	m	struct:xlgmac_hw_features
+tx_q_count	dwc-xlgmac.h	/^	unsigned int tx_q_count;$/;"	m	struct:xlgmac_pdata
+tx_ring	dwc-xlgmac.h	/^	struct xlgmac_ring *tx_ring;$/;"	m	struct:xlgmac_channel	typeref:struct:xlgmac_channel::xlgmac_ring
+tx_ring_count	dwc-xlgmac.h	/^	unsigned int tx_ring_count;$/;"	m	struct:xlgmac_pdata
+tx_sf_mode	dwc-xlgmac.h	/^	unsigned int tx_sf_mode;$/;"	m	struct:xlgmac_pdata
+tx_start_xmit	dwc-xlgmac.h	/^	void (*tx_start_xmit)(struct xlgmac_channel *channel,$/;"	m	struct:xlgmac_hw_ops
+tx_threshold	dwc-xlgmac.h	/^	unsigned int tx_threshold;$/;"	m	struct:xlgmac_pdata
+tx_timer	dwc-xlgmac.h	/^	struct timer_list tx_timer;$/;"	m	struct:xlgmac_channel	typeref:struct:xlgmac_channel::timer_list
+tx_timer_active	dwc-xlgmac.h	/^	unsigned int tx_timer_active;$/;"	m	struct:xlgmac_channel
+tx_tso_packets	dwc-xlgmac.h	/^	u64 tx_tso_packets;$/;"	m	struct:xlgmac_stats
+tx_usecs	dwc-xlgmac.h	/^	unsigned int tx_usecs;$/;"	m	struct:xlgmac_pdata
+tx_vlan_packets	dwc-xlgmac.h	/^	u64 tx_vlan_packets;$/;"	m	struct:xlgmac_stats
+txbroadcastframes_g	dwc-xlgmac.h	/^	u64 txbroadcastframes_g;$/;"	m	struct:xlgmac_stats
+txbroadcastframes_gb	dwc-xlgmac.h	/^	u64 txbroadcastframes_gb;$/;"	m	struct:xlgmac_stats
+txframecount_g	dwc-xlgmac.h	/^	u64 txframecount_g;$/;"	m	struct:xlgmac_stats
+txframecount_gb	dwc-xlgmac.h	/^	u64 txframecount_gb;$/;"	m	struct:xlgmac_stats
+txmulticastframes_g	dwc-xlgmac.h	/^	u64 txmulticastframes_g;$/;"	m	struct:xlgmac_stats
+txmulticastframes_gb	dwc-xlgmac.h	/^	u64 txmulticastframes_gb;$/;"	m	struct:xlgmac_stats
+txoctetcount_g	dwc-xlgmac.h	/^	u64 txoctetcount_g;$/;"	m	struct:xlgmac_stats
+txoctetcount_gb	dwc-xlgmac.h	/^	u64 txoctetcount_gb;$/;"	m	struct:xlgmac_stats
+txpauseframes	dwc-xlgmac.h	/^	u64 txpauseframes;$/;"	m	struct:xlgmac_stats
+txunderflowerror	dwc-xlgmac.h	/^	u64 txunderflowerror;$/;"	m	struct:xlgmac_stats
+txunicastframes_gb	dwc-xlgmac.h	/^	u64 txunicastframes_gb;$/;"	m	struct:xlgmac_stats
+txvlanframes_g	dwc-xlgmac.h	/^	u64 txvlanframes_g;$/;"	m	struct:xlgmac_stats
+unmap_desc_data	dwc-xlgmac.h	/^	void (*unmap_desc_data)(struct xlgmac_pdata *pdata,$/;"	m	struct:xlgmac_desc_ops
+update_vlan_hash_table	dwc-xlgmac.h	/^	int (*update_vlan_hash_table)(struct xlgmac_pdata *pdata);$/;"	m	struct:xlgmac_hw_ops
+usec_to_riwt	dwc-xlgmac.h	/^	unsigned int (*usec_to_riwt)(struct xlgmac_pdata *pdata,$/;"	m	struct:xlgmac_hw_ops
+version	dwc-xlgmac.h	/^	unsigned int version;$/;"	m	struct:xlgmac_hw_features
+vlan_ctag	dwc-xlgmac.h	/^	unsigned short vlan_ctag;$/;"	m	struct:xlgmac_pkt_info
+vlhash	dwc-xlgmac.h	/^	unsigned int vlhash;		\/* VLAN Hash Filter *\/$/;"	m	struct:xlgmac_hw_features
+xlgmac_add_mac_addresses	dwc-xlgmac-hw.c	/^static int xlgmac_add_mac_addresses(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_all_poll	dwc-xlgmac-net.c	/^static int xlgmac_all_poll(struct napi_struct *napi, int budget)$/;"	f	file:
+xlgmac_alloc_channels	dwc-xlgmac-desc.c	/^static int xlgmac_alloc_channels(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_alloc_channels_and_rings	dwc-xlgmac-desc.c	/^static int xlgmac_alloc_channels_and_rings(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_alloc_pages	dwc-xlgmac-desc.c	/^static int xlgmac_alloc_pages(struct xlgmac_pdata *pdata,$/;"	f	file:
+xlgmac_alloc_rings	dwc-xlgmac-desc.c	/^static int xlgmac_alloc_rings(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_buffer_data	dwc-xlgmac.h	/^struct xlgmac_buffer_data {$/;"	s
+xlgmac_calc_rx_buf_size	dwc-xlgmac-net.c	/^static int xlgmac_calc_rx_buf_size(struct net_device *netdev, unsigned int mtu)$/;"	f	file:
+xlgmac_calculate_per_queue_fifo	dwc-xlgmac-hw.c	/^static unsigned int xlgmac_calculate_per_queue_fifo($/;"	f	file:
+xlgmac_change_mtu	dwc-xlgmac-net.c	/^static int xlgmac_change_mtu(struct net_device *netdev, int mtu)$/;"	f	file:
+xlgmac_channel	dwc-xlgmac.h	/^struct xlgmac_channel {$/;"	s
+xlgmac_close	dwc-xlgmac-net.c	/^static int xlgmac_close(struct net_device *netdev)$/;"	f	file:
+xlgmac_config_checksum_offload	dwc-xlgmac-hw.c	/^static void xlgmac_config_checksum_offload(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_config_dma_bus	dwc-xlgmac-hw.c	/^static void xlgmac_config_dma_bus(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_config_flow_control	dwc-xlgmac-hw.c	/^static void xlgmac_config_flow_control(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_config_flow_control_threshold	dwc-xlgmac-hw.c	/^static void xlgmac_config_flow_control_threshold(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_config_jumbo_enable	dwc-xlgmac-hw.c	/^static void xlgmac_config_jumbo_enable(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_config_mac_address	dwc-xlgmac-hw.c	/^static void xlgmac_config_mac_address(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_config_mac_speed	dwc-xlgmac-hw.c	/^static void xlgmac_config_mac_speed(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_config_mmc	dwc-xlgmac-hw.c	/^static void xlgmac_config_mmc(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_config_mtl_mode	dwc-xlgmac-hw.c	/^static void xlgmac_config_mtl_mode(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_config_osp_mode	dwc-xlgmac-hw.c	/^static int xlgmac_config_osp_mode(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_config_pblx8	dwc-xlgmac-hw.c	/^static int xlgmac_config_pblx8(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_config_queue_mapping	dwc-xlgmac-hw.c	/^static void xlgmac_config_queue_mapping(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_config_rsf_mode	dwc-xlgmac-hw.c	/^static int xlgmac_config_rsf_mode(struct xlgmac_pdata *pdata,$/;"	f	file:
+xlgmac_config_rss	dwc-xlgmac-hw.c	/^static void xlgmac_config_rss(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_config_rx_buffer_size	dwc-xlgmac-hw.c	/^static void xlgmac_config_rx_buffer_size(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_config_rx_coalesce	dwc-xlgmac-hw.c	/^static int xlgmac_config_rx_coalesce(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_config_rx_fep_enable	dwc-xlgmac-hw.c	/^static void xlgmac_config_rx_fep_enable(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_config_rx_fifo_size	dwc-xlgmac-hw.c	/^static void xlgmac_config_rx_fifo_size(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_config_rx_flow_control	dwc-xlgmac-hw.c	/^static int xlgmac_config_rx_flow_control(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_config_rx_fup_enable	dwc-xlgmac-hw.c	/^static void xlgmac_config_rx_fup_enable(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_config_rx_mode	dwc-xlgmac-hw.c	/^static int xlgmac_config_rx_mode(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_config_rx_pbl_val	dwc-xlgmac-hw.c	/^static int xlgmac_config_rx_pbl_val(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_config_rx_threshold	dwc-xlgmac-hw.c	/^static int xlgmac_config_rx_threshold(struct xlgmac_pdata *pdata,$/;"	f	file:
+xlgmac_config_sph_mode	dwc-xlgmac-hw.c	/^static void xlgmac_config_sph_mode(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_config_tsf_mode	dwc-xlgmac-hw.c	/^static int xlgmac_config_tsf_mode(struct xlgmac_pdata *pdata,$/;"	f	file:
+xlgmac_config_tso_mode	dwc-xlgmac-hw.c	/^static void xlgmac_config_tso_mode(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_config_tx_coalesce	dwc-xlgmac-hw.c	/^static int xlgmac_config_tx_coalesce(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_config_tx_fifo_size	dwc-xlgmac-hw.c	/^static void xlgmac_config_tx_fifo_size(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_config_tx_flow_control	dwc-xlgmac-hw.c	/^static int xlgmac_config_tx_flow_control(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_config_tx_pbl_val	dwc-xlgmac-hw.c	/^static int xlgmac_config_tx_pbl_val(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_config_tx_threshold	dwc-xlgmac-hw.c	/^static int xlgmac_config_tx_threshold(struct xlgmac_pdata *pdata,$/;"	f	file:
+xlgmac_config_vlan_support	dwc-xlgmac-hw.c	/^static void xlgmac_config_vlan_support(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_create_skb	dwc-xlgmac-net.c	/^static struct sk_buff *xlgmac_create_skb(struct xlgmac_pdata *pdata,$/;"	f	file:
+xlgmac_default_config	dwc-xlgmac-common.c	/^static void xlgmac_default_config(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_desc_data	dwc-xlgmac.h	/^struct xlgmac_desc_data {$/;"	s
+xlgmac_desc_ops	dwc-xlgmac.h	/^struct xlgmac_desc_ops {$/;"	s
+xlgmac_dev_read	dwc-xlgmac-hw.c	/^static int xlgmac_dev_read(struct xlgmac_channel *channel)$/;"	f	file:
+xlgmac_dev_xmit	dwc-xlgmac-hw.c	/^static void xlgmac_dev_xmit(struct xlgmac_channel *channel)$/;"	f	file:
+xlgmac_disable_int	dwc-xlgmac-hw.c	/^static int xlgmac_disable_int(struct xlgmac_channel *channel,$/;"	f	file:
+xlgmac_disable_rss	dwc-xlgmac-hw.c	/^static int xlgmac_disable_rss(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_disable_rx	dwc-xlgmac-hw.c	/^static void xlgmac_disable_rx(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_disable_rx_csum	dwc-xlgmac-hw.c	/^static int xlgmac_disable_rx_csum(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_disable_rx_flow_control	dwc-xlgmac-hw.c	/^static int xlgmac_disable_rx_flow_control(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_disable_rx_tx_ints	dwc-xlgmac-net.c	/^static void xlgmac_disable_rx_tx_ints(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_disable_rx_vlan_filtering	dwc-xlgmac-hw.c	/^static int xlgmac_disable_rx_vlan_filtering(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_disable_rx_vlan_stripping	dwc-xlgmac-hw.c	/^static int xlgmac_disable_rx_vlan_stripping(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_disable_tx	dwc-xlgmac-hw.c	/^static void xlgmac_disable_tx(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_disable_tx_flow_control	dwc-xlgmac-hw.c	/^static int xlgmac_disable_tx_flow_control(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_dma_desc	dwc-xlgmac.h	/^struct xlgmac_dma_desc {$/;"	s
+xlgmac_dma_isr	dwc-xlgmac-net.c	/^static irqreturn_t xlgmac_dma_isr(int irq, void *data)$/;"	f	file:
+xlgmac_drv_probe	dwc-xlgmac-common.c	/^int xlgmac_drv_probe(struct device *dev, struct xlgmac_resources *res)$/;"	f
+xlgmac_drv_remove	dwc-xlgmac-common.c	/^int xlgmac_drv_remove(struct device *dev)$/;"	f
+xlgmac_dump_rx_desc	dwc-xlgmac-common.c	/^void xlgmac_dump_rx_desc(struct xlgmac_pdata *pdata,$/;"	f
+xlgmac_dump_tx_desc	dwc-xlgmac-common.c	/^void xlgmac_dump_tx_desc(struct xlgmac_pdata *pdata,$/;"	f
+xlgmac_enable_dma_interrupts	dwc-xlgmac-hw.c	/^static void xlgmac_enable_dma_interrupts(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_enable_int	dwc-xlgmac-hw.c	/^static int xlgmac_enable_int(struct xlgmac_channel *channel,$/;"	f	file:
+xlgmac_enable_mac_interrupts	dwc-xlgmac-hw.c	/^static void xlgmac_enable_mac_interrupts(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_enable_mtl_interrupts	dwc-xlgmac-hw.c	/^static void xlgmac_enable_mtl_interrupts(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_enable_rss	dwc-xlgmac-hw.c	/^static int xlgmac_enable_rss(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_enable_rx	dwc-xlgmac-hw.c	/^static void xlgmac_enable_rx(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_enable_rx_csum	dwc-xlgmac-hw.c	/^static int xlgmac_enable_rx_csum(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_enable_rx_flow_control	dwc-xlgmac-hw.c	/^static int xlgmac_enable_rx_flow_control(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_enable_rx_tx_ints	dwc-xlgmac-net.c	/^static void xlgmac_enable_rx_tx_ints(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_enable_rx_vlan_filtering	dwc-xlgmac-hw.c	/^static int xlgmac_enable_rx_vlan_filtering(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_enable_rx_vlan_stripping	dwc-xlgmac-hw.c	/^static int xlgmac_enable_rx_vlan_stripping(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_enable_tx	dwc-xlgmac-hw.c	/^static void xlgmac_enable_tx(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_enable_tx_flow_control	dwc-xlgmac-hw.c	/^static int xlgmac_enable_tx_flow_control(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_ethtool_get_channels	dwc-xlgmac-ethtool.c	/^static void xlgmac_ethtool_get_channels(struct net_device *netdev,$/;"	f	file:
+xlgmac_ethtool_get_coalesce	dwc-xlgmac-ethtool.c	/^static int xlgmac_ethtool_get_coalesce(struct net_device *netdev,$/;"	f	file:
+xlgmac_ethtool_get_drvinfo	dwc-xlgmac-ethtool.c	/^static void xlgmac_ethtool_get_drvinfo(struct net_device *netdev,$/;"	f	file:
+xlgmac_ethtool_get_ethtool_stats	dwc-xlgmac-ethtool.c	/^static void xlgmac_ethtool_get_ethtool_stats(struct net_device *netdev,$/;"	f	file:
+xlgmac_ethtool_get_msglevel	dwc-xlgmac-ethtool.c	/^static u32 xlgmac_ethtool_get_msglevel(struct net_device *netdev)$/;"	f	file:
+xlgmac_ethtool_get_sset_count	dwc-xlgmac-ethtool.c	/^static int xlgmac_ethtool_get_sset_count(struct net_device *netdev,$/;"	f	file:
+xlgmac_ethtool_get_strings	dwc-xlgmac-ethtool.c	/^static void xlgmac_ethtool_get_strings(struct net_device *netdev,$/;"	f	file:
+xlgmac_ethtool_ops	dwc-xlgmac-ethtool.c	/^static const struct ethtool_ops xlgmac_ethtool_ops = {$/;"	v	typeref:struct:ethtool_ops	file:
+xlgmac_ethtool_set_coalesce	dwc-xlgmac-ethtool.c	/^static int xlgmac_ethtool_set_coalesce(struct net_device *netdev,$/;"	f	file:
+xlgmac_ethtool_set_msglevel	dwc-xlgmac-ethtool.c	/^static void xlgmac_ethtool_set_msglevel(struct net_device *netdev,$/;"	f	file:
+xlgmac_flush_tx_queues	dwc-xlgmac-hw.c	/^static int xlgmac_flush_tx_queues(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_free_channels	dwc-xlgmac-desc.c	/^static void xlgmac_free_channels(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_free_channels_and_rings	dwc-xlgmac-desc.c	/^static void xlgmac_free_channels_and_rings(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_free_irqs	dwc-xlgmac-net.c	/^static void xlgmac_free_irqs(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_free_ring	dwc-xlgmac-desc.c	/^static void xlgmac_free_ring(struct xlgmac_pdata *pdata,$/;"	f	file:
+xlgmac_free_rings	dwc-xlgmac-desc.c	/^static void xlgmac_free_rings(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_free_rx_data	dwc-xlgmac-net.c	/^static void xlgmac_free_rx_data(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_free_tx_data	dwc-xlgmac-net.c	/^static void xlgmac_free_tx_data(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_get_all_hw_features	dwc-xlgmac-common.c	/^void xlgmac_get_all_hw_features(struct xlgmac_pdata *pdata)$/;"	f
+xlgmac_get_ethtool_ops	dwc-xlgmac-ethtool.c	/^const struct ethtool_ops *xlgmac_get_ethtool_ops(void)$/;"	f
+xlgmac_get_netdev_ops	dwc-xlgmac-net.c	/^const struct net_device_ops *xlgmac_get_netdev_ops(void)$/;"	f
+xlgmac_get_rx_pbl_val	dwc-xlgmac-hw.c	/^static int xlgmac_get_rx_pbl_val(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_get_rx_tstamp	dwc-xlgmac-hw.c	/^static void xlgmac_get_rx_tstamp(struct xlgmac_pkt_info *pkt_info,$/;"	f	file:
+xlgmac_get_stats64	dwc-xlgmac-net.c	/^static void xlgmac_get_stats64(struct net_device *netdev,$/;"	f	file:
+xlgmac_get_tx_pbl_val	dwc-xlgmac-hw.c	/^static int xlgmac_get_tx_pbl_val(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_gstring_stats	dwc-xlgmac-ethtool.c	/^static const struct xlgmac_stats_desc xlgmac_gstring_stats[] = {$/;"	v	typeref:struct:xlgmac_stats_desc	file:
+xlgmac_hw_exit	dwc-xlgmac-hw.c	/^static int xlgmac_hw_exit(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_hw_features	dwc-xlgmac.h	/^struct xlgmac_hw_features {$/;"	s
+xlgmac_hw_init	dwc-xlgmac-hw.c	/^static int xlgmac_hw_init(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_hw_ops	dwc-xlgmac.h	/^struct xlgmac_hw_ops {$/;"	s
+xlgmac_init	dwc-xlgmac-common.c	/^static int xlgmac_init(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_init_all_ops	dwc-xlgmac-common.c	/^static void xlgmac_init_all_ops(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_init_desc_ops	dwc-xlgmac-desc.c	/^void xlgmac_init_desc_ops(struct xlgmac_desc_ops *desc_ops)$/;"	f
+xlgmac_init_hw_ops	dwc-xlgmac-hw.c	/^void xlgmac_init_hw_ops(struct xlgmac_hw_ops *hw_ops)$/;"	f
+xlgmac_init_ring	dwc-xlgmac-desc.c	/^static int xlgmac_init_ring(struct xlgmac_pdata *pdata,$/;"	f	file:
+xlgmac_init_timers	dwc-xlgmac-net.c	/^static void xlgmac_init_timers(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_int	dwc-xlgmac.h	/^enum xlgmac_int {$/;"	g
+xlgmac_interface	dwc-xlgmac.h	/^struct xlgmac_interface {$/;"	s
+xlgmac_ioctl	dwc-xlgmac-net.c	/^static int xlgmac_ioctl(struct net_device *netdev,$/;"	f	file:
+xlgmac_is_context_desc	dwc-xlgmac-hw.c	/^static int xlgmac_is_context_desc(struct xlgmac_dma_desc *dma_desc)$/;"	f	file:
+xlgmac_is_last_desc	dwc-xlgmac-hw.c	/^static int xlgmac_is_last_desc(struct xlgmac_dma_desc *dma_desc)$/;"	f	file:
+xlgmac_is_tso	dwc-xlgmac-net.c	/^static int xlgmac_is_tso(struct sk_buff *skb)$/;"	f	file:
+xlgmac_isr	dwc-xlgmac-net.c	/^static irqreturn_t xlgmac_isr(int irq, void *data)$/;"	f	file:
+xlgmac_map_rx_buffer	dwc-xlgmac-desc.c	/^static int xlgmac_map_rx_buffer(struct xlgmac_pdata *pdata,$/;"	f	file:
+xlgmac_map_tx_skb	dwc-xlgmac-desc.c	/^static int xlgmac_map_tx_skb(struct xlgmac_channel *channel,$/;"	f	file:
+xlgmac_maybe_stop_tx_queue	dwc-xlgmac-net.c	/^static int xlgmac_maybe_stop_tx_queue($/;"	f	file:
+xlgmac_mmc_read	dwc-xlgmac-hw.c	/^static u64 xlgmac_mmc_read(struct xlgmac_pdata *pdata, unsigned int reg_lo)$/;"	f	file:
+xlgmac_napi_disable	dwc-xlgmac-net.c	/^static void xlgmac_napi_disable(struct xlgmac_pdata *pdata, unsigned int del)$/;"	f	file:
+xlgmac_napi_enable	dwc-xlgmac-net.c	/^static void xlgmac_napi_enable(struct xlgmac_pdata *pdata, unsigned int add)$/;"	f	file:
+xlgmac_netdev_ops	dwc-xlgmac-net.c	/^static const struct net_device_ops xlgmac_netdev_ops = {$/;"	v	typeref:struct:net_device_ops	file:
+xlgmac_one_poll	dwc-xlgmac-net.c	/^static int xlgmac_one_poll(struct napi_struct *napi, int budget)$/;"	f	file:
+xlgmac_open	dwc-xlgmac-net.c	/^static int xlgmac_open(struct net_device *netdev)$/;"	f	file:
+xlgmac_page_alloc	dwc-xlgmac.h	/^struct xlgmac_page_alloc {$/;"	s
+xlgmac_pci_driver	dwc-xlgmac-pci.c	/^module_pci_driver(xlgmac_pci_driver);$/;"	v
+xlgmac_pci_driver	dwc-xlgmac-pci.c	/^static struct pci_driver xlgmac_pci_driver = {$/;"	v	typeref:struct:pci_driver	file:
+xlgmac_pci_tbl	dwc-xlgmac-pci.c	/^static const struct pci_device_id xlgmac_pci_tbl[] = {$/;"	v	typeref:struct:pci_device_id	file:
+xlgmac_pdata	dwc-xlgmac.h	/^struct xlgmac_pdata {$/;"	s
+xlgmac_pkt_info	dwc-xlgmac.h	/^struct xlgmac_pkt_info {$/;"	s
+xlgmac_poll_controller	dwc-xlgmac-net.c	/^static void xlgmac_poll_controller(struct net_device *netdev)$/;"	f	file:
+xlgmac_prep_tso	dwc-xlgmac-net.c	/^static int xlgmac_prep_tso(struct sk_buff *skb,$/;"	f	file:
+xlgmac_prep_tx_pkt	dwc-xlgmac-net.c	/^static void xlgmac_prep_tx_pkt(struct xlgmac_pdata *pdata,$/;"	f	file:
+xlgmac_prep_vlan	dwc-xlgmac-net.c	/^static void xlgmac_prep_vlan(struct sk_buff *skb,$/;"	f	file:
+xlgmac_prepare_rx_stop	dwc-xlgmac-hw.c	/^static void xlgmac_prepare_rx_stop(struct xlgmac_pdata *pdata,$/;"	f	file:
+xlgmac_prepare_tx_stop	dwc-xlgmac-hw.c	/^static void xlgmac_prepare_tx_stop(struct xlgmac_pdata *pdata,$/;"	f	file:
+xlgmac_print_all_hw_features	dwc-xlgmac-common.c	/^void xlgmac_print_all_hw_features(struct xlgmac_pdata *pdata)$/;"	f
+xlgmac_print_pkt	dwc-xlgmac-common.c	/^void xlgmac_print_pkt(struct net_device *netdev,$/;"	f
+xlgmac_probe	dwc-xlgmac-pci.c	/^static int xlgmac_probe(struct pci_dev *pcidev, const struct pci_device_id *id)$/;"	f	file:
+xlgmac_read_mac_addr	dwc-xlgmac-common.c	/^static void xlgmac_read_mac_addr(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_read_mmc_stats	dwc-xlgmac-hw.c	/^static void xlgmac_read_mmc_stats(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_register_dev	dwc-xlgmac-common.c	/^int xlgmac_register_dev(struct xlgmac_pdata *pdata)$/;"	f
+xlgmac_register_interface	dwc-xlgmac-common.c	/^int xlgmac_register_interface(struct xlgmac_interface *intf)$/;"	f
+xlgmac_remove	dwc-xlgmac-pci.c	/^static void xlgmac_remove(struct pci_dev *pcidev)$/;"	f	file:
+xlgmac_request_irqs	dwc-xlgmac-net.c	/^static int xlgmac_request_irqs(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_resources	dwc-xlgmac.h	/^struct xlgmac_resources {$/;"	s
+xlgmac_restart	dwc-xlgmac-net.c	/^static void xlgmac_restart(struct work_struct *work)$/;"	f	file:
+xlgmac_restart_dev	dwc-xlgmac-net.c	/^static void xlgmac_restart_dev(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_ring	dwc-xlgmac.h	/^struct xlgmac_ring {$/;"	s
+xlgmac_ring_buf	dwc-xlgmac.h	/^struct xlgmac_ring_buf {$/;"	s
+xlgmac_riwt_to_usec	dwc-xlgmac-hw.c	/^static unsigned int xlgmac_riwt_to_usec(struct xlgmac_pdata *pdata,$/;"	f	file:
+xlgmac_rx_desc_data	dwc-xlgmac.h	/^struct xlgmac_rx_desc_data {$/;"	s
+xlgmac_rx_desc_init	dwc-xlgmac-desc.c	/^static void xlgmac_rx_desc_init(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_rx_desc_init	dwc-xlgmac-hw.c	/^static void xlgmac_rx_desc_init(struct xlgmac_channel *channel)$/;"	f	file:
+xlgmac_rx_desc_reset	dwc-xlgmac-hw.c	/^static void xlgmac_rx_desc_reset(struct xlgmac_pdata *pdata,$/;"	f	file:
+xlgmac_rx_dirty_desc	dwc-xlgmac-net.c	/^static inline unsigned int xlgmac_rx_dirty_desc(struct xlgmac_ring *ring)$/;"	f	file:
+xlgmac_rx_mmc_int	dwc-xlgmac-hw.c	/^static void xlgmac_rx_mmc_int(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_rx_poll	dwc-xlgmac-net.c	/^static int xlgmac_rx_poll(struct xlgmac_channel *channel, int budget)$/;"	f	file:
+xlgmac_rx_refresh	dwc-xlgmac-net.c	/^static void xlgmac_rx_refresh(struct xlgmac_channel *channel)$/;"	f	file:
+xlgmac_set_all_multicast_mode	dwc-xlgmac-hw.c	/^static int xlgmac_set_all_multicast_mode(struct xlgmac_pdata *pdata,$/;"	f	file:
+xlgmac_set_buffer_data	dwc-xlgmac-desc.c	/^static void xlgmac_set_buffer_data(struct xlgmac_buffer_data *bd,$/;"	f	file:
+xlgmac_set_features	dwc-xlgmac-net.c	/^static int xlgmac_set_features(struct net_device *netdev,$/;"	f	file:
+xlgmac_set_mac_addn_addrs	dwc-xlgmac-hw.c	/^static void xlgmac_set_mac_addn_addrs(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_set_mac_address	dwc-xlgmac-hw.c	/^static int xlgmac_set_mac_address(struct xlgmac_pdata *pdata, u8 *addr)$/;"	f	file:
+xlgmac_set_mac_address	dwc-xlgmac-net.c	/^static int xlgmac_set_mac_address(struct net_device *netdev, void *addr)$/;"	f	file:
+xlgmac_set_mac_hash_table	dwc-xlgmac-hw.c	/^static void xlgmac_set_mac_hash_table(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_set_mac_reg	dwc-xlgmac-hw.c	/^static void xlgmac_set_mac_reg(struct xlgmac_pdata *pdata,$/;"	f	file:
+xlgmac_set_promiscuous_mode	dwc-xlgmac-hw.c	/^static int xlgmac_set_promiscuous_mode(struct xlgmac_pdata *pdata,$/;"	f	file:
+xlgmac_set_rss_hash_key	dwc-xlgmac-hw.c	/^static int xlgmac_set_rss_hash_key(struct xlgmac_pdata *pdata, const u8 *key)$/;"	f	file:
+xlgmac_set_rss_lookup_table	dwc-xlgmac-hw.c	/^static int xlgmac_set_rss_lookup_table(struct xlgmac_pdata *pdata,$/;"	f	file:
+xlgmac_set_rx_mode	dwc-xlgmac-net.c	/^static void xlgmac_set_rx_mode(struct net_device *netdev)$/;"	f	file:
+xlgmac_set_xlgmii_100000_speed	dwc-xlgmac-hw.c	/^static int xlgmac_set_xlgmii_100000_speed(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_set_xlgmii_25000_speed	dwc-xlgmac-hw.c	/^static int xlgmac_set_xlgmii_25000_speed(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_set_xlgmii_40000_speed	dwc-xlgmac-hw.c	/^static int xlgmac_set_xlgmii_40000_speed(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_set_xlgmii_50000_speed	dwc-xlgmac-hw.c	/^static int xlgmac_set_xlgmii_50000_speed(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_start	dwc-xlgmac-net.c	/^static int xlgmac_start(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_stats	dwc-xlgmac.h	/^struct xlgmac_stats {$/;"	s
+xlgmac_stats_desc	dwc-xlgmac-ethtool.c	/^struct xlgmac_stats_desc {$/;"	s	file:
+xlgmac_stop	dwc-xlgmac-net.c	/^static void xlgmac_stop(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_stop_timers	dwc-xlgmac-net.c	/^static void xlgmac_stop_timers(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_tx_avail_desc	dwc-xlgmac-net.c	/^static inline unsigned int xlgmac_tx_avail_desc(struct xlgmac_ring *ring)$/;"	f	file:
+xlgmac_tx_complete	dwc-xlgmac-hw.c	/^static int xlgmac_tx_complete(struct xlgmac_dma_desc *dma_desc)$/;"	f	file:
+xlgmac_tx_desc_data	dwc-xlgmac.h	/^struct xlgmac_tx_desc_data {$/;"	s
+xlgmac_tx_desc_init	dwc-xlgmac-desc.c	/^static void xlgmac_tx_desc_init(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_tx_desc_init	dwc-xlgmac-hw.c	/^static void xlgmac_tx_desc_init(struct xlgmac_channel *channel)$/;"	f	file:
+xlgmac_tx_desc_reset	dwc-xlgmac-hw.c	/^static void xlgmac_tx_desc_reset(struct xlgmac_desc_data *desc_data)$/;"	f	file:
+xlgmac_tx_mmc_int	dwc-xlgmac-hw.c	/^static void xlgmac_tx_mmc_int(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_tx_poll	dwc-xlgmac-net.c	/^static int xlgmac_tx_poll(struct xlgmac_channel *channel)$/;"	f	file:
+xlgmac_tx_start_xmit	dwc-xlgmac-hw.c	/^static void xlgmac_tx_start_xmit(struct xlgmac_channel *channel,$/;"	f	file:
+xlgmac_tx_timeout	dwc-xlgmac-net.c	/^static void xlgmac_tx_timeout(struct net_device *netdev)$/;"	f	file:
+xlgmac_tx_timer	dwc-xlgmac-net.c	/^static void xlgmac_tx_timer(struct timer_list *t)$/;"	f	file:
+xlgmac_unmap_desc_data	dwc-xlgmac-desc.c	/^static void xlgmac_unmap_desc_data(struct xlgmac_pdata *pdata,$/;"	f	file:
+xlgmac_update_vlan_hash_table	dwc-xlgmac-hw.c	/^static int xlgmac_update_vlan_hash_table(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_usec_to_riwt	dwc-xlgmac-hw.c	/^static unsigned int xlgmac_usec_to_riwt(struct xlgmac_pdata *pdata,$/;"	f	file:
+xlgmac_vid_crc32_le	dwc-xlgmac-hw.c	/^static u32 xlgmac_vid_crc32_le(__le16 vid_le)$/;"	f	file:
+xlgmac_vlan_rx_add_vid	dwc-xlgmac-net.c	/^static int xlgmac_vlan_rx_add_vid(struct net_device *netdev,$/;"	f	file:
+xlgmac_vlan_rx_kill_vid	dwc-xlgmac-net.c	/^static int xlgmac_vlan_rx_kill_vid(struct net_device *netdev,$/;"	f	file:
+xlgmac_write_rss_hash_key	dwc-xlgmac-hw.c	/^static int xlgmac_write_rss_hash_key(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_write_rss_lookup_table	dwc-xlgmac-hw.c	/^static int xlgmac_write_rss_lookup_table(struct xlgmac_pdata *pdata)$/;"	f	file:
+xlgmac_write_rss_reg	dwc-xlgmac-hw.c	/^static int xlgmac_write_rss_reg(struct xlgmac_pdata *pdata, unsigned int type,$/;"	f	file:
+xlgmac_xmit	dwc-xlgmac-net.c	/^static int xlgmac_xmit(struct sk_buff *skb, struct net_device *netdev)$/;"	f	file:
+xmit_more	dwc-xlgmac.h	/^			unsigned int xmit_more;$/;"	m	struct:xlgmac_ring::__anon2::__anon3
