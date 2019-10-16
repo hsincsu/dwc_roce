@@ -33,9 +33,17 @@ static LIST_HEAD(dwcpdata_list);
 static void xlgmac_add_device(struct xlgmac_pdata *pdata)
 {
 	struct dwc_dev_info dev_info;
-
 	pdata->rocedev = dwcroce->add(&dev_info);
 	
+}
+
+/*xlgmac_del_device(struct xlgmac_pdata *pdata)
+ *
+ */
+static void xlgmac_del_device(struct xlgmac_pdata *pdata)
+{
+	dwcroce->remove(pdata->rocedev);
+
 }
 
 /* xlgmac_register_dev register pdata struct into dwcpdata_list
@@ -45,15 +53,23 @@ static void xlgmac_add_device(struct xlgmac_pdata *pdata)
 int xlgmac_register_dev(struct xlgmac_pdata *pdata)
 {
         list_add_tail(&pdata->list,&dwcpdata_list); // register pdata to dwcpdata_list
+	return 0;
 }
 
-
+/* xlgmac_unregister_dev unregister pdata from dwcpdata_list
+ *
+ */
+int xlgmac_unregister_dev(struct xlgmac_pdata *pdata)
+{
+	list_del(&pdata->list);
+	return 0;
+}
 
 /* xlgmac_register_interface register interface to dwc-xlgmac driver
  * @xlgmac_interface a interface structure
  *                                        --edited by hs 
  */
-int dwc_roce_register_driver(struct dwcroce_driver* drv)
+int dwc_roce_register_driver(struct dwcroce_driver *drv)
 {
         struct xlgmac_pdata *pdata;
 
@@ -63,5 +79,17 @@ int dwc_roce_register_driver(struct dwcroce_driver* drv)
 
         return 0;
 }
+EXPORT_SYMBOL(dwc_roce_register_driver);
 
-
+/*dwc_roce_unregister_driver(struct dwcroce_driver *drv)
+ *
+ */
+void dwc_roce_unregister_driver(struct dwcroce_driver *drv)
+{
+	struct xlgmac_pdata *pdata;
+	
+	dwcroce = drv;
+	list_for_each_entry(pdata,&dwcpdata_list,list)
+		xlgmac_del_device(pdata);
+}
+EXPORT_SYMBOL(dwc_roce_unregister_driver);

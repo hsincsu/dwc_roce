@@ -17,7 +17,7 @@
 #include "dwcroce.h"
 #include "dwcroce_verbs.h"
 
-int dwcroce_post_send(struct ib_qp *ibqp, struct ib_send_wr *wr, struct ib_send_wr **bad_wr)
+int dwcroce_post_send(struct ib_qp *ibqp,const struct ib_send_wr *wr,const struct ib_send_wr **bad_wr)
 {
 	printk("dwcroce:dwcroce_post_send start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
@@ -27,7 +27,7 @@ int dwcroce_post_send(struct ib_qp *ibqp, struct ib_send_wr *wr, struct ib_send_
 	return 0;
 }
 
-int dwcroce_post_recv(struct ib_qp *ibqp, struct ib_recv_wr *wr, struct ib_recv_wr **bad_wr)
+int dwcroce_post_recv(struct ib_qp *ibqp,const struct ib_recv_wr *wr,const struct ib_recv_wr **bad_wr)
 {
 	printk("dwcroce:dwcroce_post_recv start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
@@ -135,11 +135,7 @@ struct net_device *dwcroce_get_netdev(struct ib_device *device, u8 port_num)
 	return NULL;
 }
 
-int dwcroce_add_gid(struct ib_device *device,
-		   u8 port_num,
-		   unsigned int index,
-		   const union ib_gid *gid,
-		   const struct ib_gid_attr *attr,
+int dwcroce_add_gid(const struct ib_gid_attr *attr,
 		   void **context)
 {
 	printk("dwcroce:dwcroce_add_gid start!\n");//added by hs for printing start info
@@ -150,9 +146,7 @@ int dwcroce_add_gid(struct ib_device *device,
 	return 0;
 }
 
-int  dwcroce_del_gid(struct ib_device *device,
-		    u8 port_num,
-		    unsigned int index,
+int  dwcroce_del_gid(const struct ib_gid_attr *attr,
 		    void **context)
 {
 	printk("dwcroce:dwcroce_del_gid start!\n");//added by hs for printing start info

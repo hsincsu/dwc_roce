@@ -59,7 +59,8 @@ static void xlgmac_remove(struct pci_dev *pcidev)
 }
 
 static const struct pci_device_id xlgmac_pci_tbl[] = {
-	{ PCI_DEVICE(PCI_VENDOR_ID_SYNOPSYS, 0x7302) },
+        { PCI_DEVICE(0x16ca, 0x7312) },
+//	{ PCI_DEVICE(PCI_VENDOR_ID_SYNOPSYS, 0x7302) },
 	{ 0 }
 };
 MODULE_DEVICE_TABLE(pci, xlgmac_pci_tbl);

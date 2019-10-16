@@ -8,9 +8,9 @@
 #ifndef __DWCROCE_AH_H__
 #define __DWCROCE_AH_H__
 
-struct ib_ah *dwcroce_create_ah(struct ib_pd *pd, struct rdma_ah_attr *ah_attr,
-		struct ib_udata *udata);
-int dwcroce_destroy_ah(struct ib_ah *ah);
+struct ib_ah *dwcroce_create_ah(struct ib_pd *pd, struct rdma_ah_attr *ah_attr,u32 flags,	
+						struct ib_udata *udata);
+int dwcroce_destroy_ah(struct ib_ah *ah,u32 flags);
 int dwcroce_query_ah(struct ib_ah *ah, struct rdma_ah_attr *ah_attr);
 int dwcroce_modify_ah(struct ib_ah *ah,struct rdma_ah_attr *ah_attr);
 

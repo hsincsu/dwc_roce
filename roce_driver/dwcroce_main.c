@@ -11,6 +11,7 @@
 #include<linux/module.h>
 #include <linux/idr.h>
 
+#include <rdma/rdma_netlink.h>
 #include <rdma/ib_verbs.h>
 #include <rdma/ib_user_verbs.h>
 #include <rdma/ib_addr.h>
@@ -43,7 +44,7 @@ static enum rdma_link_layer dwcroce_get_link_layer(struct ib_device *device,
  * dwcroce_port_immutable
  */
 static int dwcroce_port_immutable(struct ib_device *ibdev, u8 port_num, 
-			struct ib_port_imutable *immutable)
+			struct ib_port_immutable *immutable)
 {
 	printk("dwcroce:dwcroce_port_immutable start\n");//added by hs for start info
 	/*wait to add*/
@@ -123,6 +124,7 @@ static int dwcroce_register_ibdev(struct dwcroce_dev *dev)
 #endif
 	printk("dwcroce:dwcroce_register_ibdev succeed end\n");//added by hs for info
 	//return ib_register_device(&dev->ibdev,"dwcroce%d", NULL);//wait a moment
+	return 0;
 }
 
 static struct dwcroce_dev *dwc_add(struct dwc_dev_info *dev_info)

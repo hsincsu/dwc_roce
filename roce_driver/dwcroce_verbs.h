@@ -10,9 +10,9 @@
 #ifndef __DWCROCE_VERBS_H__
 #define __DWCROCE_VERBS_H__
 
-int dwcroce_post_send(struct ib_qp *, struct ib_send_wr *, struct ib_send_wr **bad_wr);
+int dwcroce_post_send(struct ib_qp *,const struct ib_send_wr *,const struct ib_send_wr **bad_wr);
 
-int dwcroce_post_recv(struct ib_qp *, struct ib_recv_wr *, struct ib_recv_wr **bad_wr);
+int dwcroce_post_recv(struct ib_qp *,const struct ib_recv_wr *,const struct ib_recv_wr **bad_wr);
 
 int dwcroce_poll_cq(struct ib_cq *, int num_entries, struct ib_wc *wc);
 
@@ -31,15 +31,9 @@ void dwcroce_get_guid(struct dwcroce_dev *, u8 *guid);
 int dwcroce_query_gid(struct ib_device *, u8 port,
 		     int index, union ib_gid *gid);
 struct net_device *dwcroce_get_netdev(struct ib_device *device, u8 port_num);
-int dwcroce_add_gid(struct ib_device *device,
-		   u8 port_num,
-		   unsigned int index,
-		   const union ib_gid *gid,
-		   const struct ib_gid_attr *attr,
+int dwcroce_add_gid(const struct ib_gid_attr *attr,
 		   void **context);
-int  dwcroce_del_gid(struct ib_device *device,
-		    u8 port_num,
-		    unsigned int index,
+int  dwcroce_del_gid(const struct ib_gid_attr *attr,
 		    void **context);
 int dwcroce_query_pkey(struct ib_device *, u8 port, u16 index, u16 *pkey);
 

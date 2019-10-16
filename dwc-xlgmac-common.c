@@ -262,6 +262,10 @@ int xlgmac_drv_probe(struct device *dev, struct xlgmac_resources *res)
 		dev_err(dev, "net device registration failed\n");
 		goto err_free_netdev;
 	}
+/* add pdata sturct to list so roce can find it
+ * 				--edited by hs
+ */
+	xlgmac_register_dev(pdata); 
 
 	return 0;
 
@@ -274,7 +278,9 @@ err_free_netdev:
 int xlgmac_drv_remove(struct device *dev)
 {
 	struct net_device *netdev = dev_get_drvdata(dev);
-
+	struct xlgmac_pdata *pdata = netdev_priv(netdev);
+//added by hs 
+	xlgmac_unregister_dev(pdata);
 	unregister_netdev(netdev);
 	free_netdev(netdev);
 
