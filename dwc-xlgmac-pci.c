@@ -48,7 +48,8 @@ static int xlgmac_probe(struct pci_dev *pcidev, const struct pci_device_id *id)
 	memset(&res, 0, sizeof(res));
 	res.irq = pcidev->irq;
 	res.addr = pcim_iomap_table(pcidev)[i];
-
+	//added by hs for mac address	
+	res.addr += 0XB000000;
 	return xlgmac_drv_probe(&pcidev->dev, &res);
 }
 

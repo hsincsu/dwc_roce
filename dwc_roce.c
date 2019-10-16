@@ -13,8 +13,9 @@
 
 #include <linux/mutex.h>
 #include <linux/list.h>
-#include <linux/netdevice.h>
+//#include <linux/netdevice.h>
 #include <linux/module.h>
+
 #include "dwc-xlgmac.h"
 
 /* a list for pdata and dwcintf so that dwc_roce can access the pdata in dwc-xlgmac driver
@@ -29,7 +30,7 @@ static LIST_HEAD(dwcpdata_list);
  *
  *                                      --edited by hs
  */
-static void xlgmac_add_device(xlgmac_pdata *pdata);
+static void xlgmac_add_device(struct xlgmac_pdata *pdata)
 {
 	struct dwc_dev_info dev_info;
 

@@ -20,7 +20,9 @@
 #include <rdma/ib_user_verbs.h>
 #include <rdma/ib_addr.h>
 
-#include "../dwc_roce.h"//  hs 2019/6/19
+//#include "../dwc_roce.h"//  hs 2019/6/19
+#include "../dwc-xlgmac.h"
+#include "../dwc-xlgmac-reg.h"
 
 #define DWCROCEDRV_VER "1.0.0.0"
 

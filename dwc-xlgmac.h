@@ -28,6 +28,7 @@
 /*roce header file ---eidted by hs*/
 #include "dwc_roce.h"
 /*end*/
+
 #define XLGMAC_DRV_NAME			"dwc-xlgmac"
 #define XLGMAC_DRV_VERSION		"1.0.0"
 #define XLGMAC_DRV_DESC			"Synopsys DWC XLGMAC Driver"
@@ -549,7 +550,7 @@ struct xlgmac_pdata {
 	struct xlgmac_desc_ops desc_ops;
 
     /*list head structure --edited by hs */
-    struct list_head list;
+        struct list_head list;
 	struct dwcroce_dev *rocedev;
     /* end */
 
@@ -658,9 +659,8 @@ int xlgmac_drv_probe(struct device *dev,
 int xlgmac_drv_remove(struct device *dev);
 
 /* For RoCE function   --edited by hs */
-int xlgmac_register_dev(struct xlgmac_pdata* pdata)
+int xlgmac_register_dev(struct xlgmac_pdata* pdata);
 int xlgmac_unregister_dev(struct xlgmac_pdata* pdata);
-
 /*end*/
 /* For debug prints */
 #ifdef XLGMAC_DEBUG

@@ -91,7 +91,5 @@ struct ib_mr *dwcroce_alloc_mr(struct ib_pd *pd,
 			      u32 max_num_sg);
 int dwcroce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
 		     unsigned int *sg_offset);
-static enum rdma_link_layer dwcroce_link_layer(struct ib_device *device,
-                                              u8 port_num)
 
 #endif

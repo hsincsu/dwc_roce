@@ -433,10 +433,3 @@ int dwcroce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,u
 	return 0;
 }
 
-static enum rdma_link_layer dwcroce_get_link_layer(struct ib_device *device,
-                                              u8 port_num)
-{
-	printk("dwcroce:dwcroce_link_layer start!\n");//added by hs for printing stat info
-	printk("dwcroce:dwcroce_link_layer end!\n");//added by hs for printing end info
-	return IB_LINK_LAYER_ETHERNET;
-}

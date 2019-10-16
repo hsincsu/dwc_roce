@@ -29,6 +29,17 @@ MODULE_AUTHOR("HS");
 MODULE_LICENSE("Dual BSD/GPL");
 
 /*
+ *rdma link_layer
+ */
+static enum rdma_link_layer dwcroce_get_link_layer(struct ib_device *device,
+                                              u8 port_num)
+{
+        printk("dwcroce:dwcroce_link_layer start!\n");//added by hs for printing stat info
+        printk("dwcroce:dwcroce_link_layer end!\n");//added by hs for printing end info
+        return IB_LINK_LAYER_ETHERNET;
+}
+
+/*
  * dwcroce_port_immutable
  */
 static int dwcroce_port_immutable(struct ib_device *ibdev, u8 port_num, 

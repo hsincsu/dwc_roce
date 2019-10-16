@@ -13,6 +13,7 @@
 
 #ifndef DWC_ROCE_H
 #define DWC_ROCE_H
+
 #include<linux/pci.h>
 #include<linux/netdevice.h>
 struct dwcroce_dev;
