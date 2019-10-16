@@ -20,7 +20,7 @@
 #include <rdma/ib_user_verbs.h>
 #include <rdma/ib_addr.h>
 
-#include "dwc_roce.h"//alter this later,but not now   hs 2019/6/19
+#include "../dwc_roce.h"//  hs 2019/6/19
 
 #define DWCROCEDRV_VER "1.0.0.0"
 
@@ -28,6 +28,8 @@ struct dwcroce_dev{
 	struct ib_device ibdev;
 	//not finished ,added later.
 };
+
+
 
 
 

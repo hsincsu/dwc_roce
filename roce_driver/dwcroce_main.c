@@ -20,7 +20,6 @@
 #include <net/addrconf.h>
 
 #include "dwcroce.h"
-#include "dwc_roce.h"
 #include "dwcroce_verbs.h"
 #include "dwcroce_ah.h"
 #define HSDEBUG 1

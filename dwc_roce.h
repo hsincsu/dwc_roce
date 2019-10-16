@@ -5,7 +5,7 @@
  *     *      This is a header file for dwc driver.It connect dwc driver and dwcroce driver
  *      *
  *       *
- *        *                                                                      ---------------edited by hs in 2019/6/18
+ *        *                                                                      ---------------edited by hs in 2019/9/18
  *         *
  *          *
  *           *
