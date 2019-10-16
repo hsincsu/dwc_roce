@@ -139,7 +139,8 @@ static struct dwcroce_dev *dwc_add(struct dwc_dev_info *dev_info)
 		printk("dwcroce:Unable to allocate ib device\n");//to show the err information.
 		return NULL;
 	}	
-	
+	printk("dwcroce:get the mac address is:%x\n", dev_info->mac_base);
+
 	status = dwcroce_register_ibdev(dev);
 	if (status)
 		goto alloc_err;
