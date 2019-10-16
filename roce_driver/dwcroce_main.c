@@ -52,6 +52,54 @@ static int dwcroce_port_immutable(struct ib_device *ibdev, u8 port_num,
 	printk("dwcroce:dwcroce_port_immutable end\n");//added by hs for end info
 	return 0;
 }
+/*ib_device_ops definition for roce*/
+const struct ib_device_ops dwcroce_dev_ops = {
+	.query_device = dwcroce_query_device,
+	.query_port = dwcroce_query_port,
+	.modify_port = dwcroce_modify_port,
+	.query_gid = dwcroce_query_gid,
+	.get_netdev = dwcroce_get_netdev,
+	.add_gid = dwcroce_add_gid,
+	.del_gid = dwcroce_del_gid,
+	.get_link_layer = dwcroce_get_link_layer,
+	.alloc_pd = dwcroce_alloc_pd,
+	.dealloc_pd = dwcroce_dealloc_pd,
+
+	.create_cq = dwcroce_create_cq,
+	.destroy_cq = dwcroce_destroy_cq,
+	.resize_cq = dwcroce_resize_cq,
+
+	.create_qp = dwcroce_create_qp,
+	.modify_qp = dwcroce_modify_qp,
+	.query_qp = dwcroce_query_qp,
+	.destroy_qp = dwcroce_destroy_qp,
+
+	.query_pkey = dwcroce_query_pkey,
+	.create_ah = dwcroce_create_ah,
+	.destroy_ah = dwcroce_destroy_ah,
+	.query_ah = dwcroce_query_ah,
+	.modify_ah = dwcroce_modify_ah,
+
+	.poll_cq = dwcroce_poll_cq,
+	.post_send = dwcroce_post_send,
+	.post_recv = dwcroce_post_recv,
+	.req_notify_cq = dwcroce_arm_cq,
+
+	.get_dma_mr = dwcroce_get_dma_mr,
+	.dereg_mr = dwcroce_dereg_mr,
+	.reg_user_mr = dwcroce_reg_user_mr,
+
+	.alloc_mr = dwcroce_alloc_mr,
+	.map_mr_sg = dwcroce_map_mr_sg,
+
+	.alloc_ucontext = dwcroce_alloc_ucontext,
+	.dealloc_ucontext = dwcroce_dealloc_ucontext,
+	.mmap = dwcroce_mmap,
+
+	.process_mad = dwcroce_process_mad,
+	.get_port_immutable = dwcroce_port_immutable,
+};
+
 
 /*
  *dwcroce_register_ibdev.To register the ibdev to kernel.must exec it before unregister_ibdev.
@@ -69,54 +117,12 @@ static int dwcroce_register_ibdev(struct dwcroce_dev *dev)
 	dev->ibdev.phys_port_cnt = 1;//not finished ,add later! hs 2019/6/22
 
 	/*mandatory verbs. */
-	dev->ibdev.query_device = dwcroce_query_device;
-	dev->ibdev.query_port = dwcroce_query_port;
-	dev->ibdev.modify_port = dwcroce_modify_port;
-	dev->ibdev.query_gid = dwcroce_query_gid;
-	dev->ibdev.get_netdev = dwcroce_get_netdev;
-	dev->ibdev.add_gid = dwcroce_add_gid;
-	dev->ibdev.del_gid = dwcroce_del_gid;
-	dev->ibdev.get_link_layer = dwcroce_get_link_layer;//not finished ;
-	dev->ibdev.alloc_pd = dwcroce_alloc_pd;
-	dev->ibdev.dealloc_pd = dwcroce_dealloc_pd;
-
-	dev->ibdev.create_cq = dwcroce_create_cq;
-	dev->ibdev.destroy_cq = dwcroce_destroy_cq;
-	dev->ibdev.resize_cq = dwcroce_resize_cq;
-
-	dev->ibdev.create_qp = dwcroce_create_qp;
-	dev->ibdev.modify_qp = dwcroce_modify_qp;
-	dev->ibdev.query_qp = dwcroce_query_qp;
-	dev->ibdev.destroy_qp = dwcroce_destroy_qp;
-	
-	dev->ibdev.query_pkey = dwcroce_query_pkey;
-	dev->ibdev.create_ah = dwcroce_create_ah;
-	dev->ibdev.destroy_ah = dwcroce_destroy_ah;
-	dev->ibdev.query_ah = dwcroce_query_ah;
-	dev->ibdev.modify_ah = dwcroce_modify_ah;
-
-	dev->ibdev.poll_cq = dwcroce_poll_cq;
-	dev->ibdev.post_send = dwcroce_post_send;
-	dev->ibdev.post_recv = dwcroce_post_recv;
-	dev->ibdev.req_notify_cq = dwcroce_arm_cq;
-
-	dev->ibdev.get_dma_mr = dwcroce_get_dma_mr;
-	dev->ibdev.dereg_mr = dwcroce_dereg_mr;
-	dev->ibdev.reg_user_mr = dwcroce_reg_user_mr;
-
-	dev->ibdev.alloc_mr = dwcroce_alloc_mr;
-	dev->ibdev.map_mr_sg = dwcroce_map_mr_sg;
-
-	dev->ibdev.alloc_ucontext = dwcroce_alloc_ucontext;
-	dev->ibdev.dealloc_ucontext = dwcroce_dealloc_ucontext;
-	dev->ibdev.mmap = dwcroce_mmap;
+	ib_set_device_ops(&dev->ibdev, &dwcroce_dev_ops);
 	dev->ibdev.dev.parent = NULL;
-
-	dev->ibdev.process_mad = dwcroce_process_mad;
-	dev->ibdev.get_port_immutable = dwcroce_port_immutable;	
+	dev->ibdev.driver_id = RDMA_DRIVER_UNKNOWN;
 #endif
 	printk("dwcroce:dwcroce_register_ibdev succeed end\n");//added by hs for info
-	return ib_register_device(&dev->ibdev,NULL);
+	//return ib_register_device(&dev->ibdev,"dwcroce%d", NULL);//wait a moment
 }
 
 static struct dwcroce_dev *dwc_add(struct dwc_dev_info *dev_info)
@@ -147,7 +153,7 @@ alloc_err:
 static void dwc_remove(struct dwcroce_dev *dev)
 {
 	printk("dwcrove:dwc_remove start\n");//added by hs for printing dwc_remove info
-	ib_unregister_device(&dev->ibdev);
+	//ib_unregister_device(&dev->ibdev);
 	ib_dealloc_device(&dev->ibdev);
 	printk("dwcroce:dwc_remove succeed end \n");//added by hs for printing dwc_remove info
 }
