@@ -133,7 +133,8 @@ static struct dwcroce_dev *dwc_add(struct dwc_dev_info *dev_info)
 	int status = 0;
 	u8 lstate = 0;
 	struct dwcroce_dev *dev;
-	u32 downlinkmtu;
+	u32 downlinkmtu = 0;
+ 	u32 data = 0;
 #if HSDEBUG //added by hs for debug
 	dev = (struct dwcroce_dev *)ib_alloc_device(sizeof(struct dwcroce_dev));
 	if(!dev) {
@@ -141,11 +142,24 @@ static struct dwcroce_dev *dwc_add(struct dwc_dev_info *dev_info)
 		return NULL;
 	}	
 	printk("dwcroce:get the mac address is:%x,base addr is %x\n", dev_info->mac_base,dev_info->base_addr);
-	writel(UPLINKDOWNLINK,dev_info->base_addr + 0x0);
-	
+	writel(GENRSP,dev_info->base_addr + 0x0);	
 	downlinkmtu = readl(dev_info->base_addr + 0x100);
+	printk("dwcroce: get GENRSP %lx\n", downlinkmtu);//added by hs  read first time
+	downlinkmtu = 0;
 
-	printk("dwcroce: get downlinkmtu %x\n", downlinkmtu);//added by hs
+	writel(GENRSP,dev_info->base_addr + 0x0);
+	data = 0x0800;
+	writel(data,dev_info->base_addr + 0x100);//added by hs write first time;
+
+	writel(UPLINKDOWNLINK,dev_info->base_addr + 0x0);
+ 	downlinkmtu = readl(dev_info->base_addr + 0x100);
+	printk("dwcroce: get UPLINKDOWNLINK %0lx\n", downlinkmtu);//added by hs  read second time
+	downlinkmtu = 0;	
+
+	writel(GENRSP,dev_info->base_addr + 0x0); 
+        downlinkmtu = readl(dev_info->base_addr + 0x100);
+        printk("dwcroce: get GENRSP %0lx\n", downlinkmtu);//added by hs  read third time
+	
 
 	status = dwcroce_register_ibdev(dev);
 	if (status)
