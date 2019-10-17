@@ -231,7 +231,7 @@ int xlgmac_drv_probe(struct device *dev, struct xlgmac_resources *res)
 	struct net_device *netdev;
 	int ret;
 
-	netdev = alloc_etherdev_mq(sizeof(struct xlgmac_pdata),
+	netdev = alloc_etherdev_mq(sizeof(struct xlgmc_pdata),
 				   XLGMAC_MAX_DMA_CHANNELS);
 
 	if (!netdev) {
@@ -246,7 +246,8 @@ int xlgmac_drv_probe(struct device *dev, struct xlgmac_resources *res)
 	pdata->netdev = netdev;
 
 	pdata->dev_irq = res->irq;
-	pdata->mac_regs = res->addr;
+	pdata->base_addr = res->addr; // get the pcie base addr --edited by hs
+	pdata->mac_regs = res->addr+0XB000000; // for the mac addr --edited by hs
 
 	mutex_init(&pdata->rss_mutex);
 	pdata->msg_enable = netif_msg_init(debug, default_msg_level);

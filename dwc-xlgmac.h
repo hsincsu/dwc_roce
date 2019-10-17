@@ -562,6 +562,7 @@ struct xlgmac_pdata {
 
 	/* MAC registers base */
 	void __iomem *mac_regs;
+	void __iomem *base_addr;
 
 	/* Hardware features of the device */
 	struct xlgmac_hw_features hw_feat;
