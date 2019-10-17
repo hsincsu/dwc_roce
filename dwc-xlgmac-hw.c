@@ -2989,6 +2989,9 @@ static int xlgmac_hw_init(struct xlgmac_pdata *pdata)
 	struct xlgmac_desc_ops *desc_ops = &pdata->desc_ops;
 	int ret;
 
+	/*Initialize MPP related features  --edited by hs */
+
+
 	/* Flush Tx queues */
 	ret = xlgmac_flush_tx_queues(pdata);
 	if (ret)
