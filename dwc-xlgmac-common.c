@@ -231,7 +231,7 @@ int xlgmac_drv_probe(struct device *dev, struct xlgmac_resources *res)
 	struct net_device *netdev;
 	int ret;
 
-	netdev = alloc_etherdev_mq(sizeof(struct xlgmc_pdata),
+	netdev = alloc_etherdev_mq(sizeof(struct xlgmac_pdata),
 				   XLGMAC_MAX_DMA_CHANNELS);
 
 	if (!netdev) {
