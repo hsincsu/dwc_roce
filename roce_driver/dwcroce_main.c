@@ -134,7 +134,6 @@ static struct dwcroce_dev *dwc_add(struct dwc_dev_info *dev_info)
 	u8 lstate = 0;
 	struct dwcroce_dev *dev;
 	u32 downlinkmtu;
-	u32 uplinkmtu;
 #if HSDEBUG //added by hs for debug
 	dev = (struct dwcroce_dev *)ib_alloc_device(sizeof(struct dwcroce_dev));
 	if(!dev) {
@@ -142,15 +141,11 @@ static struct dwcroce_dev *dwc_add(struct dwc_dev_info *dev_info)
 		return NULL;
 	}	
 	printk("dwcroce:get the mac address is:%x,base addr is %x\n", dev_info->mac_base,dev_info->base_addr);
-	writel(dev_info->base_addr + 0x0, UPLINKDOWNLINK + DOWNLINKMTU_POS);
+	writel(dev_info->base_addr + 0x0, UPLINKDOWNLINK);
 	
 	downlinkmtu = readl(dev_info->base_addr + 0x100);
 
-	writel(dev_info->base_addr + 0x100, UPLINKDOWNLINK + UPLINKMTU_POS);
-
-	uplinkmtu = readl(dev_info->base_addr + 0x100);
-
-	printk("dwcroce: get downlinkmtu %l,get uplinkmut %l \n", downlinkmtu, uplinkmtu);//added by hs
+	printk("dwcroce: get downlinkmtu %x\n", downlinkmtu);//added by hs
 
 	status = dwcroce_register_ibdev(dev);
 	if (status)
