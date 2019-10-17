@@ -741,7 +741,7 @@
  * 						*/
 
 /*PGU Registers START*/
-#define PGU_BASE 			0 /*wait for answer*/
+#define PGU_BASE 			0x00 /*wait for answer*/
 
 #define GENRSP 				0x2000	/*whether CQ interrup*/
 #define CFGRNR 				0x2004	/*QP WQE, NIC WORK, RNR,CREDIT TIMER*/

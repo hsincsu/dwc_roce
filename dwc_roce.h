@@ -25,6 +25,7 @@ struct dwc_dev_info {
         struct net_device *netdev;
 		/*mac registers base addr*/
 		void __iomem *mac_base;
+		void __iomem *base_addr;
 		int phy_speed;
 		unsigned char *mac_addr[6];
 		int dev_irq;
