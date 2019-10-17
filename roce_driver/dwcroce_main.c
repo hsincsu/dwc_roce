@@ -148,7 +148,7 @@ static struct dwcroce_dev *dwc_add(struct dwc_dev_info *dev_info)
 
 	writel(dev_info->base_addr + 0x100, UPLINKDOWNLINK + UPLINKMTU_POS);
 
-	uplinkmtu = real(dev_info->base_addr + 0x100);
+	uplinkmtu = readl(dev_info->base_addr + 0x100);
 
 	printk("dwcroce: get downlinkmtu %l,get uplinkmut %l \n", downlinkmtu, uplinkmtu);//added by hs
 
