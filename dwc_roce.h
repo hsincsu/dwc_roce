@@ -20,13 +20,13 @@
 struct dwcroce_dev;
 
 struct dwc_dev_info {
-        u8 mac_addr[ETH_ALEN];
+       // u8 mac_addr[ETH_ALEN];
         struct device *dev;
         struct net_device *netdev;
 		/*mac registers base addr*/
 		void __iomem *mac_base;
 		int phy_speed;
-		unsigned char mac_addr[6];
+		unsigned char *mac_addr[6];
 		int dev_irq;
 
         //not finished ,need added later.

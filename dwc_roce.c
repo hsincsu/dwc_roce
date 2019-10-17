@@ -34,11 +34,11 @@ static void xlgmac_add_device(struct xlgmac_pdata *pdata)
 {
 	struct dwc_dev_info dev_info;
 	dev_info.netdev = pdata->netdev;
-	dev_info.pdev = pdata->dev;
+	dev_info.dev = pdata->dev;
 	dev_info.dev_irq = pdata->dev_irq;
-	dev_info.mac_addr = pdata->mac_addr;
+//	dev_info.mac_addr = &pdata->mac_addr;
 	dev_info.phy_speed = pdata->phy_speed;
-	dev_info.mac_base = pdata->mac_base;
+	dev_info.mac_base = pdata->mac_regs;
 	pdata->rocedev = dwcroce->add(&dev_info);
 	
 }
