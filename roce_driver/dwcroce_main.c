@@ -143,7 +143,7 @@ static struct dwcroce_dev *dwc_add(struct dwc_dev_info *dev_info)
 	}	
 	printk("dwcroce:get the mac address is:%x,base addr is %x\n", dev_info->mac_base,dev_info->base_addr);
 	writel(dev_info->base_addr + 0x0, UPLINKDOWNLINK + DOWNLINKMTU_POS);
-
+	
 	downlinkmtu = readl(dev_info->base_addr + 0x100);
 
 	writel(dev_info->base_addr + 0x100, UPLINKDOWNLINK + UPLINKMTU_POS);
