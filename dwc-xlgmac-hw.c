@@ -2995,11 +2995,11 @@ static int xlgmac_config_mpp(struct xlgmac_pdata* pdata)
 	u32 regval;
 	regval = readl(pdata->base_addr + MPP_BASE + MPPMPP_PARAM);
 	printk("dwc_xlgmac: in xlgmac_config_mpp,1. regval = %0lx\n", regval);//added by hs for info
-	regval = XLGMAC_SET_REG_BITS(regval, MPPPORT_0_EN_POS, MPPPORT_0_EN_LEN, 1);
-	printk("dwc_xlgmac: in xlgmac_config_mpp,2. regval = %0lx\n",regval);//added by hs for info
-	regval = XLGMAC_SET_REG_BITS(regval, MPPPORT_0_RST_N_POS, MPPPORT_0_RST_N_LEN, 1);
-	printk("dwc_xlgmac: in xlgmac_config_mpp,3. regval = %0lx\n", regval);//added by hs for info
-	writel(regval, pdata->base_addr + MPP_BASE + MPPMPP_PARAM);
+	//regval = XLGMAC_SET_REG_BITS(regval, MPPPORT_0_EN_POS, MPPPORT_0_EN_LEN, 1);
+	//printk("dwc_xlgmac: in xlgmac_config_mpp,2. regval = %0lx\n",regval);//added by hs for info
+	//regval = XLGMAC_SET_REG_BITS(regval, MPPPORT_0_RST_N_POS, MPPPORT_0_RST_N_LEN, 1);
+	//printk("dwc_xlgmac: in xlgmac_config_mpp,3. regval = %0lx\n", regval);//added by hs for info
+	//writel(regval, pdata->base_addr + MPP_BASE + MPPMPP_PARAM);
 	return 0;
 }
 /*
