@@ -1395,16 +1395,12 @@
 #define PHYMPLLB_FORCE_EN_LEN			1
 
 
-
 /*MPP REGISTER END*/
 
 /*Registers with RoCE functions end
 *					--edited by hs in 2019/10/17
 *
 */
-
-
-
 
 
 #define XLGMAC_MTL_REG(pdata, n, reg)					\

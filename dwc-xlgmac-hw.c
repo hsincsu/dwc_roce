@@ -2984,12 +2984,35 @@ static void xlgmac_config_dma_bus(struct xlgmac_pdata *pdata)
 	writel(regval, pdata->mac_regs + DMA_SBMR);
 }
 
+/* xlgmac_config_mpp --edited by hs
+* @xlgmac_pdata *pdata
+* set port_0_en = 1, set port_0_rst_n =1 beform mac0
+*/
+
+static int xlgmac_config_mpp(struct xlgmac_pdata* pdata)
+{
+	printk("dwc_xlgmac: xlgmac_config_mpp start\n");//added by hs for info 
+	u32 regval;
+	regval = readl(pdata->base_addr + MPP_BASE + MPPMPP_PARAM);
+	printk("dwc_xlgmac: in xlgmac_config_mpp,1. regval = %0lx\n", regval);//added by hs for info
+	regval = XLGMAC_SET_REG_BITS(regval, MPPPORT_0_EN_POS, MPPPORT_0_EN_LEN, 1);
+	printk("dwc_xlgmac: in xlgmac_config_mpp,2. regval = %0lx\n",regval);//added by hs for info
+	regval = XLGMAC_SET_REG_BITS(regval, MPPPORT_0_RST_N_POS, MPPPORT_0_RST_N_LEN, 1);
+	printk("dwc_xlgmac: in xlgmac_config_mpp,3. regval = %0lx\n", regval);//added by hs for info
+	writel(regval, pdata->base_addr + MPP_BASE + MPPMPP_PARAM);
+	return 0;
+}
+/*
+	end			--edited by hs
+*/
+
 static int xlgmac_hw_init(struct xlgmac_pdata *pdata)
 {
 	struct xlgmac_desc_ops *desc_ops = &pdata->desc_ops;
 	int ret;
 
 	/*Initialize MPP related features  --edited by hs */
+	xlgmac_config_mpp(pdata);
 
 	/* Flush Tx queues */
 	ret = xlgmac_flush_tx_queues(pdata);
