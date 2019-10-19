@@ -2994,7 +2994,7 @@ static int xlgmac_config_mpp(struct xlgmac_pdata* pdata)
 	printk("dwc_xlgmac: xlgmac_config_mpp start\n");//added by hs for info 
 //	u32 regval;
 //	regval = ioread8(pdata->base_addr + MPP_BASE);
-	printk("dwc_xlgmac: in xlgmac_config_mpp,1. regval = %0lx\n", regval);//added by hs for info
+//	printk("dwc_xlgmac: in xlgmac_config_mpp,1. regval = %0lx\n", regval);//added by hs for info
 	//regval = XLGMAC_SET_REG_BITS(regval, MPPPORT_0_EN_POS, MPPPORT_0_EN_LEN, 1);
 	//printk("dwc_xlgmac: in xlgmac_config_mpp,2. regval = %0lx\n",regval);//added by hs for info
 	//regval = XLGMAC_SET_REG_BITS(regval, MPPPORT_0_RST_N_POS, MPPPORT_0_RST_N_LEN, 1);
