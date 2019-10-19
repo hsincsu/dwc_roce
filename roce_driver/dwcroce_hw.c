@@ -6,7 +6,7 @@
 #include <linux/sched.h>
 #include <linux/interrupt.h>
 #include <linux/log2.h>
-#include <linux/dma_mapping.h>
+#include <linux/dma-mapping.h>
 
 #include <rdma/ib_verbs.h>
 #include <rdma/ib_user_verbs.h>
@@ -208,12 +208,12 @@ static int dwcroce_init_phd(struct dwcroce_dev *dev)
 	status = phd_ipv4_init(dev);
 	if (status)
 		goto iperr;
-	status = phd_ipv6_init(dev);
-	if (status)
-		goto iperr;
-	status = phd_udp_init(dev);
-	if (status)
-		goto udperr;
+//	status = phd_ipv6_init(dev);
+//	if (status)
+//		goto iperr;
+//	status = phd_udp_init(dev);
+//	if (status)
+//		goto udperr;
 	return 0;
 udperr:
 	printk("err: udperr\n");
@@ -223,7 +223,7 @@ mac_err:
 	printk("err: macerr\n");
 phdtxrxdesc_err:
 	printk("err: phd txrxdescerr!\n");//added by hs for info
-	return status
+	return status;
 }
 
 int dwcroce_init_hw(struct dwcroce_dev *dev)
