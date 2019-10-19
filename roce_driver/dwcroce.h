@@ -27,6 +27,7 @@
 
 struct dwcroce_dev{
 	struct ib_device ibdev;
+	struct dwc_dev_info *devinfo;
 	//not finished ,added later.
 };
 
