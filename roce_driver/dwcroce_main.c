@@ -142,23 +142,23 @@ static struct dwcroce_dev *dwc_add(struct dwc_dev_info *dev_info)
 		return NULL;
 	}	
 	printk("dwcroce:get the mac address is:%x,base addr is %x\n", dev_info->mac_base,dev_info->base_addr);
-	writel(GENRSP,dev_info->base_addr + 0x0);	
+	writel(PHD_BASE_1+ PHDIVP4PROTOCOL,dev_info->base_addr + 0x0);	
 	downlinkmtu = readl(dev_info->base_addr + 0x100);
-	printk("dwcroce: get GENRSP %lx\n", downlinkmtu);//added by hs  read first time
+	printk("dwcroce: get UDPSOURCEPORT %0x\n", downlinkmtu);//added by hs  read first time
 	downlinkmtu = 0;
 
-	writel(GENRSP,dev_info->base_addr + 0x0);
-	data = 0x0800;
-	writel(data,dev_info->base_addr + 0x100);//added by hs write first time;
+//	writel(PHD_BASE_0+ PHDCONTEXT_TDES2,dev_info->base_addr + 0x0);
+//	data = 0x5B4;
+//	writel(data,dev_info->base_addr + 0x100);//added by hs write first time;
 
-	writel(UPLINKDOWNLINK,dev_info->base_addr + 0x0);
+	writel(PHD_BASE_1 + PHDUDPDESTPORT,dev_info->base_addr + 0x0);
  	downlinkmtu = readl(dev_info->base_addr + 0x100);
-	printk("dwcroce: get UPLINKDOWNLINK %0lx\n", downlinkmtu);//added by hs  read second time
+	printk("dwcroce: get UDPDSTPORT %0x\n", downlinkmtu);//added by hs  read second time
 	downlinkmtu = 0;	
 
-	writel(GENRSP,dev_info->base_addr + 0x0); 
+	writel(PHD_BASE_0+ PHDCONTEXT_TDES2,dev_info->base_addr + 0x0); 
         downlinkmtu = readl(dev_info->base_addr + 0x100);
-        printk("dwcroce: get GENRSP %0lx\n", downlinkmtu);//added by hs  read third time
+        printk("dwcroce: get GENRSP %0x\n", downlinkmtu);//added by hs  read third time
 	
 
 	status = dwcroce_register_ibdev(dev);
