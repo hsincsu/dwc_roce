@@ -256,6 +256,7 @@ static int phd_txdesc_init(struct dwcroce_dev *dev)
 		addr_h = readl(XLGMAC_DMA_REG(channel, DMA_CH_TDLR_HI));
 		addr_l = readl(XLGMAC_DMA_REG(channel, DMA_CH_TDLR_LO));
 		printk("addr_h = %x, addr_l = %x \n,channel count is %d", addr_h, addr_l,pdata->channel_count);//added by hs for info
+		channel++;
 	}
 #if 0 // added by hs for debugging
 	/*tx_desc_tail_lptr_addr start*/
