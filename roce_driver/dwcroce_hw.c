@@ -424,13 +424,25 @@ phdtxrxdesc_err:
 	return status;
 }
 
+static int dwcroce_init_cm(struct dwcroce_dev *dev)
+{
+	
+	
+	return 0;
+}
+
 int dwcroce_init_hw(struct dwcroce_dev *dev)
 {
 	int status;
 	status = dwcroce_init_phd(dev);
 	if (status)
 		goto errphd;
+	status = dwcroce_init_cm(dev);
+	if (status)
+		goto errcm;
 	return 0;
+errcm:
+	printk("cm init err!\n");//added by hs
 errphd:
 	printk("phd init err!\n");//added by hs
 	return status;
