@@ -28,7 +28,7 @@ struct dwc_dev_info {
 		void __iomem *mac_base;
 		void __iomem *base_addr;
 		int phy_speed;
-		unsigned char *mac_addr[6];
+		unsigned char *mac_addr;
 		int dev_irq;
 
         //not finished ,need added later.

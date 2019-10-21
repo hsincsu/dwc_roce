@@ -158,6 +158,10 @@ static int phd_mac_init(struct dwcroce_dev *dev)
 {
 	void __iomem *base_addr;
 	base_addr = dev->devinfo->base_addr;
+	unsigned char *macaddr;
+	macaddr = dev->devinfo->mac_addr;
+	printk("mac addr is %0lx\n",macaddr);//added by hs for info
+#if 0
 	/*mac source addr  */
 	writel(PHD_BASE_0 + PHDMACSOURCEADDR_H, base_addr + MPB_WRITE_ADDR);
 	writel(0x0, base_addr + MPB_RW_DATA);
@@ -170,8 +174,9 @@ static int phd_mac_init(struct dwcroce_dev *dev)
 
 	writel(PHD_BASE_1 + PHDMACSOURCEADDR_L, base_addr + MPB_WRITE_ADDR);
 	writel(0x0, base_addr + MPB_RW_DATA);
+#endif
 	/*end*/
-
+#if 0 //added by hs ,no need to init !
 	/*mac type */
 	writel(PHD_BASE_0 + PHDMACTYPEIPV4, base_addr + MPB_WRITE_ADDR);
 	writel(0x0, base_addr + MPB_RW_DATA);
@@ -185,6 +190,7 @@ static int phd_mac_init(struct dwcroce_dev *dev)
 	writel(PHD_BASE_0 + PHDMACTYPEIPV6, base_addr + MPB_WRITE_ADDR);
 	writel(0x0, base_addr + MPB_RW_DATA);
 	/*end*/
+#endif
 	return 0;
 }
 
@@ -375,10 +381,11 @@ static int dwcroce_init_phd(struct dwcroce_dev *dev)
 	status = phd_rxdesc_init(dev);
 	if (status)
 		goto phdtxrxdesc_err;
-#if 0 // added by hs for debugging
+
 	status = phd_mac_init(dev);
 	if (status)
 		goto mac_err;
+#if 0 // added by hs for debugging
 	status = phd_ipv4_init(dev);
 	if (status)
 		goto iperr;
