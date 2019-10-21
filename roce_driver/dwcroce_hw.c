@@ -192,21 +192,41 @@ static int phd_rxdesc_init(struct dwcroce_dev *dev)
 {
 	void __iomem *base_addr;
 	base_addr = dev->devinfo->base_addr;
-	
+	struct xlgmac_channel* channel = dev->devinfo->channel_head;
+	struct xlgmac_pdata* pdata = channel->pdata;
+
+	int i = 0;
+	u32 addr_h = 0;
+	u32 addr_l = 0;
+	for (i = 0; i < pdata->channel_count; i++) //just for printing channel info
+	{
+
+		addr_h = readl(XLGMAC_DMA_REG(channel, DMA_CH_RDLR_HI));
+		addr_l = readl(XLGMAC_DMA_REG(channel, DMA_CH_RDLR_LO));
+		printk("FOR RXDESC_INIT: addr_h = %x, addr_l = %x \n,channel count is %d", addr_h, addr_l, pdata->channel_count);//added by hs for info
+		channel++;
+	}
+	channel = dev->devinfo->channel_head;
+	addr_h = 0;
+	addr_l = 0;
+	addr_h = readl(XLGMAC_DMA_REG(channel, DMA_CH_RDLR_HI));
+	addr_l = readl(XLGMAC_DMA_REG(channel, DMA_CH_RDLR_LO));
+
+
 	/*rx_desc_tail_lptr_addr start*/
 	writel(PHD_BASE_0 + PHDRXDESCTAILPTR_H, base_addr + MPB_WRITE_ADDR);
-	writel(0x0, base_addr + MPB_RW_DATA);
+	writel(addr_h, base_addr + MPB_RW_DATA);
 
 	writel(PHD_BASE_0 + PHDRXDESCTAILPTR_L, base_addr + MPB_WRITE_ADDR);
-	writel(0x0, base_addr + MPB_RW_DATA);
+	writel(addr_l, base_addr + MPB_RW_DATA);
 
 	writel(PHD_BASE_1 + PHDRXDESCTAILPTR_H, base_addr + MPB_WRITE_ADDR);
-	writel(0x0, base_addr + MPB_RW_DATA);
+	writel(addr_l, base_addr + MPB_RW_DATA);
 
 	writel(PHD_BASE_1 + PHDRXDESCTAILPTR_L, base_addr + MPB_WRITE_ADDR);
-	writel(0x0, base_addr + MPB_RW_DATA);
+	writel(addr_h, base_addr + MPB_RW_DATA);
 	/*end*/
-
+#if 0 //added by hs , no need to init this
 	/*rx_desc_tail_thresdhold & tail ptr incr step*/
 	writel(PHD_BASE_0 + PHDRXDESCTAILPTR_THRESDHOLD, base_addr + MPB_WRITE_ADDR);
 	writel(0x0, base_addr + MPB_RW_DATA);
@@ -240,6 +260,7 @@ static int phd_rxdesc_init(struct dwcroce_dev *dev)
 	writel(PHD_BASE_1 + PHDNORMAL_RDES3, base_addr + MPB_WRITE_ADDR);
 	writel(0x0, base_addr + MPB_RW_DATA);
 	/*end*/
+#endif
 	return 0;
 }
 static int phd_txdesc_init(struct dwcroce_dev *dev)
@@ -252,7 +273,7 @@ static int phd_txdesc_init(struct dwcroce_dev *dev)
 	int i =0;
 	u32 addr_h = 0;
 	u32 addr_l = 0;
-	for (i = 0; i < pdata->channel_count; i++)
+	for (i = 0; i < pdata->channel_count; i++) //just for printing channel info
 	{
 		
 		addr_h = readl(XLGMAC_DMA_REG(channel, DMA_CH_TDLR_HI));
@@ -279,7 +300,7 @@ static int phd_txdesc_init(struct dwcroce_dev *dev)
 	writel(PHD_BASE_1 + PHDTXDESCTAILPTR_L, base_addr + MPB_WRITE_ADDR);
 	writel(addr_l, base_addr + MPB_RW_DATA);
 	/*end*/
-#if 0 // added by hs for debugging
+#if 0 //no need to init this ,added by hs
 	/*tx_desc_tail_ptr_thresdhold*/
 	writel(PHD_BASE_0 + PHDTXDESCTAILPTR_THRESDHOLD, base_addr + MPB_WRITE_ADDR);
 	writel(0x0, base_addr + MPB_RW_DATA);
@@ -287,7 +308,9 @@ static int phd_txdesc_init(struct dwcroce_dev *dev)
 	writel(PHD_BASE_1 + PHDTXDESCTAILPTR_THRESDHOLD, base_addr + MPB_WRITE_ADDR);
 	writel(0x0, base_addr + MPB_RW_DATA);
 	/*end*/
+#endif
 
+#if 0 // no need to init all this now.added by hs 
 	/*tx context PHD0 desc init*/
 	writel(PHD_BASE_0 + PHDCONTEXT_TDES0, base_addr + MPB_WRITE_ADDR);
 	writel(0x0, base_addr + MPB_RW_DATA);
@@ -349,10 +372,10 @@ static int dwcroce_init_phd(struct dwcroce_dev *dev)
 	status = phd_txdesc_init(dev);
 	if (status)
 		goto phdtxrxdesc_err;
-#if 0
 	status = phd_rxdesc_init(dev);
 	if (status)
 		goto phdtxrxdesc_err;
+#if 0 // added by hs for debugging
 	status = phd_mac_init(dev);
 	if (status)
 		goto mac_err;
