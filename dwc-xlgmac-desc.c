@@ -450,7 +450,7 @@ static void xlgmac_tx_desc_init(struct xlgmac_pdata *pdata)
 		ring->cur = 0;
 		ring->dirty = 0;
 		memset(&ring->tx, 0, sizeof(ring->tx));
-
+		printk("dwc-xlgmac: the %d times to init txdesc,channel count is %d\n",i,pdata->channel_count);//added by hs for info
 		hw_ops->tx_desc_init(channel);
 	}
 }
