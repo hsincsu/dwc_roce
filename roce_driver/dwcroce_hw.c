@@ -248,11 +248,15 @@ static int phd_txdesc_init(struct dwcroce_dev *dev)
 	void __iomem *base_addr;
 	base_addr = dev->devinfo->base_addr;
 	struct xlgmac_channel *channel = dev->devinfo->channel_head;
-	u32 addr_h = 0;
-	u32 addr_l = 0;
-	addr_h = readl(XLGMAC_DMA_REG(channel, DMA_CH_TDLR_HI));
-	addr_l = readl(XLGMAC_DMA_REG(channel, DMA_CH_TDLR_LO));
-	printk("addr_h = %x, addr_l = %x \n",addr_h, addr_l);//added by hs for info
+	struct xlgmac_pdata* pdata = channel->pdata;
+	for (int i = 0; i < pdata->channel_count; i++)
+	{
+		u32 addr_h = 0;
+		u32 addr_l = 0;
+		addr_h = readl(XLGMAC_DMA_REG(channel, DMA_CH_TDLR_HI));
+		addr_l = readl(XLGMAC_DMA_REG(channel, DMA_CH_TDLR_LO));
+		printk("addr_h = %x, addr_l = %x \n,channel count is %d", addr_h, addr_l,pdata->channel_count);//added by hs for info
+	}
 #if 0 // added by hs for debugging
 	/*tx_desc_tail_lptr_addr start*/
 	writel(PHD_BASE_0 + PHDTXDESCTAILPTR_H, base_addr + MPB_WRITE_ADDR);
