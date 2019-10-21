@@ -93,7 +93,21 @@ static int phd_ipv4_init(struct dwcroce_dev *dev)
 {
 	void __iomem *base_addr;
 	base_addr = dev->devinfo->base_addr;
+	struct net_device *netdev;
+	netdev = dev->devinfo->netdev;
+	__be32 addr;
+	addr = netdev->ip_ptr->ifa_list->ifa_address;	
+	u32 addr_k;
+	addr_k = __be32_to_cpu(addr);
+	printk("ipv4: %x",addr_k);//added by hs for info
 
+        writel(PHD_BASE_0 + PHDIPV4SOURCEADDR, base_addr + MPB_WRITE_ADDR);
+        writel(addr_k, base_addr + MPB_RW_DATA);
+
+        writel(PHD_BASE_1 + PHDIPV4SOURCEADDR, base_addr + MPB_WRITE_ADDR);
+        writel(addr_k, base_addr + MPB_RW_DATA);
+
+#if 0
 	/*ipv4 version*/
 	writel(PHD_BASE_0 + PHDIPV4VERSION, base_addr + MPB_WRITE_ADDR);
 	writel(0x0, base_addr + MPB_RW_DATA);
@@ -150,7 +164,7 @@ static int phd_ipv4_init(struct dwcroce_dev *dev)
 	writel(PHD_BASE_1 + PHDIPV4SOURCEADDR, base_addr + MPB_WRITE_ADDR);
 	writel(0x0, base_addr + MPB_RW_DATA);
 	/*END*/
-
+#endif
 	return 0;
 }
 
@@ -158,23 +172,24 @@ static int phd_mac_init(struct dwcroce_dev *dev)
 {
 	void __iomem *base_addr;
 	base_addr = dev->devinfo->base_addr;
-	unsigned char *macaddr;
+	u64 macaddr;
 	macaddr = dev->devinfo->mac_addr;
-	printk("mac addr is %0lx\n",macaddr);//added by hs for info
-#if 0
+	printk("mac addr is %0lx\n",macaddr&0xffffffffffff);//added by hs for info
+	u32 macaddr_l = macaddr &0xffffffff;
+	u16 macaddr_h = macaddr >>32;
 	/*mac source addr  */
 	writel(PHD_BASE_0 + PHDMACSOURCEADDR_H, base_addr + MPB_WRITE_ADDR);
-	writel(0x0, base_addr + MPB_RW_DATA);
+	writel(macaddr_h, base_addr + MPB_RW_DATA);
 
 	writel(PHD_BASE_0 + PHDMACSOURCEADDR_L, base_addr + MPB_WRITE_ADDR);
-	writel(0x0, base_addr + MPB_RW_DATA);
+	writel(macaddr_l, base_addr + MPB_RW_DATA);
 
 	writel(PHD_BASE_1 + PHDMACSOURCEADDR_H, base_addr + MPB_WRITE_ADDR);
-	writel(0x0, base_addr + MPB_RW_DATA);
+	writel(macaddr_h, base_addr + MPB_RW_DATA);
 
 	writel(PHD_BASE_1 + PHDMACSOURCEADDR_L, base_addr + MPB_WRITE_ADDR);
-	writel(0x0, base_addr + MPB_RW_DATA);
-#endif
+	writel(macaddr_l, base_addr + MPB_RW_DATA);
+
 	/*end*/
 #if 0 //added by hs ,no need to init !
 	/*mac type */
@@ -385,10 +400,10 @@ static int dwcroce_init_phd(struct dwcroce_dev *dev)
 	status = phd_mac_init(dev);
 	if (status)
 		goto mac_err;
-#if 0 // added by hs for debugging
 	status = phd_ipv4_init(dev);
 	if (status)
 		goto iperr;
+#if 0 // added by hs for debugging,now there is no need to init follow function.
 	status = phd_ipv6_init(dev);
 	if (status)
 		goto iperr;
