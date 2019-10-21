@@ -249,7 +249,8 @@ static int phd_txdesc_init(struct dwcroce_dev *dev)
 	base_addr = dev->devinfo->base_addr;
 	struct xlgmac_channel *channel = dev->devinfo->channel_head;
 	struct xlgmac_pdata* pdata = channel->pdata;
-	for (int i = 0; i < pdata->channel_count; i++)
+	int i =0;
+	for (i = 0; i < pdata->channel_count; i++)
 	{
 		u32 addr_h = 0;
 		u32 addr_l = 0;
