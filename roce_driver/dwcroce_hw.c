@@ -221,10 +221,10 @@ static int phd_rxdesc_init(struct dwcroce_dev *dev)
 	writel(addr_l, base_addr + MPB_RW_DATA);
 
 	writel(PHD_BASE_1 + PHDRXDESCTAILPTR_H, base_addr + MPB_WRITE_ADDR);
-	writel(addr_l, base_addr + MPB_RW_DATA);
+	writel(addr_h, base_addr + MPB_RW_DATA);
 
 	writel(PHD_BASE_1 + PHDRXDESCTAILPTR_L, base_addr + MPB_WRITE_ADDR);
-	writel(addr_h, base_addr + MPB_RW_DATA);
+	writel(addr_l, base_addr + MPB_RW_DATA);
 	/*end*/
 #if 0 //added by hs , no need to init this
 	/*rx_desc_tail_thresdhold & tail ptr incr step*/
