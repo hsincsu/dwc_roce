@@ -399,7 +399,7 @@ static int dwcroce_read_phd(struct dwcroce_dev *dev)
 	int i = 0;
 	u32 phd_base_addr = 0;
 	for (i = 0; i <= 1; i++) {
-		phd_base_addr = i == 0 ? PHD_BASE_0; PHD_BASE_1;
+		phd_base_addr = i == 0 ? PHD_BASE_0: PHD_BASE_1;
 		printk("------------------dwcroce read phd %d------------------\n",i);//added by hs for info
 			/*read phd order*/
 		writel(phd_base_addr + PHDBYTEORDER, base_addr + MPB_WRITE_ADDR);
@@ -602,7 +602,7 @@ static int dwcroce_read_phd(struct dwcroce_dev *dev)
 		printk("dwcroce: phd_normal_tdes3: %x\n", regval);//added by hs for info 
 
 						/*read phd tx desc tail ptr thresdhold order*/
-		writelphd_base_addr + PHDNORMAL_RDES1, base_addr + MPB_WRITE_ADDR);
+		writel(phd_base_addr + PHDNORMAL_RDES1, base_addr + MPB_WRITE_ADDR);
 		regval = readl(base_addr + MPB_RW_DATA);
 		printk("dwcroce: phd_normal_rdes1: %x\n", regval);//added by hs for info 
 
