@@ -17,6 +17,78 @@
 #include "dwcroce_ah.h"
 #include "dwcroce_verbs.h"
 
+static int phd_udp_init(struct dwcroce_dev *dev)
+{
+	void __iomem* base_addr;
+	base_addr = dev->devinfo->base_addr;
+	printk("dwcroce: no need to init udp\n");//added by hs
+	return 0;
+}
+
+
+static int phd_ipv6_init(struct dwcroce_dev *dev)
+{
+	void __iomem* base_addr;
+	base_addr = dev->devinfo->base_addr;
+
+	/*ipv6 init phd 0*/
+	writel(PHD_BASE_0 + PHDIPV6VERSION, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_0 +	PHDIPV6CLASS, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_0 + PHDIPV6FLOWLABLE, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_0 + PHDIPV6NEXTHEADER, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_0 + PHDIPV6HOPLIMIT, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_0 + PHDIPV6SOURCEADDR_0, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_0 + PHDIPV6SOURCEADDR_1, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_0 + PHDIPV6SOURCEADDR_2, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_0 + PHDIPV6SOURCEADDR_3, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+	/*END*/
+	/*IPV6 INIT PHD 1*/
+	writel(PHD_BASE_1 + PHDIPV6VERSION, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_1 + PHDIPV6CLASS, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_1 + PHDIPV6FLOWLABLE, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_1 + PHDIPV6NEXTHEADER, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_1 + PHDIPV6HOPLIMIT, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_1 + PHDIPV6SOURCEADDR_0, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_1 + PHDIPV6SOURCEADDR_1, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_1 + PHDIPV6SOURCEADDR_2, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_1 + PHDIPV6SOURCEADDR_3, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+	/*END*/
+}
+
 static int phd_ipv4_init(struct dwcroce_dev *dev)
 {
 	void __iomem *base_addr;
@@ -25,7 +97,60 @@ static int phd_ipv4_init(struct dwcroce_dev *dev)
 	/*ipv4 version*/
 	writel(PHD_BASE_0 + PHDIPV4VERSION, base_addr + MPB_WRITE_ADDR);
 	writel(0x0, base_addr + MPB_RW_DATA);
-	
+
+	writel(PHD_BASE_0 + PHDIPV4HEADER_LEN, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_0 + PHDIPV4TOS, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_0 + PHDIPV4ID, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_0 + PHDIPV4FLAG, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_0 + PHDIPV4OFFSET, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_0 + PHDIPV4TTL, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_0 + PHDIPV4PROTOCOL, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_0 + PHDIPV4SOURCEADDR, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+	/*END*/
+	/*phd 1 ipv4 init*/
+	writel(PHD_BASE_1 + PHDIPV4VERSION, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_1 + PHDIPV4HEADER_LEN, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_1 + PHDIPV4TOS, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_1 + PHDIPV4ID, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_1 + PHDIPV4FLAG, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_1 + PHDIPV4OFFSET, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_1 + PHDIPV4TTL, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_1 + PHDIPV4PROTOCOL, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_1 + PHDIPV4SOURCEADDR, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+	/*END*/
+
 	return 0;
 }
 
@@ -48,10 +173,16 @@ static int phd_mac_init(struct dwcroce_dev *dev)
 	/*end*/
 
 	/*mac type */
-	writel(PHD_BASE_0 + PHDMACTYPE, base_addr + MPB_WRITE_ADDR);
+	writel(PHD_BASE_0 + PHDMACTYPEIPV4, base_addr + MPB_WRITE_ADDR);
 	writel(0x0, base_addr + MPB_RW_DATA);
 
-	writel(PHD_BASE_1 + PHDMACTYPE, base_addr + MPB_WRITE_ADDR);
+	writel(PHD_BASE_1 + PHDMACTYPEIPV4, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_1 + PHDMACTYPEIPV6, base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_0 + PHDMACTYPEIPV6, base_addr + MPB_WRITE_ADDR);
 	writel(0x0, base_addr + MPB_RW_DATA);
 	/*end*/
 	return 0;
@@ -208,12 +339,12 @@ static int dwcroce_init_phd(struct dwcroce_dev *dev)
 	status = phd_ipv4_init(dev);
 	if (status)
 		goto iperr;
-//	status = phd_ipv6_init(dev);
-//	if (status)
-//		goto iperr;
-//	status = phd_udp_init(dev);
-//	if (status)
-//		goto udperr;
+	status = phd_ipv6_init(dev);
+	if (status)
+		goto iperr;
+	status = phd_udp_init(dev);
+	if (status)
+		goto udperr;
 	return 0;
 udperr:
 	printk("err: udperr\n");
@@ -229,5 +360,256 @@ phdtxrxdesc_err:
 int dwcroce_init_hw(struct dwcroce_dev *dev)
 {
 	int status;
+	status = dwcroce_init_phd(dev);
+	if (status)
+		goto errphd;
+	return 0;
+errphd:
+	printk("phd init err!\n");//added by hs
+	return status;
+}
 
+static int dwcroce_read_phd(struct dwcroce_dev *dev)
+{
+	u32 regval;
+	void __iomem* base_addr;
+	base_addr = dev->devinfo->base_addr;
+	printk("------------------dwcroce read phd 0------------------\n");//added by hs for info
+		/*read phd order*/
+	writel(PHD_BASE_0 + PHDBYTEORDER, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_byte_order: %x\n",regval);//added by hs for info 
+
+		/*read tx desc tail ptr_l order*/
+	writel(PHD_BASE_0 + PHDTXDESCTAILPTR_L, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_tx_desc_tail_ptr_l: %x\n", regval);//added by hs for info 
+
+		/*read tx desc tail ptr_h order*/
+	writel(PHD_BASE_0 + PHDTXDESCTAILPTR_H, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_tx_desc_tail_ptr_h: %x\n", regval);//added by hs for info 
+
+		/*read phd tx desc tail ptr thresdhold order*/
+	writel(PHD_BASE_0 + PHDTXDESCTAILPTR_THRESDHOLD, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_tx_desc_tail_ptr_thresdhold: %x\n", regval);//added by hs for info 
+
+			/*read phd rx desc tail ptr thresdhold order*/
+	writel(PHD_BASE_0 + PHDRXDESCTAILPTR_THRESDHOLD, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_rx_desc_tail_ptr_thresdhold: %x\n", regval);//added by hs for info 
+
+			/*read phd tx desc tail ptr incr step order*/
+	writel(PHD_BASE_0 + PHDRXDESCTAILPTR_INCR_STEP, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_tx_desc_tail_ptr_incr_step: %x\n", regval);//added by hs for info 
+
+			/*read phd rx desc tail ptr_l order*/
+	writel(PHD_BASE_0 + PHDRXDESCTAILPTR_L, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_rx_desc_tail_ptr_l: %x\n", regval);//added by hs for info 
+
+			/*read phd rx desc tail ptr_h thresdhold order*/
+	writel(PHD_BASE_0 + PHDRXDESCTAILPTR_H, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_rx_desc_tail_ptr_h: %x\n", regval);//added by hs for info 
+
+			/*read phd mac source addr_l*/
+	writel(PHD_BASE_0 + PHDMACSOURCEADDR_L, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_mac_source_addr_l: %x\n", regval);//added by hs for info 
+
+			/*read phd mac source addr_h*/
+	writel(PHD_BASE_0 + PHDMACSOURCEADDR_H, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_mac_source_addr_h: %x\n", regval);//added by hs for info 
+
+			/*read phd mac type ipv4*/
+	writel(PHD_BASE_0 + PHDMACTYPEIPV4, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_mac_type_ipv4: %x\n", regval);//added by hs for info 
+
+			/*read phd mac type ipv6*/
+	writel(PHD_BASE_0 + PHDMACTYPEIPV6, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_mac_type_ipv6: %x\n", regval);//added by hs for info 
+
+			/*read phd ipv4 version*/
+	writel(PHD_BASE_0 + PHDIPV4VERSION, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: : phd_ipv4_version: %x\n", regval);//added by hs for info 
+
+			/*read phd ipv4 header len*/
+	writel(PHD_BASE_0 + PHDIPV4HEADER_LEN, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_ipv4_header_len: %x\n", regval);//added by hs for info 
+
+			/*read phd ipv4 tos */
+	writel(PHD_BASE_0 + PHDIPV4TOS, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_ipv4_tos: %x\n", regval);//added by hs for info 
+
+			/*read phd ipv4 id*/
+	writel(PHD_BASE_0 + PHDIPV4ID, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_ipv4_id: %x\n", regval);//added by hs for info 
+
+			/*read phd ipv4 flag*/
+	writel(PHD_BASE_0 + PHDIPV4FLAG, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_ipv4_flag: %x\n", regval);//added by hs for info 
+
+			/*read phd ipv4 offset*/
+	writel(PHD_BASE_0 + PHDIPV4OFFSET, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_ipv4_offset: %x\n", regval);//added by hs for info 
+
+			/*read phd ipv4 ttl*/
+	writel(PHD_BASE_0 + PHDIPV4TTL, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_ipv4_ttl: %x\n", regval);//added by hs for info 
+
+			/*read phd ipv4 protocol*/
+	writel(PHD_BASE_0 + PHDIPV4PROTOCOL, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_ipv4_protocol: %x\n", regval);//added by hs for info 
+
+			/*read phd ipv4 source addr*/
+	writel(PHD_BASE_0 + PHDIPV4SOURCEADDR, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_ipv4_source_addr: %x\n", regval);//added by hs for info 
+
+			/*read phd ipv6 version*/
+	writel(PHD_BASE_0 + PHDIPV6VERSION, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_ipv6_version: %x\n", regval);//added by hs for info 
+
+			/*read phd ipv6_class*/
+	writel(PHD_BASE_0 + PHDIPV6CLASS, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_ipv6_class: %x\n", regval);//added by hs for info 
+
+			/*read phd ipv6 flow label*/
+	writel(PHD_BASE_0 + PHDIPV6FLOWLABLE, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_ipv6_flow_label: %x\n", regval);//added by hs for info 
+
+			/*read phd ipv6 next header*/
+	writel(PHD_BASE_0 + PHDIPV6NEXTHEADER, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_ipv6_next_header: %x\n", regval);//added by hs for info 
+
+			/*read phd ipv6 hop limit*/
+	writel(PHD_BASE_0 + PHDIPV6HOPLIMIT, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_ipv6_hop_limit: %x\n", regval);//added by hs for info 
+
+			/*read phd ipv6 source addr 0*/
+	writel(PHD_BASE_0 + PHDIPV6SOURCEADDR_0, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_ipv6_source_addr_0: %x\n", regval);//added by hs for info 
+
+				/*read phd ipv6 source addr 1 order*/
+	writel(PHD_BASE_0 + PHDIPV6SOURCEADDR_1, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_ipv6_source_addr_1: %x\n", regval);//added by hs for info 
+
+				/*read phd ipv6 source addr 2*/
+	writel(PHD_BASE_0 + PHDIPV6SOURCEADDR_2, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_ipv6_source_addr_2: %x\n", regval);//added by hs for info 
+
+				/*read phd tx desc tail ptr thresdhold order*/
+	writel(PHD_BASE_0 + PHDIPV6SOURCEADDR_3, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_ipv6_source_addr_3: %x\n", regval);//added by hs for info 
+
+				/*read phd tx desc tail ptr thresdhold order*/
+	writel(PHD_BASE_0 + PHDUDPSOURCEPORT, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_udp_source_port: %x\n", regval);//added by hs for info 
+
+				/*read phd tx desc tail ptr thresdhold order*/
+	writel(PHD_BASE_0 + PHDUDPDESTPORT, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_udp_dest_port: %x\n", regval);//added by hs for info 
+
+				/*read phd tx desc tail ptr thresdhold order*/
+	writel(PHD_BASE_0 + PHDUDPCHECKSUM, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_udp_checksum: %x\n", regval);//added by hs for info 
+
+				/*read phd tx desc tail ptr thresdhold order*/
+	writel(PHD_BASE_0 + PHDCONTEXT_TDES0, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_context_tdes0: %x\n", regval);//added by hs for info 
+
+				/*read phd tx desc tail ptr thresdhold order*/
+	writel(PHD_BASE_0 + PHDCONTEXT_TDES1, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_context_tdes1: %x\n", regval);//added by hs for info 
+
+				/*read phd tx desc tail ptr thresdhold order*/
+	writel(PHD_BASE_0 + PHDCONTEXT_TDES2, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_context_tdes2: %x\n", regval);//added by hs for info 
+
+				/*read phd tx desc tail ptr thresdhold order*/
+	writel(PHD_BASE_0 + PHDCONTEXT_TDES3, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_context_tdes3: %x\n", regval);//added by hs for info 
+
+				/*read phd tx desc tail ptr thresdhold order*/
+	writel(PHD_BASE_0 + PHDNORMAL_TDES1, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_normal_tdes1: %x\n", regval);//added by hs for info 
+
+					/*read phd tx desc tail ptr thresdhold order*/
+	writel(PHD_BASE_0 + PHDNORMAL_TDES2, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_normal_tdes2: %x\n", regval);//added by hs for info 
+
+					/*read phd tx desc tail ptr thresdhold order*/
+	writel(PHD_BASE_0 + PHDNORMAL_TDES3, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_normal_tdes3: %x\n", regval);//added by hs for info 
+
+					/*read phd tx desc tail ptr thresdhold order*/
+	writel(PHD_BASE_0 + PHDNORMAL_RDES1, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_normal_rdes1: %x\n", regval);//added by hs for info 
+
+					/*read phd tx desc tail ptr thresdhold order*/
+	writel(PHD_BASE_0 + PHDNORMAL_RDES2, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_normal_rdes2: %x\n", regval);//added by hs for info 
+
+					/*read phd tx desc tail ptr thresdhold order*/
+	writel(PHD_BASE_0 + PHDNORMAL_RDES3, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_normal_rdes3: %x\n", regval);//added by hs for info 
+
+					/*read phd tx desc tail ptr thresdhold order*/
+	writel(PHD_BASE_0 + PHDSRAM_RMC, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_sram_rmc: %x\n", regval);//added by hs for info 
+
+					/*read phd tx desc tail ptr thresdhold order*/
+	writel(PHD_BASE_0 + PHDMACTYPEIPV6RECV, base_addr + MPB_WRITE_ADDR);
+	regval = readl(base_addr + MPB_RW_DATA);
+	printk("dwcroce: phd_mac_type_ipv6_recv: %x\n", regval);//added by hs for info 
+
+	return 0;
+}
+int dwcroce_get_hwinfo(struct dwcroce_dev *dev)
+{
+	int status;
+	status = dwcroce_read_phd(dev);
+	if (status)
+		goto errphd;
+	return 0;
+errphd:
+	printk("read phd failed!\n");//added by hs
+	return status;
 }

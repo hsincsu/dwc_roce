@@ -8,5 +8,6 @@
 
 int dwcroce_init_hw(struct dwcroce_dev *);
 void dwcroce_cleanup_hw(struct dwcroce_dev *);
+int dwcroce_get_hwinfo(struct dwcroce_dev *);
 
 #endif		/*__DWCROCE_HW_H__*/	

@@ -23,6 +23,7 @@
 #include "dwcroce.h"
 #include "dwcroce_verbs.h"
 #include "dwcroce_ah.h"
+#include "dwcroce_hw.h"
 #define HSDEBUG 1
 
 MODULE_VERSION(DWCROCEDRV_VER);
@@ -139,8 +140,11 @@ static struct dwcroce_dev *dwc_add(struct dwc_dev_info *dev_info)
 		printk("dwcroce:Unable to allocate ib device\n");//to show the err information.
 		return NULL;
 	}	
+	dev->devinfo = dev_info;
 	printk("dwcroce:get the mac address is:%x,base addr is %x\n", dev_info->mac_base,dev_info->base_addr);
-	
+	status = dwcroce_get_hwinfo(dev);
+	if (status)
+		goto err_getinfo;
 	status = dwcroce_register_ibdev(dev);
 	if (status)
 		goto alloc_err;
@@ -150,6 +154,9 @@ static struct dwcroce_dev *dwc_add(struct dwc_dev_info *dev_info)
 alloc_err:
 	ib_dealloc_device(&dev->ibdev);
 	printk("dwcroce:error!alloc_err as dwcroce_register_ibdev failed\n");//added by hs for info
+err_getinfo:
+	printk("read hw failed\n");//added by hs;
+
 	return NULL;
 }
 
