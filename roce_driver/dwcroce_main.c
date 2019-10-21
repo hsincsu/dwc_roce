@@ -142,12 +142,17 @@ static struct dwcroce_dev *dwc_add(struct dwc_dev_info *dev_info)
 	}	
 	dev->devinfo = dev_info;
 	printk("dwcroce:get the mac address is:%x,base addr is %x\n", dev_info->mac_base,dev_info->base_addr);
-	status = dwcroce_get_hwinfo(dev);
+
+	status = dwcroce_init_hw(dev);// init hw
+	if (status)
+		goto err_inithw;
+	status = dwcroce_get_hwinfo(dev);//read hw
 	if (status)
 		goto err_getinfo;
-	status = dwcroce_register_ibdev(dev);
+	status = dwcroce_register_ibdev(dev);//register ib_device
 	if (status)
 		goto alloc_err;
+
 #endif
 	printk("dwcroce:dwc_add succeed end\n");//added by hs for printing info
 	return dev;//turn back the ib dev
@@ -156,7 +161,8 @@ alloc_err:
 	printk("dwcroce:error!alloc_err as dwcroce_register_ibdev failed\n");//added by hs for info
 err_getinfo:
 	printk("read hw failed\n");//added by hs;
-
+err_inithw:
+	printk("init hw failed\n");//added by hs for info
 	return NULL;
 }
 

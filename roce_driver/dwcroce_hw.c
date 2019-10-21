@@ -247,6 +247,13 @@ static int phd_txdesc_init(struct dwcroce_dev *dev)
 	/*对Phd的发送描述符进行初始化*/
 	void __iomem *base_addr;
 	base_addr = dev->devinfo->base_addr;
+	struct xlgmac_channel *channel = dev->devinfo->channel_head;
+	u32 addr_h = 0;
+	u32 addr_l = 0;
+	addr_h = readl(XLGMAC_DMA_REG(channel, DMA_CH_TDLR_HI));
+	addr_l = readl(XLGMAC_DMA_REG(channel, DMA_CH_TDLR_LO))
+	printk("addr_h = %x, addr_l = %x \n",addr_h, addr_l);//added by hs for info
+#if 0 // added by hs for debugging
 	/*tx_desc_tail_lptr_addr start*/
 	writel(PHD_BASE_0 + PHDTXDESCTAILPTR_H, base_addr + MPB_WRITE_ADDR);
 	writel(0x0, base_addr + MPB_RW_DATA);
@@ -318,7 +325,7 @@ static int phd_txdesc_init(struct dwcroce_dev *dev)
 	writel(PHD_BASE_1 + PHDNORMAL_TDES3, base_addr + MPB_WRITE_ADDR);
 	writel(0x0, base_addr + MPB_RW_DATA);
 	/*end*/
-	
+#endif
 	return 0;
 
 }
@@ -330,6 +337,7 @@ static int dwcroce_init_phd(struct dwcroce_dev *dev)
 	status = phd_txdesc_init(dev);
 	if (status)
 		goto phdtxrxdesc_err;
+#if 0
 	status = phd_rxdesc_init(dev);
 	if (status)
 		goto phdtxrxdesc_err;
@@ -345,6 +353,7 @@ static int dwcroce_init_phd(struct dwcroce_dev *dev)
 	status = phd_udp_init(dev);
 	if (status)
 		goto udperr;
+#endif
 	return 0;
 udperr:
 	printk("err: udperr\n");
@@ -352,6 +361,7 @@ iperr:
 	printk("err: iperr\n");
 mac_err:
 	printk("err: macerr\n");
+
 phdtxrxdesc_err:
 	printk("err: phd txrxdescerr!\n");//added by hs for info
 	return status;

@@ -23,6 +23,7 @@ struct dwc_dev_info {
        // u8 mac_addr[ETH_ALEN];
         struct device *dev;
         struct net_device *netdev;
+		struct xlgmac_channel *channel_head;
 		/*mac registers base addr*/
 		void __iomem *mac_base;
 		void __iomem *base_addr;

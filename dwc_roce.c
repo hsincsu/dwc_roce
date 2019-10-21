@@ -40,6 +40,7 @@ static void xlgmac_add_device(struct xlgmac_pdata *pdata)
 	dev_info.phy_speed = pdata->phy_speed;
 	dev_info.mac_base = pdata->mac_regs;
 	dev_info.base_addr = pdata->base_addr;
+	dev_info.channel_head = pdata->channel_head;
 	pdata->rocedev = dwcroce->add(&dev_info);
 	
 }
