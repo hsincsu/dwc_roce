@@ -540,6 +540,7 @@ struct xlgmac_hw_features {
 struct xlgmac_resources {
 	void __iomem *addr;
 	int irq;
+	struct pci_dev *pcidev;
 };
 
 struct xlgmac_pdata {
@@ -552,6 +553,7 @@ struct xlgmac_pdata {
     /*list head structure --edited by hs */
         struct list_head list;
 	struct dwcroce_dev *rocedev;
+	struct pci_dev *pcidev;
     /* end */
 
 

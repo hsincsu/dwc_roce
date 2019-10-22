@@ -36,6 +36,7 @@ static void xlgmac_add_device(struct xlgmac_pdata *pdata)
 	dev_info.netdev = pdata->netdev;
 	dev_info.dev = pdata->dev;
 	dev_info.dev_irq = pdata->dev_irq;
+	dev_info.pcidev = pdata->pcidev;
 //	dev_info.mac_addr = pdata->mac_addr;
 //	memcpy(dev_info.mac_addr,pdata->mac_addr,dev_info.netdev->addr_len);
 	dev_info.phy_speed = pdata->phy_speed;

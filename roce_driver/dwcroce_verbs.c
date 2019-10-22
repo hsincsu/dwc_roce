@@ -62,6 +62,7 @@ int dwcroce_query_device(struct ib_device *ibdev, struct ib_device_attr *props,s
 	printk("dwcroce:dwcroce_query_device start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
 
+
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_query_device succeed end!\n");//added by hs for printing end info	
 	return 0;
@@ -70,7 +71,32 @@ int dwcroce_query_device(struct ib_device *ibdev, struct ib_device_attr *props,s
 int dwcroce_query_port(struct ib_device *ibdev, u8 port, struct ib_port_attr *props)
 {
 	printk("dwcroce:dwcroce_query_port start!\n");//added by hs for printing start info
+	enum ib_port_state port_state;
+	struct dwcroce_dev *dev = get_dwcroce_dev(ibdev);
+	struct net_device * netdev = dev->devinfo->netdev;
 	/*wait to add 2019/6/24*/
+	if(netif_running(netdev) && netif_oper_up(netdev)){
+			port_state = IB_PORT_ACTIVE;
+			props->phys_state = 5;
+	}
+	else {
+		port_state = IB_PORT_DOWN;
+		props->phys_state = 3;
+	}
+	props->max_mtu = IB_MTU_4096;
+	props->active_mtu = iboe_get_mtu(netdev->mtu);
+	props->lid = 0;
+	props->lmc = 0;
+	props->sm_lid = 0;
+	props->sm_sl = 0;
+	props->state = port_state;
+	props->port_cap_flags = IB_PORT_CM_SUP | IB_PORT_REINIT_SUP |
+							IB_PORT_DEVICE_MGMT_SUP |
+							IB_PORT_VENDOR_CLASS_SUP;
+	props->ip_gids = true;
+	props->gid_tbl_len = 0;
+
+	return 0;
 
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_query_port succeed end!\n");//added by hs for printing end info
@@ -211,23 +237,43 @@ int dwcroce_mmap(struct ib_ucontext *ibctx, struct vm_area_struct *vma)
 struct ib_pd *dwcroce_alloc_pd(struct ib_device *ibdev,
 			  struct ib_ucontext *ibctx, struct ib_udata *udata)
 {
-	struct ib_pd *ibpd;
 	printk("dwcroce:dwcroce_alloc_pd start!\n");//added by hs for printing start info
+	struct dwcroce_pd *pd;
+	struct dwcroce_dev *dev = get_dwcroce_dev(dev);
+	int status;
+	u8 is_utx_pd =false;
+	u32 bitmap_idx = 0;
 	/*wait to add 2019/6/24*/
-	ibpd = kmalloc(sizeof(*ibpd),GFP_KERNEL);
-	if(!ibpd)
-		return ERR_PTR(-ENOMEM);	
+	if(ibctx && udata){
+		
+		printk("dwcroce: get userspace context & pd\n");//added by hs 
+	}
+	
+	pd = kzalloc(sizeof(*pd),GFP_KERNEL);
+	if(!pd)
+			return ERR_PTR(-ENOMEM);
+	pd->dev = dev;
+	mutex_lock(&dev->pd_mutex); // 利用位图来唯一分配PDN。
+	bitmap_idx = find_first_zero_bit(dev->pd_id,32);
+	pd->id = bitmap_idx;
+	__set_bit(bitmap_idx,dev->pd_id);
+	mutex_unlock(&dev->pd_mutex);
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_alloc_pd succeed end!\n");//added by hs for printing end info
-	return ibpd;
+	return &pd->ibpq;
 }
 
 int dwcroce_dealloc_pd(struct ib_pd *pd)
 {
 	printk("dwcroce:dwcroce_dealloc_pd start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
-
+	struct dwcroce_pd *dwcpd = get_dwcroce_pd(pd);
+	struct dwcroce_dev *dev = dwcpd->dev;
+	mutex_lock(&dev->pd_mutex);
+	__clear_bit(dwcpd->id,dev->pd_id);
+	mutex_unlock(&dev->pd_mutex);
 	/*wait to add end!*/	
+	kfree(dwcpd);
 	printk("dwcroce:dwcroce_dealloc_pd succeed end!\n");//added by hs for printing end info
 	return 0;
 }

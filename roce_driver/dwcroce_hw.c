@@ -17,6 +17,14 @@
 #include "dwcroce_ah.h"
 #include "dwcroce_verbs.h"
 
+static int phd_start(struct dwcroce_dev *dev)
+{
+	void __iomem* base_addr;
+	base_addr = dev->devinfo->base_addr;
+	writel(PHD_BASE_0 + PHDSTART, base_addr + MPB_WRITE_ADDR);
+	writel(0x1, base_addr + MPB_RW_DATA);
+}
+
 static int phd_udp_init(struct dwcroce_dev *dev)
 {
 	void __iomem* base_addr;
@@ -175,6 +183,7 @@ static int phd_mac_init(struct dwcroce_dev *dev)
 	u8 *addr;
 	addr = dev->devinfo->netdev->dev_addr;	
 	printk("mac addr is %x\n",addr[5]);//added by hs for info
+
 /*  added by hs, these code is to read mac reg to get mac address
 	unsigned int addh = 0;
 	unsigned int addl = 0;
@@ -422,6 +431,9 @@ static int dwcroce_init_phd(struct dwcroce_dev *dev)
 	if (status)
 		goto udperr;
 #endif
+	status = phd_start(dev);
+	if (status)
+		goto udperr;
 	return 0;
 udperr:
 	printk("err: udperr\n");
@@ -437,8 +449,7 @@ phdtxrxdesc_err:
 
 static int dwcroce_init_cm(struct dwcroce_dev *dev)
 {
-	
-	
+	printk("cm is no need to init?!\n");//added by hs 
 	return 0;
 }
 

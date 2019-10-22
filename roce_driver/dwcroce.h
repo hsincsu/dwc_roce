@@ -28,9 +28,26 @@
 struct dwcroce_dev{
 	struct ib_device ibdev;
 	struct dwc_dev_info *devinfo;
+	unsigned long *pd_id; // for allocate an unique id to each pd.
+	struct mutex pd_mutex;
 	//not finished ,added later.
 };
 
+struct dwcroce_pd {
+	struct ib_pd ibpd;
+	struct dwcroce_dev *dev;
+	u32 id;
+
+};
+static inline struct dwcroce_dev *get_dwcroce_dev(struct ib_device ib_device *ibdev)
+{
+	return container_of(ibdev, struct dwcroce_dev, ibdev);
+}
+
+static inline struct dwcroce_pd *get_dwcroce_pd(struct ib_pd *ibpd)
+{
+	return container_of(ibpd, struct dwcroce_pd, ibpd);
+}
 
 
 

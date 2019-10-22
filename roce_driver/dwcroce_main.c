@@ -111,20 +111,54 @@ static int dwcroce_register_ibdev(struct dwcroce_dev *dev)
 {
 	printk("dwcroce:dwcroce_register_ibdev start \n");//added by hs for info
 #if HSDEBUG //added by hs for debug
-	strlcpy(dev->ibdev.name, "dwcroce%d", IB_DEVICE_NAME_MAX);
+	//strlcpy(dev->ibdev.name, "dwcroce%d", IB_DEVICE_NAME_MAX);
 	printk("dwcroce:ibdev.name = %s",dev->ibdev.name);//added by hs for name info
 	dev->ibdev.owner = THIS_MODULE;	
+	dev->ibdev.uverbs_abi_ver = 2;//temple value.added by hs
 	//added later.now have no this information.
 	dev->ibdev.node_type = RDMA_NODE_IB_CA;
 	dev->ibdev.phys_port_cnt = 1;//not finished ,add later! hs 2019/6/22
+	dev->ibdev.uverbs_cmd_mask = 
+		(1ull << IB_USER_VERBS_CMD_GET_CONTEXT)			|
+		(1ull << IB_USER_VERBS_CMD_QUERY_DEVICE)		|
+		(1ull << IB_USER_VERBS_CMD_QUERY_PORT)			|
+		(1ull << IB_USER_VERBS_CMD_ALLOC_PD)			|
+		(1ull << IB_USER_VERBS_CMD_DEALLOC_PD)			|
+		(1ull << IB_USER_VERBS_CMD_CREATE_AH)			|
+		(1ull << IB_USER_VERBS_CMD_DESTROY_AH)			|
+		(1ull << IB_USER_VERBS_CMD_REG_MR)				|
+		(1ull << IB_USER_VERBS_CMD_REREG_MR)			|
+		(1ull << IB_USER_VERBS_CMD_DEREG_MR)			|
+		(1ull << IB_USER_VERBS_CMD_CREATE_COMP_CHANNEL) |
+		(1ull << IB_USER_VERBS_CMD_CREATE_CQ)			|
+		(1ull << IB_USER_VERBS_CMD_RESIZE_CQ)			|
+		(1ull << IB_USER_VERBS_CMD_DESTROY_CQ)			|
+		(1ull << IB_USER_VERBS_CMD_CREATE_QP)			|
+		(1ull << IB_USER_VERBS_CMD_MODIFY_QP)			|
+		(1ull << IB_USER_VERBS_CMD_QUERY_QP)			|
+		(1ull << IB_USER_VERBS_CMD_DESTROY_QP)			|
+		(1ull << IB_USER_VERBS_CMD_ATTACH_MCAST)		|
+		(1ull << IB_USER_VERBS_CMD_DETACH_MCAST)		|
+		(1ull << IB_USER_VERBS_CMD_CREATE_SRQ)			|
+		(1ull << IB_USER_VERBS_CMD_MODIFY_SRQ)			|
+		(1ull << IB_USER_VERBS_CMD_QUERY_SRQ)			|
+		(1ull << IB_USER_VERBS_CMD_DESTROY_SRQ)			|
+		(1ull << IB_USER_VERBS_CMD_CREATE_XSRQ)			|
+		(1ull << IB_USER_VERBS_CMD_OPEN_QP);
 
 	/*mandatory verbs. */
 	ib_set_device_ops(&dev->ibdev, &dwcroce_dev_ops);
-	dev->ibdev.dev.parent = NULL;
+	dev->ibdev.dev.parent = dev->devinfo->dev;
 	dev->ibdev.driver_id = RDMA_DRIVER_UNKNOWN;
 #endif
 	printk("dwcroce:dwcroce_register_ibdev succeed end\n");//added by hs for info
 	//return ib_register_device(&dev->ibdev,"dwcroce%d", NULL);//wait a moment
+	return 0;
+}
+
+static int dwcroce_alloc_resource(struct dwcroce_dev *dev)
+{
+	printk("dwcroce: dwcroce_alloc_resource start\n");//added by hs
 	return 0;
 }
 
@@ -142,13 +176,16 @@ static struct dwcroce_dev *dwc_add(struct dwc_dev_info *dev_info)
 	}	
 	dev->devinfo = dev_info;
 	printk("dwcroce:get the mac address is:%x,base addr is %x\n", dev_info->mac_base,dev_info->base_addr);
-
+	mutex_init(&dev->pd_mutex);
 	status = dwcroce_init_hw(dev);// init hw
 	if (status)
 		goto err_inithw;
 	status = dwcroce_get_hwinfo(dev);//read hw
 	if (status)
 		goto err_getinfo;
+	status = dwcroce_alloc_resource(dev);//alloc some resources
+	if (status)
+		goto err_alloc;
 	status = dwcroce_register_ibdev(dev);//register ib_device
 	if (status)
 		goto alloc_err;
@@ -156,6 +193,8 @@ static struct dwcroce_dev *dwc_add(struct dwc_dev_info *dev_info)
 #endif
 	printk("dwcroce:dwc_add succeed end\n");//added by hs for printing info
 	return dev;//turn back the ib dev
+err_alloc:
+	printk("alloc failed\n");//added by hs for info
 alloc_err:
 	ib_dealloc_device(&dev->ibdev);
 	printk("dwcroce:error!alloc_err as dwcroce_register_ibdev failed\n");//added by hs for info

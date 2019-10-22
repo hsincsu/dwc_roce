@@ -24,6 +24,7 @@ struct dwc_dev_info {
         struct device *dev;
         struct net_device *netdev;
 		struct xlgmac_channel *channel_head;
+		struct pci_dev *pcidev;
 		/*mac registers base addr*/
 		void __iomem *mac_base;
 		void __iomem *base_addr;
