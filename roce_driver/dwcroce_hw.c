@@ -172,11 +172,22 @@ static int phd_mac_init(struct dwcroce_dev *dev)
 {
 	void __iomem *base_addr;
 	base_addr = dev->devinfo->base_addr;
-	u64 macaddr;
-	macaddr = dev->devinfo->mac_addr;
-	printk("mac addr is %0lx\n",macaddr&0xffffffffffff);//added by hs for info
-	u32 macaddr_l = macaddr &0xffffffff;
-	u16 macaddr_h = macaddr >>32;
+	u8 *addr;
+	addr = dev->devinfo->netdev->dev_addr;	
+	printk("mac addr is %x\n",addr[5]);//added by hs for info
+/*  added by hs, these code is to read mac reg to get mac address
+	unsigned int addh = 0;
+	unsigned int addl = 0;
+	addh = readl(dev->devinfo->mac_base + MAC_MACA0HR);
+	addl = readl(dev->devinfo->mac_base + MAC_MACA0LR);
+	printk("addh is %x, addl is %x \n",addh,addl);//added by hs 
+*/
+	int i =0;
+	unsigned int macaddr_l =0;
+	unsigned int  macaddr_h = 0;
+	macaddr_h = (addr[5]<<8)|(addr[4]<<0);
+	macaddr_l = (addr[3]<<24)|(addr[2]<<16)|(addr[1]<<8)|(addr[0]<<0);
+	
 	/*mac source addr  */
 	writel(PHD_BASE_0 + PHDMACSOURCEADDR_H, base_addr + MPB_WRITE_ADDR);
 	writel(macaddr_h, base_addr + MPB_RW_DATA);

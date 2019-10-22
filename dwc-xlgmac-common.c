@@ -79,7 +79,7 @@ static int xlgmac_init(struct xlgmac_pdata *pdata)
 	netdev->base_addr = (unsigned long)pdata->mac_regs;
 	xlgmac_read_mac_addr(pdata);
 	memcpy(netdev->dev_addr, pdata->mac_addr, netdev->addr_len);
-
+	printk("mac addr:%lx",pdata->mac_addr[5]);//added by hs
 	/* Set all the function pointers */
 	xlgmac_init_all_ops(pdata);
 
