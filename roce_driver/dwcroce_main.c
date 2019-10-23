@@ -54,6 +54,39 @@ static int dwcroce_port_immutable(struct ib_device *ibdev, u8 port_num,
 	printk("dwcroce:dwcroce_port_immutable end\n");//added by hs for end info
 	return 0;
 }
+
+/*dev_attr_hw_rev 's show function*/
+static ssize_t hw_rev_show(struct device* device, struct device_attribute* attr, char* buf)
+{
+	struct ocrdma_dev *dev = container_of(device, struct dwcroce_dev, ibdev.dev);
+	
+	return scnprintf(buf,PAGE_SIZE,"0x%x\n",dev->devinfo->pcidev->vendor);
+
+}
+static DEVICE_ATTR_RO(hw_rev);
+
+/*dev_attr_hca_type 's show function*/
+static ssize_t hca_type_show(struct device *device, struct device_attribute *attr, char *buf)
+{
+	struct  dwcroce_dev *dev = container_of(device, struct dwcroce_dev, ibdev.dev);
+	
+	return sprintf(buf, "MT%d\n",dev->devinfo->dev);
+}
+static DEVICE_ATTR_RO(hca_type);
+
+/*attribute file*/
+static struct attribute *dwcroce_attributes[] = {
+	&dev_attr_hw_rev.attr,
+	&dev_attr_hca_type.attr,
+	NULL
+
+};
+
+/*attribute group*/
+static const struct attribute_group dwcroce_attr_group = {
+	.attrs = dwcroce_attributes,
+};
+
 /*ib_device_ops definition for roce*/
 const struct ib_device_ops dwcroce_dev_ops = {
 	.query_device = dwcroce_query_device,
@@ -102,7 +135,19 @@ const struct ib_device_ops dwcroce_dev_ops = {
 	.get_port_immutable = dwcroce_port_immutable,
 };
 
-
+void dwcroce_get_guid(struct dwcroce_dev *dev, u8 *guid)
+{
+	u8 *addr;
+	addr = dev->devinfo->mac_addr;
+	guid[0] = addr[0]^2;
+	guid[1] = addr[1];
+	guid[2] = addr[2];
+	guid[3] = 0xff;
+	guid[4] = 0xfe;
+	guid[5] = addr[3];
+	guid[6] = addr[4];
+	guid[7] = addr[5];
+}
 /*
  *dwcroce_register_ibdev.To register the ibdev to kernel.must exec it before unregister_ibdev.
  *@struct dwcroce_dev  *dev. the struct describe the ibdev attribute.
@@ -113,6 +158,8 @@ static int dwcroce_register_ibdev(struct dwcroce_dev *dev)
 #if HSDEBUG //added by hs for debug
 	//strlcpy(dev->ibdev.name, "dwcroce%d", IB_DEVICE_NAME_MAX);
 	printk("dwcroce:ibdev.name = %s",dev->ibdev.name);//added by hs for name info
+	dwcroce_get_guid(dev,(u8 *)&dev->ibdev.node_guid);
+	printk("dwcroce: node_guid is %0lx\n",dev->ibdev.node_guid);//added by hs
 	dev->ibdev.owner = THIS_MODULE;	
 	dev->ibdev.uverbs_abi_ver = 2;//temple value.added by hs
 	//added later.now have no this information.
@@ -149,6 +196,9 @@ static int dwcroce_register_ibdev(struct dwcroce_dev *dev)
 	/*mandatory verbs. */
 	ib_set_device_ops(&dev->ibdev, &dwcroce_dev_ops);
 	dev->ibdev.dev.parent = dev->devinfo->dev;
+	/*create device attr file*/
+	rdma_set_device_sysfs_group(&dev->ibdev,&dwcroce_attr_group);
+	/*end*/
 	dev->ibdev.driver_id = RDMA_DRIVER_UNKNOWN;
 #endif
 	printk("dwcroce:dwcroce_register_ibdev succeed end\n");//added by hs for info

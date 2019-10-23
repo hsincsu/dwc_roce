@@ -93,11 +93,17 @@ int dwcroce_query_port(struct ib_device *ibdev, u8 port, struct ib_port_attr *pr
 	props->port_cap_flags = IB_PORT_CM_SUP | IB_PORT_REINIT_SUP |
 							IB_PORT_DEVICE_MGMT_SUP |
 							IB_PORT_VENDOR_CLASS_SUP;
+	/* not sure,need verified!*/
 	props->ip_gids = true;
 	props->gid_tbl_len = 0;
-
-	return 0;
-
+	props->pkey_tbl_len = 1;
+	props->bad_pkey_cntr = 0;
+	props->qkey_viol_cntr = 0;
+	props->active_speed = 0;
+	props->active_width = 0;
+	props->max_msg_sz = 0x80000000;
+	props->max_vl_num = 4;
+	/*end */
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_query_port succeed end!\n");//added by hs for printing end info
 	return 0;
