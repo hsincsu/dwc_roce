@@ -287,11 +287,11 @@ struct ib_pd *dwcroce_alloc_pd(struct ib_device *ibdev,
 	if(!pd)
 			return ERR_PTR(-ENOMEM);
 	pd->dev = dev;
-	mutex_lock(&dev->pd_mutex); // 利用位图来唯一分配PDN。
-	bitmap_idx = find_first_zero_bit(dev->pd_id,32);
-	pd->id = bitmap_idx;
-	__set_bit(bitmap_idx,dev->pd_id);
-	mutex_unlock(&dev->pd_mutex);
+//	mutex_lock(&dev->pd_mutex); // 利用位图来唯一分配PDN。
+//	bitmap_idx = find_first_zero_bit(dev->pd_id,32);
+//	pd->id = bitmap_idx;
+//	__set_bit(bitmap_idx,dev->pd_id);
+//	mutex_unlock(&dev->pd_mutex);
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_alloc_pd succeed end!\n");//added by hs for printing end info
 	return &pd->ibpd;
@@ -303,9 +303,9 @@ int dwcroce_dealloc_pd(struct ib_pd *pd)
 	/*wait to add 2019/6/24*/
 	struct dwcroce_pd *dwcpd = get_dwcroce_pd(pd);
 	struct dwcroce_dev *dev = dwcpd->dev;
-	mutex_lock(&dev->pd_mutex);
-	__clear_bit(dwcpd->id,dev->pd_id);
-	mutex_unlock(&dev->pd_mutex);
+//	mutex_lock(&dev->pd_mutex);
+//	__clear_bit(dwcpd->id,dev->pd_id);
+//	mutex_unlock(&dev->pd_mutex);
 	/*wait to add end!*/	
 	kfree(dwcpd);
 	printk("dwcroce:dwcroce_dealloc_pd succeed end!\n");//added by hs for printing end info

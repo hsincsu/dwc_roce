@@ -24,6 +24,7 @@
 #include "dwcroce_verbs.h"
 #include "dwcroce_ah.h"
 #include "dwcroce_hw.h"
+#include <rdma/ocrdma-abi.h>
 #define HSDEBUG 1
 
 MODULE_VERSION(DWCROCEDRV_VER);
@@ -54,9 +55,9 @@ static int dwcroce_port_immutable(struct ib_device *ibdev, u8 port_num,
 	int err;
 
 	dev = get_dwcroce_dev(ibdev);
-	immutable->core_cap_flags = RDMA_CORE_IBA_ROCE;
+	immutable->core_cap_flags = RDMA_CORE_PORT_IBA_ROCE;
 	/*support udp encap ?*/
-	immutable->core_cap_flags |= RDMA_CORE_CAP_PORT_ROCE_UDP_ENCAP;
+	immutable->core_cap_flags |= RDMA_CORE_CAP_PROT_ROCE_UDP_ENCAP;
 	err = ib_query_port(ibdev,port_num, &attr);
 	if(err)
 			return err;
@@ -159,7 +160,7 @@ static int dwcroce_register_ibdev(struct dwcroce_dev *dev)
 	printk("dwcroce:dwcroce_register_ibdev start \n");//added by hs for info
 #if HSDEBUG //added by hs for debug
 	//strlcpy(dev->ibdev.name, "dwcroce%d", IB_DEVICE_NAME_MAX);
-	printk("dwcroce:ibdev.name = %s",dev->ibdev.name);//added by hs for name info
+//	printk("dwcroce:ibdev.name = %s",dev->ibdev.name);//added by hs for name info
 	dwcroce_get_guid(dev,(u8 *)&dev->ibdev.node_guid);
 	printk("dwcroce: node_guid is %0lx\n",dev->ibdev.node_guid);//added by hs
 	dev->ibdev.owner = THIS_MODULE;	
@@ -204,14 +205,39 @@ static int dwcroce_register_ibdev(struct dwcroce_dev *dev)
 	dev->ibdev.driver_id = RDMA_DRIVER_UNKNOWN;
 #endif
 	printk("dwcroce:dwcroce_register_ibdev succeed end\n");//added by hs for info
-	//return ib_register_device(&dev->ibdev,"dwcroce%d", NULL);//wait a moment
-	return 0;
+	return ib_register_device(&dev->ibdev,"dwcroce%d", NULL);//wait a moment
+//	return 0;
 }
 
 static int dwcroce_alloc_resource(struct dwcroce_dev *dev)
 {
 	printk("dwcroce: dwcroce_alloc_resource start\n");//added by hs
 	return 0;
+}
+
+static int dwcroce_alloc_hw_resources(struct dwcroce_dev *dev)
+{
+	printk("dwcroce:-----------------------test start------------------------\n");//added by hs 
+	printk("dwcroce:test ib_alloc_pd:\n");//added by hs 
+	struct ib_cq_init_attr cq_attr = {.cqe = 1};
+	struct ib_pd *ibpd = ib_alloc_pd(&dev->ibdev,NULL);
+	if(!ibpd)
+		goto err_pd;
+	printk("dwcroce:ib_alloc_pd succeed!\n");//added by hs
+	struct ib_cq *ibcq = ib_create_cq(&dev->ibdev,NULL,NULL,NULL,&cq_attr);
+	if(!ibcq)
+		goto err_cq;
+	printk("dwcroce: ib_alloc_pd succeed! \n");//added by hs
+	printk("dwcroce:------------------------test end --------------------\n");//added by hs 
+	
+	ib_dealloc_pd(ibpd);
+	ib_destroy_cq(ibcq);
+	return 0;
+err_cq:
+	printk("create_cq");//added by hs 
+err_pd:
+	printk("alloc_pd failed\n");//added by hs 
+	return ERR_PTR(-ENOMEM);	
 }
 
 static struct dwcroce_dev *dwc_add(struct dwc_dev_info *dev_info)
@@ -244,7 +270,14 @@ static struct dwcroce_dev *dwc_add(struct dwc_dev_info *dev_info)
 
 #endif
 	printk("dwcroce:dwc_add succeed end\n");//added by hs for printing info
+
+	/*test ibdev*/
+	status = dwcroce_alloc_hw_resources(dev);
+	if (status)
+		goto alloc_hwres;
 	return dev;//turn back the ib dev
+alloc_hwres:
+	printk("alloc hw res failed\n");//added by hs for info
 err_alloc:
 	printk("alloc failed\n");//added by hs for info
 alloc_err:
@@ -260,8 +293,9 @@ err_inithw:
 static void dwc_remove(struct dwcroce_dev *dev)
 {
 	printk("dwcrove:dwc_remove start\n");//added by hs for printing dwc_remove info
-	//ib_unregister_device(&dev->ibdev);
+	ib_unregister_device(&dev->ibdev);
 	ib_dealloc_device(&dev->ibdev);
+	
 	printk("dwcroce:dwc_remove succeed end \n");//added by hs for printing dwc_remove info
 }
 
