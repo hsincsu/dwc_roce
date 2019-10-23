@@ -39,7 +39,7 @@ struct dwcroce_pd {
 	u32 id;
 
 };
-static inline struct dwcroce_dev *get_dwcroce_dev(struct ib_device ib_device *ibdev)
+static inline struct dwcroce_dev *get_dwcroce_dev(struct ib_device *ibdev)
 {
 	return container_of(ibdev, struct dwcroce_dev, ibdev);
 }

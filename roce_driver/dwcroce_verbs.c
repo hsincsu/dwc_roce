@@ -136,7 +136,16 @@ void dwcroce_get_guid(struct dwcroce_dev *dev, u8 *guid)
 {
 	printk("dwcroce:dwcroce_get_guid start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
-
+        u8 *addr;
+        addr = dev->devinfo->netdev->dev_addr;
+        guid[0] = addr[0]^2;
+        guid[1] = addr[1];
+        guid[2] = addr[2];
+        guid[3] = 0xff;
+        guid[4] = 0xfe;
+        guid[5] = addr[3];
+        guid[6] = addr[4];
+        guid[7] = addr[5];
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_get_guid succeed end!\n");//added by hs for printing end info
 }
@@ -266,7 +275,7 @@ struct ib_pd *dwcroce_alloc_pd(struct ib_device *ibdev,
 	mutex_unlock(&dev->pd_mutex);
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_alloc_pd succeed end!\n");//added by hs for printing end info
-	return &pd->ibpq;
+	return &pd->ibpd;
 }
 
 int dwcroce_dealloc_pd(struct ib_pd *pd)

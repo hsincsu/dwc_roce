@@ -58,7 +58,7 @@ static int dwcroce_port_immutable(struct ib_device *ibdev, u8 port_num,
 /*dev_attr_hw_rev 's show function*/
 static ssize_t hw_rev_show(struct device* device, struct device_attribute* attr, char* buf)
 {
-	struct ocrdma_dev *dev = container_of(device, struct dwcroce_dev, ibdev.dev);
+	struct dwcroce_dev *dev = container_of(device, struct dwcroce_dev, ibdev.dev);
 	
 	return scnprintf(buf,PAGE_SIZE,"0x%x\n",dev->devinfo->pcidev->vendor);
 
@@ -135,19 +135,6 @@ const struct ib_device_ops dwcroce_dev_ops = {
 	.get_port_immutable = dwcroce_port_immutable,
 };
 
-void dwcroce_get_guid(struct dwcroce_dev *dev, u8 *guid)
-{
-	u8 *addr;
-	addr = dev->devinfo->mac_addr;
-	guid[0] = addr[0]^2;
-	guid[1] = addr[1];
-	guid[2] = addr[2];
-	guid[3] = 0xff;
-	guid[4] = 0xfe;
-	guid[5] = addr[3];
-	guid[6] = addr[4];
-	guid[7] = addr[5];
-}
 /*
  *dwcroce_register_ibdev.To register the ibdev to kernel.must exec it before unregister_ibdev.
  *@struct dwcroce_dev  *dev. the struct describe the ibdev attribute.
