@@ -39,6 +39,23 @@ struct dwcroce_pd {
 	u32 id;
 
 };
+
+struct dwcroce_cq {
+	struct ib_cq ibcq;
+	struct dwcroce_dev *dev;
+
+};
+
+struct dwcroce_mr {
+	struct ib_mr ibmr;
+	struct dwcroce_dev *dev;
+
+};
+
+struct dwcroce_qp {
+	struct ib_qp ibqp;
+	struct dwcroce_dev *dev;
+};
 static inline struct dwcroce_dev *get_dwcroce_dev(struct ib_device *ibdev)
 {
 	return container_of(ibdev, struct dwcroce_dev, ibdev);
@@ -49,8 +66,20 @@ static inline struct dwcroce_pd *get_dwcroce_pd(struct ib_pd *ibpd)
 	return container_of(ibpd, struct dwcroce_pd, ibpd);
 }
 
+static inline struct dwcroce_cq *get_dwcroce_cq(struct ib_cq *ibcq)
+{
+	return container_of(ibcq, struct dwcroce_cq, ibcq);
+}
 
+static inline struct dwcroce_mr *get_dwcroce_mr(struct ib_mr *ibmr)
+{
+	return container_of(ibmr, struct dwcroce_mr, ibmr);
+}
 
+static inline struct dwcroce_qp *get_dwcroce_qp(struct ib_qp *ibqp)
+{
+	return container_of(ibqp,struct dwcroce_qp, ibqp);
+}
 
 
 #endif

@@ -21,6 +21,12 @@ int dwcroce_post_send(struct ib_qp *ibqp,const struct ib_send_wr *wr,const struc
 {
 	printk("dwcroce:dwcroce_post_send start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
+	struct dwcroce_qp *qp;
+	struct dwcroce_dev *dev;
+
+	qp = get_dwcroce_qp(ibqp);
+	dev = qp->dev;
+
 
 	/*wait to add end!*/
 	printk("dwcroce:dwcroce_post_send succeed end!\n");//added by hs for printing end info
@@ -31,7 +37,11 @@ int dwcroce_post_recv(struct ib_qp *ibqp,const struct ib_recv_wr *wr,const struc
 {
 	printk("dwcroce:dwcroce_post_recv start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
+	struct dwcroce_qp *qp;
+	struct dwcroce_dev *dev;
 
+	qp = get_dwcroce_qp(ibqp);
+	dev = qp->dev;
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_post_recv succeed end!\n");//added by hs for printing end info
 	return 0;
@@ -170,10 +180,19 @@ struct net_device *dwcroce_get_netdev(struct ib_device *device, u8 port_num)
 {
 	printk("dwcroce:dwcroce_get_netdev start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
-
+	struct dwcroce_dev *dev;
+	struct net_device * ndev;
+	/*rcu make sure that the shared file is safe*/
+	rcu_read_lock();
+	dev = get_dwcroce_dev(device);
+	if(dev)
+	ndev = dev->devinfo->netdev;
+	if(ndev)
+		dev_hold(ndev);
+	rcu_read_unlock();
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_get_netdev succeed end!\n");//added by hs for printing end info
-	return NULL;
+	return ndev;
 }
 
 int dwcroce_add_gid(const struct ib_gid_attr *attr,
@@ -300,10 +319,17 @@ struct ib_cq *dwcroce_create_cq(struct ib_device *ibdev,
 {
 	printk("dwcroce:dwcroce_create_cq start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
-
+	struct dwcroce_dev *dev;
+	struct dwcroce_cq *cq;
+	
+	dev = get_dwcroce_dev(ibdev);
+	cq = kzalloc(sizeof(*cq),GFP_KERNEL);
+	if(!cq)
+		return ERR_PTR(-ENOMEM);
+	cq->dev = dev;
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_create_cq succeed end!\n");//added by hs for printing end info
-	return NULL;
+	return &cq->ibcq;
 }
 
 int dwcroce_resize_cq(struct ib_cq *ibcq, int cqe, struct ib_udata *udata)
@@ -320,7 +346,9 @@ int dwcroce_destroy_cq(struct ib_cq *ibcq)
 {
 	printk("dwcroce:dwcroce_destroy_cq start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
-
+	struct dwcroce_cq *cq;
+	cq = get_dwcroce_cq(ibcq);
+	kfree(cq);
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_destroy_cq succeed end!\n");//added by hs for printing end info
 	return 0;
@@ -332,10 +360,15 @@ struct ib_qp *dwcroce_create_qp(struct ib_pd *ibpd,
 {
 	printk("dwcroce:dwcroce_create_qp start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
+	struct dwcroce_dev *dev;
+	struct dwcroce_qp *qp;
 
+	qp = kzalloc(sizeof(*qp),GFP_KERNEL);
+	
+	qp->dev = dev;
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_create_qp succeed end!\n");//added by hs for printing end info
-	return NULL;
+	return &qp->ibqp;
 }
 
 int _dwcroce_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
@@ -354,6 +387,11 @@ int dwcroce_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 {
 	printk("dwcroce:dwcroce_modify_qp start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
+	struct dwcroce_qp *qp;
+	struct dwcroce_dev *dev;
+
+	qp = get_dwcroce_qp(ibqp);
+	dev = qp->dev;
 
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_modify_qp succeed end!\n");//added by hs for printing end info
@@ -376,7 +414,9 @@ int dwcroce_destroy_qp(struct ib_qp *ibqp)
 {
 	printk("dwcroce:dwcroce_destroy_qp start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
-
+	struct dwcroce_qp *qp;
+	qp = get_dwcroce_qp(ibqp);
+	kfree(qp);
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_destroy_qp succeed end!\n");//added by hs for printing end info
 	return 0;
@@ -439,7 +479,11 @@ int dwcroce_dereg_mr(struct ib_mr *ibmr)
 {
 	printk("dwcroce:dwcroce_dereg_mr start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
+	//struct dwcroce_dev *dev;
+	struct dwcroce_mr *mr;
 
+	mr = get_dwcroce_mr(ibmr);
+	kfree(mr);
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_dereg_mr succeed end!\n");//added by hs for printing end info
 	return 0;
@@ -449,10 +493,16 @@ struct ib_mr *dwcroce_get_dma_mr(struct ib_pd *ibpd, int acc)
 {
 	printk("dwcroce:dwcroce_get_dma_mr start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
+	struct dwcroce_dev *dev;
+	struct dwcroce_mr *mr;
 
-	/*wait to add end!*/	
+	mr = kzalloc(sizeof(*mr),GFP_KERNEL);
+	if(!mr)
+		return ERR_PTR(-ENOMEM);
+	mr->dev =dev;
+	/*wait to add end!*/
 	printk("dwcroce:dwcroce_get_dma_mr succeed end!\n");//added by hs for printing end info
-	return NULL;
+	return &mr->ibmr;
 }
 
 struct ib_mr *dwcroce_reg_user_mr(struct ib_pd *ibpd, u64 start, u64 length,

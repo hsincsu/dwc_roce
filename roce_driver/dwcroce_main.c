@@ -49,6 +49,21 @@ static int dwcroce_port_immutable(struct ib_device *ibdev, u8 port_num,
 {
 	printk("dwcroce:dwcroce_port_immutable start\n");//added by hs for start info
 	/*wait to add*/
+	struct ib_port_attr attr;
+	struct dwcroce_dev *dev;
+	int err;
+
+	dev = get_dwcroce_dev(ibdev);
+	immutable->core_cap_flags = RDMA_CORE_IBA_ROCE;
+	/*support udp encap ?*/
+	immutable->core_cap_flags |= RDMA_CORE_CAP_PORT_ROCE_UDP_ENCAP;
+	err = ib_query_port(ibdev,port_num, &attr);
+	if(err)
+			return err;
+	/*not sure , need verified*/
+	immutable->pkey_tbl_len = attr.pkey_tbl_len;
+	immutable->gid_tbl_len = attr.gid_tbl_len;
+	immutable->max_mad_size = IB_MGMT_MAD_SIZE;
 
 	/*wait to add*/
 	printk("dwcroce:dwcroce_port_immutable end\n");//added by hs for end info
@@ -99,7 +114,7 @@ const struct ib_device_ops dwcroce_dev_ops = {
 	.get_link_layer = dwcroce_get_link_layer,
 	.alloc_pd = dwcroce_alloc_pd,
 	.dealloc_pd = dwcroce_dealloc_pd,
-
+	
 	.create_cq = dwcroce_create_cq,
 	.destroy_cq = dwcroce_destroy_cq,
 	.resize_cq = dwcroce_resize_cq,
