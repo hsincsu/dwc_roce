@@ -35,26 +35,24 @@ struct dwcroce_dev{
 
 struct dwcroce_pd {
 	struct ib_pd ibpd;
-	struct dwcroce_dev *dev;
 	u32 id;
 
 };
 
 struct dwcroce_cq {
 	struct ib_cq ibcq;
-	struct dwcroce_dev *dev;
+
 
 };
 
 struct dwcroce_mr {
 	struct ib_mr ibmr;
-	struct dwcroce_dev *dev;
+	
 
 };
 
 struct dwcroce_qp {
 	struct ib_qp ibqp;
-	struct dwcroce_dev *dev;
 };
 static inline struct dwcroce_dev *get_dwcroce_dev(struct ib_device *ibdev)
 {

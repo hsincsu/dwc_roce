@@ -22,7 +22,7 @@ int dwcroce_post_send(struct ib_qp *ibqp,const struct ib_send_wr *wr,const struc
 	printk("dwcroce:dwcroce_post_send start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
 	struct dwcroce_qp *qp;
-	struct dwcroce_dev *dev;
+	
 
 	qp = get_dwcroce_qp(ibqp);
 	dev = qp->dev;
@@ -38,10 +38,10 @@ int dwcroce_post_recv(struct ib_qp *ibqp,const struct ib_recv_wr *wr,const struc
 	printk("dwcroce:dwcroce_post_recv start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
 	struct dwcroce_qp *qp;
-	struct dwcroce_dev *dev;
+	
 
 	qp = get_dwcroce_qp(ibqp);
-	dev = qp->dev;
+	
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_post_recv succeed end!\n");//added by hs for printing end info
 	return 0;
@@ -292,7 +292,7 @@ struct ib_pd *dwcroce_alloc_pd(struct ib_device *ibdev,
 	pd = kzalloc(sizeof(*pd),GFP_KERNEL);
 	if(!pd)
 			return ERR_PTR(-ENOMEM);
-	pd->dev = dev;
+	
 //	mutex_lock(&dev->pd_mutex); // 利用位图来唯一分配PDN。
 //	bitmap_idx = find_first_zero_bit(dev->pd_id,32);
 //	pd->id = bitmap_idx;
@@ -308,7 +308,7 @@ int dwcroce_dealloc_pd(struct ib_pd *pd)
 	printk("dwcroce:dwcroce_dealloc_pd start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
 	struct dwcroce_pd *dwcpd = get_dwcroce_pd(pd);
-	struct dwcroce_dev *dev = dwcpd->dev;
+	
 //	mutex_lock(&dev->pd_mutex);
 //	__clear_bit(dwcpd->id,dev->pd_id);
 //	mutex_unlock(&dev->pd_mutex);
@@ -325,14 +325,14 @@ struct ib_cq *dwcroce_create_cq(struct ib_device *ibdev,
 {
 	printk("dwcroce:dwcroce_create_cq start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
-	struct dwcroce_dev *dev;
+	
 	struct dwcroce_cq *cq;
 	
 	dev = get_dwcroce_dev(ibdev);
 	cq = kzalloc(sizeof(*cq),GFP_KERNEL);
 	if(!cq)
 		return ERR_PTR(-ENOMEM);
-	cq->dev = dev;
+	
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_create_cq succeed end!\n");//added by hs for printing end info
 	return &cq->ibcq;
@@ -366,12 +366,12 @@ struct ib_qp *dwcroce_create_qp(struct ib_pd *ibpd,
 {
 	printk("dwcroce:dwcroce_create_qp start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
-	struct dwcroce_dev *dev;
+	
 	struct dwcroce_qp *qp;
 
 	qp = kzalloc(sizeof(*qp),GFP_KERNEL);
 	
-	qp->dev = dev;
+	
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_create_qp succeed end!\n");//added by hs for printing end info
 	return &qp->ibqp;
@@ -394,10 +394,10 @@ int dwcroce_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 	printk("dwcroce:dwcroce_modify_qp start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
 	struct dwcroce_qp *qp;
-	struct dwcroce_dev *dev;
+	
 
 	qp = get_dwcroce_qp(ibqp);
-	dev = qp->dev;
+	
 
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_modify_qp succeed end!\n");//added by hs for printing end info
@@ -499,13 +499,13 @@ struct ib_mr *dwcroce_get_dma_mr(struct ib_pd *ibpd, int acc)
 {
 	printk("dwcroce:dwcroce_get_dma_mr start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
-	struct dwcroce_dev *dev;
+	
 	struct dwcroce_mr *mr;
 
 	mr = kzalloc(sizeof(*mr),GFP_KERNEL);
 	if(!mr)
 		return ERR_PTR(-ENOMEM);
-	mr->dev =dev;
+	
 	/*wait to add end!*/
 	printk("dwcroce:dwcroce_get_dma_mr succeed end!\n");//added by hs for printing end info
 	return &mr->ibmr;
