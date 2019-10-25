@@ -82,17 +82,23 @@ int dwcroce_query_port(struct ib_device *ibdev, u8 port, struct ib_port_attr *pr
 {
 	printk("dwcroce:dwcroce_query_port start!\n");//added by hs for printing start info
 	enum ib_port_state port_state;
-	struct dwcroce_dev *dev = get_dwcroce_dev(ibdev);
-	struct net_device * netdev = dev->devinfo->netdev;
+	struct dwcroce_dev *dev;
+	struct net_device *netdev;
 	/*wait to add 2019/6/24*/
+	dev = get_dwcroce_dev(ibdev);
+	netdev = dev->devinfo->netdev;
+	printk("dwcrpce:query_port next is netif_running\n");//added by hs
 	if(netif_running(netdev) && netif_oper_up(netdev)){
+		printk("dwcroce:query_port in active\n");//added by hs 
 			port_state = IB_PORT_ACTIVE;
 			props->phys_state = 5;
 	}
 	else {
+		printk("dwcroce:query_port in down\n");//added by hs 
 		port_state = IB_PORT_DOWN;
 		props->phys_state = 3;
 	}
+	printk("dwcroce:query_port next is lid .. \n");//added by hs 
 	props->max_mtu = IB_MTU_4096;
 	props->active_mtu = iboe_get_mtu(netdev->mtu);
 	props->lid = 0;

@@ -21,6 +21,7 @@ struct dwcroce_dev;
 
 struct dwc_dev_info {
        // u8 mac_addr[ETH_ALEN];
+	struct xlgmac_pdata *pdata;
         struct device *dev;
         struct net_device *netdev;
 		struct xlgmac_channel *channel_head;

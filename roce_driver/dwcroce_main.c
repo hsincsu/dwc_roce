@@ -72,21 +72,34 @@ static int dwcroce_port_immutable(struct ib_device *ibdev, u8 port_num,
 }
 
 /*dev_attr_hw_rev 's show function*/
-static ssize_t hw_rev_show(struct device* device, struct device_attribute* attr, char* buf)
+static ssize_t hw_rev_show(struct device *device, struct device_attribute *attr, char *buf)
 {
-	struct dwcroce_dev *dev = container_of(device, struct dwcroce_dev, ibdev.dev);
-	
-	return scnprintf(buf,PAGE_SIZE,"0x%x\n",dev->devinfo->pcidev->vendor);
-
+	printk("dwcroce: hw_rev_show start\n");//added by hs
+	struct dwcroce_dev *dev;
+	struct xlgmac_pdata *pdata;
+	dev =  container_of(device, struct dwcroce_dev, ibdev.dev);
+	pdata = dev->devinfo->pdata;
+	if(pdata)
+	printk("dwcroce: hw_rev is 0x\n");//added by hs
+	printk("dwcroce: hw_rev_show end\n");//added by hs	
+//	return scnprintf(buf,PAGE_SIZE,"0x%x\n",dev->devinfo->pcidev->vendor);
+	return 0;
 }
 static DEVICE_ATTR_RO(hw_rev);
 
 /*dev_attr_hca_type 's show function*/
 static ssize_t hca_type_show(struct device *device, struct device_attribute *attr, char *buf)
 {
-	struct  dwcroce_dev *dev = container_of(device, struct dwcroce_dev, ibdev.dev);
-	
-	return sprintf(buf, "MT%d\n",dev->devinfo->dev);
+	printk("dwcroce: hca_type_show start \n");//added by hs
+	struct  dwcroce_dev *dev; 
+	struct 	xlgmac_pdata *pdata;
+	dev = container_of(device, struct dwcroce_dev, ibdev.dev);
+ 	pdata = dev->devinfo->pdata;
+	if(pdata)
+	printk("dwcroce: hca_type is DWC\n");//added by hs
+	printk("dwcroce: hca_type_show end \n");//added by hs
+//	return sprintf(buf,"DWC%d\n",dev->devinfo->pcidev->device);
+	return 0;
 }
 static DEVICE_ATTR_RO(hca_type);
 
@@ -198,7 +211,7 @@ static int dwcroce_register_ibdev(struct dwcroce_dev *dev)
 
 	/*mandatory verbs. */
 	ib_set_device_ops(&dev->ibdev, &dwcroce_dev_ops);
-	dev->ibdev.dev.parent = dev->devinfo->dev;
+	dev->ibdev.dev.parent =&dev->devinfo->pcidev->dev;
 	/*create device attr file*/
 	rdma_set_device_sysfs_group(&dev->ibdev,&dwcroce_attr_group);
 	/*end*/
@@ -221,6 +234,7 @@ static int dwcroce_alloc_hw_resources(struct dwcroce_dev *dev)
 	printk("dwcroce:test ib_alloc_pd:\n");//added by hs 
 	struct ib_cq_init_attr cq_attr = {.cqe = 1};
 	struct ib_pd *ibpd = ib_alloc_pd(&dev->ibdev,NULL);
+	struct ib_port_attr attr;
 	if(!ibpd)
 		goto err_pd;
 	printk("dwcroce:ib_alloc_pd succeed!\n");//added by hs
@@ -229,7 +243,8 @@ static int dwcroce_alloc_hw_resources(struct dwcroce_dev *dev)
 		goto err_cq;
 	printk("dwcroce: ib_alloc_pd succeed! \n");//added by hs
 	printk("dwcroce:------------------------test end --------------------\n");//added by hs 
-	
+
+	ib_query_port(&dev->ibdev, 1, &attr);	
 	ib_dealloc_pd(ibpd);
 	ib_destroy_cq(ibcq);
 	return 0;
@@ -253,7 +268,8 @@ static struct dwcroce_dev *dwc_add(struct dwc_dev_info *dev_info)
 		return NULL;
 	}	
 	dev->devinfo = dev_info;
-	printk("dwcroce:get the mac address is:%x,base addr is %x\n", dev_info->mac_base,dev_info->base_addr);
+	printk("dwcroce:get the mac address is:%x,base addr is %x\n", dev->devinfo->mac_base,dev_info->base_addr);
+	printk("dwcroce: get vendor is 0x%x,pci device is DWC%d\n",dev->devinfo->pcidev->vendor,dev->devinfo->pcidev->device);//added by hs
 	mutex_init(&dev->pd_mutex);
 	status = dwcroce_init_hw(dev);// init hw
 	if (status)
@@ -295,7 +311,7 @@ static void dwc_remove(struct dwcroce_dev *dev)
 	printk("dwcrove:dwc_remove start\n");//added by hs for printing dwc_remove info
 	ib_unregister_device(&dev->ibdev);
 	ib_dealloc_device(&dev->ibdev);
-	
+	kfree(dev);	
 	printk("dwcroce:dwc_remove succeed end \n");//added by hs for printing dwc_remove info
 }
 

@@ -249,6 +249,7 @@ int xlgmac_drv_probe(struct device *dev, struct xlgmac_resources *res)
 	pdata->base_addr = res->addr; // get the pcie base addr --edited by hs
 	pdata->mac_regs = res->addr+0XB000000; // for the mac addr --edited by hs
 	pdata->pcidev = res->pcidev;
+	printk("dwc-xlgmac: pci device is DWC%d\n",pdata->pcidev->device);//added by hs 
 
 	mutex_init(&pdata->rss_mutex);
 	pdata->msg_enable = netif_msg_init(debug, default_msg_level);

@@ -33,6 +33,7 @@ static LIST_HEAD(dwcpdata_list);
 static void xlgmac_add_device(struct xlgmac_pdata *pdata)
 {
 	struct dwc_dev_info dev_info;
+	dev_info.pdata = pdata;
 	dev_info.netdev = pdata->netdev;
 	dev_info.dev = pdata->dev;
 	dev_info.dev_irq = pdata->dev_irq;
