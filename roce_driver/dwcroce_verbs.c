@@ -76,7 +76,7 @@ int dwcroce_query_device(struct ib_device *ibdev, struct ib_device_attr *props,s
 	dev = get_dwcroce_dev(ibdev);
 
 	if(uhw->inlen || uhw->outlen)
-		return -ENIVAL;
+		return -EINVAL;
 	memset(props,0,sizeof *props);
 	dwcroce_get_guid(dev,(u8 *)&props->sys_image_guid);
 	props->vendor_id = dev->devinfo.pcidev->vendor;

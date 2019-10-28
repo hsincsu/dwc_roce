@@ -720,9 +720,10 @@ errphd:
 	return status;
 }
 
-int dwcroce_hw_create_cq(struct dwcroce_dev*, struct dwcroce_cq*, int entries, u16 pd_id)
+int dwcroce_hw_create_cq(struct dwcroce_dev *dev, struct dwcroce_cq *cq, int entries, u16 pd_id)
 {
-	printk("dwcroce: dwcroce_hw_create_cq start\n")//added by hs 
+	printk("dwcroce: dwcroce_hw_create_cq start\n");//added by hs 
 	
 	printk("dwcroce: dwcroce_hw_create_cq end\n");//added by hs 
+	return 0;
 }
