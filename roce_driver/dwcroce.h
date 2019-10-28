@@ -41,13 +41,21 @@ struct dwcroce_pd {
 
 struct dwcroce_cq {
 	struct ib_cq ibcq;
-
+	struct 
 
 };
 
 struct dwcroce_mr {
 	struct ib_mr ibmr;
-	
+	u32 phase;
+	u32 getp;
+
+	u32 max_hw_cqe;
+	u32 cqe_cnt;
+	u32 len;
+	spinlock_t lock; //for serialize accessing to the CQ
+	struct list_head sq_head, rq_head;
+
 
 };
 

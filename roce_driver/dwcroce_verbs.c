@@ -17,6 +17,7 @@
 
 #include "dwcroce.h"
 #include "dwcroce_verbs.h"
+#include "dwcroce_hw.h"
 
 int dwcroce_post_send(struct ib_qp *ibqp,const struct ib_send_wr *wr,const struct ib_send_wr **bad_wr)
 {
@@ -71,6 +72,20 @@ int dwcroce_query_device(struct ib_device *ibdev, struct ib_device_attr *props,s
 {
 	printk("dwcroce:dwcroce_query_device start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
+	struct dwcroce_dev *dev;
+	dev = get_dwcroce_dev(ibdev);
+
+	if(uhw->inlen || uhw->outlen)
+		return -ENIVAL;
+	memset(props,0,sizeof *props);
+	dwcroce_get_guid(dev,(u8 *)&props->sys_image_guid);
+	props->vendor_id = dev->devinfo.pcidev->vendor;
+	props->vendor_part_id = dev->devinfo.pcidev->device;
+	
+	props->atomic_cap = 0;
+	props->max_fmr = 0;
+	props->max_map_per_fmr = 0;
+
 
 
 	/*wait to add end!*/	
@@ -325,13 +340,36 @@ struct ib_cq *dwcroce_create_cq(struct ib_device *ibdev,
 {
 	printk("dwcroce:dwcroce_create_cq start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
+	int entries = attr->cqe;
 	struct dwcroce_cq *cq;
-	
+	struct dwcroce_dev *dev;
+	u16 pd_id = 0;
+	int status;
+
+	dev = get_dwcroce_dev(ibdev);
+	if(attr->flags)
+		return ERR_PTR(-EINVAL);
+	if (udata) {
+		printk("dwcroce:create_cq by user space\n");//added by hs
+	}else
+		printk("dwcroce:create_cq in kernel\n");//added by hs 
 	cq = kzalloc(sizeof(*cq),GFP_KERNEL);
 	if(!cq)
 		return ERR_PTR(-ENOMEM);
-	
+
+	spin_lock_init(&cq->lock);
+	INIT_LIST_HEAD(&cq->sq_head);
+	INIT_LIST_HEAD(&cq->rq_head);
 	/*wait to add end!*/	
+	if (ib_ctx) {
+		printk("dwcroce:some function for user space");//added by hs
+	}
+	/*create cq -- access hw for these*/
+	status = dwcroce_hw_create_cq(dev,cq,entries,pd_id);
+	if (status) {
+		kfree(cq);
+		return ERR_PTR(status);
+	}
 	printk("dwcroce:dwcroce_create_cq succeed end!\n");//added by hs for printing end info
 	return &cq->ibcq;
 }
@@ -492,18 +530,43 @@ int dwcroce_dereg_mr(struct ib_mr *ibmr)
 	printk("dwcroce:dwcroce_dereg_mr succeed end!\n");//added by hs for printing end info
 	return 0;
 }
+static int dwcroce_alloc_lkey(struct dwcroce_dev* dev, struct dwcroce_mr* mr, u32 pdid, int acc)
+{
+	int status;
+	printk("dwcroce: dwcroce_alloc_lkey start\n");//added by hs
+	
+	printk("dwcroce: dwcroce_alloc_lkey end\n");//added by hs 
+	return 0;
+}
 
 struct ib_mr *dwcroce_get_dma_mr(struct ib_pd *ibpd, int acc)
 {
 	printk("dwcroce:dwcroce_get_dma_mr start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
-	
+	int status;
+	struct dwcroce_pd *pd;
 	struct dwcroce_mr *mr;
+	struct dwcroce_dev *dev;
+	u32 pdn = 0;
+	pd = get_dwcroce_pd(pd);
+
+	dev = get_dwcroce_dev(ibpd->device);
+	if (acc & IB_ACCESS_REMOTE_WRITE && !(acc & IB_ACCESS_LOCAL_WRITE)){
+		pr_err("%s err, invalid access rights \n",__func__);
+		return ERR_PTR(-EINVAL);
+	}
 
 	mr = kzalloc(sizeof(*mr),GFP_KERNEL);
 	if(!mr)
 		return ERR_PTR(-ENOMEM);
 	
+	status = dwcroce_alloc_lkey(dev,mr,pdn,acc); // most importand is to get the key!
+	if (status){
+			kfree(mr);
+			return ERR_PTR(status);
+	}
+
+
 	/*wait to add end!*/
 	printk("dwcroce:dwcroce_get_dma_mr succeed end!\n");//added by hs for printing end info
 	return &mr->ibmr;

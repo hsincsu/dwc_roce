@@ -86,4 +86,6 @@ struct ib_mr *dwcroce_alloc_mr(struct ib_pd *pd,
 int dwcroce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
 		     unsigned int *sg_offset);
 
+/*some function definition*/
+static int dwcroce_alloc_lkey(struct dwcroce_dev *dev,struct dwcroce_mr *mr,u32 pdid, int acc);//alter later --2019/10/28 hs
 #endif
