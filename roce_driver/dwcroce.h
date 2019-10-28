@@ -27,8 +27,8 @@
 
 struct dwcroce_dev{
 	struct ib_device ibdev;
-	struct dwc_dev_info *devinfo;
-	unsigned long *pd_id; // for allocate an unique id to each pd.
+	struct dwc_dev_info devinfo;
+//	unsigned long *pd_id; // for allocate an unique id to each pd.
 	struct mutex pd_mutex;
 	//not finished ,added later.
 };

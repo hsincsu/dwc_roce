@@ -54,7 +54,7 @@ static void xlgmac_add_device(struct xlgmac_pdata *pdata)
 static void xlgmac_del_device(struct xlgmac_pdata *pdata)
 {
 	dwcroce->remove(pdata->rocedev);
-
+	pdata->rocedev =NULL;
 }
 
 /* xlgmac_register_dev register pdata struct into dwcpdata_list

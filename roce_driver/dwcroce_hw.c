@@ -20,7 +20,7 @@
 static int phd_start(struct dwcroce_dev *dev)
 {
 	void __iomem* base_addr;
-	base_addr = dev->devinfo->base_addr;
+	base_addr = dev->devinfo.base_addr;
 	writel(PHD_BASE_0 + PHDSTART, base_addr + MPB_WRITE_ADDR);
 	writel(0x1, base_addr + MPB_RW_DATA);
 }
@@ -28,7 +28,7 @@ static int phd_start(struct dwcroce_dev *dev)
 static int phd_udp_init(struct dwcroce_dev *dev)
 {
 	void __iomem* base_addr;
-	base_addr = dev->devinfo->base_addr;
+	base_addr = dev->devinfo.base_addr;
 	printk("dwcroce: no need to init udp\n");//added by hs
 	return 0;
 }
@@ -37,7 +37,7 @@ static int phd_udp_init(struct dwcroce_dev *dev)
 static int phd_ipv6_init(struct dwcroce_dev *dev)
 {
 	void __iomem* base_addr;
-	base_addr = dev->devinfo->base_addr;
+	base_addr = dev->devinfo.base_addr;
 
 	/*ipv6 init phd 0*/
 	writel(PHD_BASE_0 + PHDIPV6VERSION, base_addr + MPB_WRITE_ADDR);
@@ -100,9 +100,9 @@ static int phd_ipv6_init(struct dwcroce_dev *dev)
 static int phd_ipv4_init(struct dwcroce_dev *dev)
 {
 	void __iomem *base_addr;
-	base_addr = dev->devinfo->base_addr;
+	base_addr = dev->devinfo.base_addr;
 	struct net_device *netdev;
-	netdev = dev->devinfo->netdev;
+	netdev = dev->devinfo.netdev;
 	__be32 addr;
 	addr = netdev->ip_ptr->ifa_list->ifa_address;	
 	u32 addr_k;
@@ -179,9 +179,9 @@ static int phd_ipv4_init(struct dwcroce_dev *dev)
 static int phd_mac_init(struct dwcroce_dev *dev)
 {
 	void __iomem *base_addr;
-	base_addr = dev->devinfo->base_addr;
+	base_addr = dev->devinfo.base_addr;
 	u8 *addr;
-	addr = dev->devinfo->netdev->dev_addr;	
+	addr = dev->devinfo.netdev->dev_addr;	
 	printk("mac addr is %x\n",addr[5]);//added by hs for info
 
 /*  added by hs, these code is to read mac reg to get mac address
@@ -232,8 +232,8 @@ static int phd_mac_init(struct dwcroce_dev *dev)
 static int phd_rxdesc_init(struct dwcroce_dev *dev)
 {
 	void __iomem *base_addr;
-	base_addr = dev->devinfo->base_addr;
-	struct xlgmac_channel* channel = dev->devinfo->channel_head;
+	base_addr = dev->devinfo.base_addr;
+	struct xlgmac_channel* channel = dev->devinfo.channel_head;
 	struct xlgmac_pdata* pdata = channel->pdata;
 
 	int i = 0;
@@ -247,7 +247,7 @@ static int phd_rxdesc_init(struct dwcroce_dev *dev)
 		printk("FOR RXDESC_INIT: addr_h = %x, addr_l = %x \n,channel count is %d", addr_h, addr_l, pdata->channel_count);//added by hs for info
 		channel++;
 	}
-	channel = dev->devinfo->channel_head;
+	channel = dev->devinfo.channel_head;
 	addr_h = 0;
 	addr_l = 0;
 	addr_h = readl(XLGMAC_DMA_REG(channel, DMA_CH_RDLR_HI));
@@ -308,8 +308,8 @@ static int phd_txdesc_init(struct dwcroce_dev *dev)
 {
 	/*对Phd的发送描述符进行初始化*/
 	void __iomem *base_addr;
-	base_addr = dev->devinfo->base_addr;
-	struct xlgmac_channel *channel = dev->devinfo->channel_head;
+	base_addr = dev->devinfo.base_addr;
+	struct xlgmac_channel *channel = dev->devinfo.channel_head;
 	struct xlgmac_pdata* pdata = channel->pdata;
 	int i =0;
 	u32 addr_h = 0;
@@ -322,7 +322,7 @@ static int phd_txdesc_init(struct dwcroce_dev *dev)
 		printk("addr_h = %x, addr_l = %x \n,channel count is %d", addr_h, addr_l,pdata->channel_count);//added by hs for info
 		channel++;
 	}
-	channel = dev->devinfo->channel_head;
+	channel = dev->devinfo.channel_head;
 	addr_h = 0;
 	addr_l = 0;
 	addr_h = readl(XLGMAC_DMA_REG(channel, DMA_CH_TDLR_HI));
@@ -474,7 +474,7 @@ static int dwcroce_read_phd(struct dwcroce_dev *dev)
 {
 	u32 regval;
 	void __iomem* base_addr;
-	base_addr = dev->devinfo->base_addr;
+	base_addr = dev->devinfo.base_addr;
 	int i = 0;
 	u32 phd_base_addr = 0;
 	for (i = 0; i <= 1; i++) {

@@ -13,6 +13,7 @@
 #include <rdma/ib_umem.h>
 #include <rdma/ib_addr.h>
 #include <rdma/ib_cache.h>
+#include <linux/netdevice.h>
 
 #include "dwcroce.h"
 #include "dwcroce_verbs.h"
@@ -25,7 +26,6 @@ int dwcroce_post_send(struct ib_qp *ibqp,const struct ib_send_wr *wr,const struc
 	
 
 	qp = get_dwcroce_qp(ibqp);
-	dev = qp->dev;
 
 
 	/*wait to add end!*/
@@ -86,7 +86,7 @@ int dwcroce_query_port(struct ib_device *ibdev, u8 port, struct ib_port_attr *pr
 	struct net_device *netdev;
 	/*wait to add 2019/6/24*/
 	dev = get_dwcroce_dev(ibdev);
-	netdev = dev->devinfo->netdev;
+	netdev = dev->devinfo.netdev;
 	printk("dwcrpce:query_port next is netif_running\n");//added by hs
 	if(netif_running(netdev) && netif_oper_up(netdev)){
 		printk("dwcroce:query_port in active\n");//added by hs 
@@ -153,7 +153,7 @@ void dwcroce_get_guid(struct dwcroce_dev *dev, u8 *guid)
 	printk("dwcroce:dwcroce_get_guid start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
         u8 *addr;
-        addr = dev->devinfo->netdev->dev_addr;
+        addr = dev->devinfo.netdev->dev_addr;
         guid[0] = addr[0]^2;
         guid[1] = addr[1];
         guid[2] = addr[2];
@@ -192,7 +192,7 @@ struct net_device *dwcroce_get_netdev(struct ib_device *device, u8 port_num)
 	rcu_read_lock();
 	dev = get_dwcroce_dev(device);
 	if(dev)
-	ndev = dev->devinfo->netdev;
+	ndev = dev->devinfo.netdev;
 	if(ndev)
 		dev_hold(ndev);
 	rcu_read_unlock();
@@ -325,10 +325,8 @@ struct ib_cq *dwcroce_create_cq(struct ib_device *ibdev,
 {
 	printk("dwcroce:dwcroce_create_cq start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
-	
 	struct dwcroce_cq *cq;
 	
-	dev = get_dwcroce_dev(ibdev);
 	cq = kzalloc(sizeof(*cq),GFP_KERNEL);
 	if(!cq)
 		return ERR_PTR(-ENOMEM);
