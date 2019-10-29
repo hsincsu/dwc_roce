@@ -18,6 +18,7 @@
 #include "dwcroce.h"
 #include "dwcroce_verbs.h"
 #include "dwcroce_hw.h"
+#include "dwcroce_loc.h"
 
 int dwcroce_post_send(struct ib_qp *ibqp,const struct ib_send_wr *wr,const struct ib_send_wr **bad_wr)
 {
@@ -295,18 +296,9 @@ struct ib_pd *dwcroce_alloc_pd(struct ib_device *ibdev,
 	printk("dwcroce:dwcroce_alloc_pd start!\n");//added by hs for printing start info
 	struct dwcroce_pd *pd;
 	struct dwcroce_dev *dev = get_dwcroce_dev(dev);
-	int status;
-	u8 is_utx_pd =false;
-	u32 bitmap_idx = 0;
 	/*wait to add 2019/6/24*/
-	if(ibctx && udata){
-		
-		printk("dwcroce: get userspace context & pd\n");//added by hs 
-	}
 	
-	pd = kzalloc(sizeof(*pd),GFP_KERNEL);
-	if(!pd)
-			return ERR_PTR(-ENOMEM);
+	pd = dwcroce_alloc(&dev->pd_pool);
 	
 //	mutex_lock(&dev->pd_mutex); // 利用位图来唯一分配PDN。
 //	bitmap_idx = find_first_zero_bit(dev->pd_id,32);
@@ -315,7 +307,7 @@ struct ib_pd *dwcroce_alloc_pd(struct ib_device *ibdev,
 //	mutex_unlock(&dev->pd_mutex);
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_alloc_pd succeed end!\n");//added by hs for printing end info
-	return &pd->ibpd;
+	return pd ? &pd->ibpd:ERR_PTR(-ENOMEM);
 }
 
 int dwcroce_dealloc_pd(struct ib_pd *pd)
@@ -328,7 +320,7 @@ int dwcroce_dealloc_pd(struct ib_pd *pd)
 //	__clear_bit(dwcpd->id,dev->pd_id);
 //	mutex_unlock(&dev->pd_mutex);
 	/*wait to add end!*/	
-	kfree(dwcpd);
+	dwcroce_drop_ref(dwcpd);
 	printk("dwcroce:dwcroce_dealloc_pd succeed end!\n");//added by hs for printing end info
 	return 0;
 }
@@ -525,7 +517,10 @@ int dwcroce_dereg_mr(struct ib_mr *ibmr)
 	struct dwcroce_mr *mr;
 
 	mr = get_dwcroce_mr(ibmr);
-	kfree(mr);
+	mr->state = DWCROCE_MEM_STATE_ZOMBIE;
+	dwcroce_drop_ref(mr->pd);
+	dwcroce_drop_index(mr);
+	dwcroce_drop_ref(mr);
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_dereg_mr succeed end!\n");//added by hs for printing end info
 	return 0;
@@ -549,27 +544,33 @@ struct ib_mr *dwcroce_get_dma_mr(struct ib_pd *ibpd, int acc)
 	struct dwcroce_dev *dev;
 	u32 pdn = 0;
 	pd = get_dwcroce_pd(pd);
-
 	dev = get_dwcroce_dev(ibpd->device);
+
 	if (acc & IB_ACCESS_REMOTE_WRITE && !(acc & IB_ACCESS_LOCAL_WRITE)){
 		pr_err("%s err, invalid access rights \n",__func__);
 		return ERR_PTR(-EINVAL);
 	}
-
-	mr = kzalloc(sizeof(*mr),GFP_KERNEL);
-	if(!mr)
-		return ERR_PTR(-ENOMEM);
 	
-	status = dwcroce_alloc_lkey(dev,mr,pdn,acc); // most importand is to get the key!
-	if (status){
-			kfree(mr);
-			return ERR_PTR(status);
+	mr = dwcroce_alloc(&dev->mr_pool);
+	if (!mr) {
+		err = -ENOMEM;
+		goto err1;
 	}
+	dwcroce_add_index(mr);
+	dwcroce_add_ref(pd);
 
+	err = dwcroce_mem_init_dma(pd,acc,mr);
+	if(err)
+		goto err2;
 
 	/*wait to add end!*/
 	printk("dwcroce:dwcroce_get_dma_mr succeed end!\n");//added by hs for printing end info
 	return &mr->ibmr;
+err2:
+	dwcroce_drop_ref(pd);
+	dwcroce_drop_index(mr);
+	dwcroce_drop_ref(mr);
+
 }
 
 struct ib_mr *dwcroce_reg_user_mr(struct ib_pd *ibpd, u64 start, u64 length,
@@ -589,10 +590,33 @@ struct ib_mr *dwcroce_alloc_mr(struct ib_pd *pd,
 {
 	printk("dwcroce:dwcroce_alloc_mr start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
+	struct dwcroce_dev *dev = get_dwcroce_dev(pd->device);
+	struct dwcroce_pd *pd = get_dwcroce_pd(pd);
+	struct dwcroce_mr *mr;
+	int err;
 
+	if(mr_type != IB_MR_TYPE_MEM_REG)
+			return	ERR_PTR(-EINVAL);
+	mr = dwcroce_alloc(&dev->mr_pool);
+	if (!mr) {
+			err = -ENOMEM;
+			goto err1;
+	}
+	dwcroce_add_index(mr);
+	dwcroce_add_ref(pd);
+
+	err = dwcroce_mem_init_fast(dev,max_num_sg,mr);
+	if(err)
+		goto err2;
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_alloc_mr succeed end!\n");//added by hs for printing end info
-	return NULL;
+	return &mr->ibmr;
+err2:
+	dwcroce_drop_ref(pd);
+	dwcroce_drop_index(mr);
+	dwcroce_drop_ref(mr);
+err1:
+	return ERR_PTR(err);
 }
 
 int dwcroce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,unsigned int *sg_offset)
@@ -605,3 +629,15 @@ int dwcroce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,u
 	return 0;
 }
 
+void dwcroce_cq_cleanup(struct dwcroce_pool_entry* arg)
+{
+	printk("dwcroce: dwcroce_cq_cleanup\n");//added by hs 
+}
+void dwcroce_qp_cleanup(struct dwcroce_pool_entry* arg)
+{
+	printk("dwcroce： dwcroce_qp_cleanup\n");//added by hs 
+}
+void dwcroce_mem_cleanup(struct dwcroce_pool_entry* arg)
+{
+	printk("dwcroce:  dwcroce_mem_cleanup\n");//added by hs 
+}

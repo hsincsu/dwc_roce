@@ -24,6 +24,7 @@
 #include "dwcroce_verbs.h"
 #include "dwcroce_ah.h"
 #include "dwcroce_hw.h"
+#include "dwcroce_pool.h"
 #include <rdma/ocrdma-abi.h>
 #define HSDEBUG 1
 
@@ -221,11 +222,38 @@ static int dwcroce_register_ibdev(struct dwcroce_dev *dev)
 	return ib_register_device(&dev->ibdev,"dwcroce%d", NULL);//wait a moment
 //	return 0;
 }
+static int dwcroce_init_pools(struct dwcroce_dev *dev)
+{
+	printk("dwcroce: dwcroce_init_pools start\n");//added by hs 
+	int err;
+	err = dwcroce_pool_init(dev,&dev->pd_pool,DWCROCE_TYPE_PD,
+							dev->attr.max_pd);
+	if (err)
+		goto err1;
+	err = dwcroce_pool_init(dev,&dev->mr_pool,DWCROCE_TYPE_MR,
+							dev->attr.max_mr);
+	if (err)
+		goto err2;
+	printk("dwcroce: dwcroce_init_pools end\n");//added by hs 
+	return 0;
+err2:
+	dwcroce_pool_cleanup(&dev->mr_pool);
+err1:
+	dwcroce_pool_cleanup(&dev->pd_pool);
+	return err;
+}
 
 static int dwcroce_alloc_resource(struct dwcroce_dev *dev)
 {
 	printk("dwcroce: dwcroce_alloc_resource start\n");//added by hs
+	int status;
+	status = dwcroce_init_pools(dev);
+	if(status)
+		goto err1;
 	return 0;
+err1:
+	printk("init pool failed\n");//added by hs
+	return status;
 }
 
 static int dwcroce_alloc_hw_resources(struct dwcroce_dev *dev)

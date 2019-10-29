@@ -453,6 +453,25 @@ static int dwcroce_init_cm(struct dwcroce_dev *dev)
 	return 0;
 }
 
+static int dwcroce_init_dev_attr(struct dwcroce_dev *dev)
+{
+	printk("dwcroce: dwcroce_init_dev_attr \n");//added by hs 
+	int err = 0;
+	err = dwcroce_query_device(&dev->ibdev,&dev->attr,NULL);
+	if(err)
+		goto err1;
+	/*temple value*/
+	dev->attr.max_pd = 0x1024;
+	dev->attr.max_mr = 256*1024;
+	dev->attr.max_cq = 16384;
+	dev->attr.ma_qp = 0x10000;
+
+	printk("dwcroce: dwcroce_init_dev_attr \n");//added by hs 
+	return 0;
+err1:
+	printk("query device failed\n");//added by hs 
+	return err;
+}
 int dwcroce_init_hw(struct dwcroce_dev *dev)
 {
 	int status;
@@ -463,6 +482,9 @@ int dwcroce_init_hw(struct dwcroce_dev *dev)
 	if (status)
 		goto errcm;
 	return 0;
+	status = dwcroce_init_dev_attr(dev);
+	if(status)
+		goto errcm;
 errcm:
 	printk("cm init err!\n");//added by hs
 errphd:
