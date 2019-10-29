@@ -1,6 +1,7 @@
 /* dwcroce_pool.c  --2019/10/28 hs*/
 #include <rdma/ib_verbs.h>
 #include "dwcroce.h"
+
 struct dwcroce_type_info dwcroce_type_info[DWCROCE_NUM_TYPES] = {
 	[DWCROCE_TYPE_PD] = {
 		.name = "dwcroce-pd",
@@ -133,7 +134,7 @@ int dwcroce_pool_init(struct dwcroce_dev *dev, struct dwcroce_pool *pool,
 	atomic_set(&pool->num_elem, 0);
 
 	kref_init(&pool->ref_cnt);
-
+	printk("dwcroce: pool_lock init \n");//added by hs 
 	rwlock_init(&pool->pool_lock);
 
 	if (dwcroce_type_info[type].flags & DWCROCE_POOL_INDEX) {
@@ -311,25 +312,30 @@ void dwcroce_drop_index(void *arg)
 
 void *dwcroce_alloc(struct dwcroce_pool *pool)
 {
-	printk("dwcroce: dwcroce_alloc start \n");//added by hs 
+	printk("dwcroce: --------------------dwcroce_alloc start--------------- \n");//added by hs 
 	struct dwcroce_pool_entry *elem;
 	unsigned long flags;
-
+	printk("dwcroce: next is might_sleep_if\n");//added by hs 
 	might_sleep_if(!(pool->flags & DWCROCE_POOL_ATOMIC));
-
+	printk("dwcroce: next is read_lock_irqsave\n");//added by hs 
 	read_lock_irqsave(&pool->pool_lock, flags);
 	if (pool->state != DWCROCE_POOL_STATE_VALID) {
+		printk("dwcroce: pool->state is not valid\n");//added by hs 
 		read_unlock_irqrestore(&pool->pool_lock, flags);
 		return NULL;
 	}
+	printk("dwcroce: next is kref_get\n");//added by hs 
 	kref_get(&pool->ref_cnt);
+	printk("dwcroce: next is read_unlock_irq\n");//added by hs
 	read_unlock_irqrestore(&pool->pool_lock, flags);
 
 	//kref_get(&pool->dwcroce->ref_cnt);
-
+	printk("dwcroce: next is atomic_inc_return\n");//added by hs 
+	printk("dwcorce: pool->num_elem is %x\n, max_elem is %x\n",pool->num_elem,pool->max_elem);//added by hs 
 	if (atomic_inc_return(&pool->num_elem) > pool->max_elem)
 		goto out_put_pool;
 
+	printk("dwcroce: next is kmem_cache_zalloc\n");//added by hs 
 	elem = kmem_cache_zalloc(pool_cache(pool),
 		(pool->flags & DWCROCE_POOL_ATOMIC) ?
 		GFP_ATOMIC : GFP_KERNEL);
@@ -337,8 +343,10 @@ void *dwcroce_alloc(struct dwcroce_pool *pool)
 		goto out_put_pool;
 
 	elem->pool = pool;
+	printk("dwcroe: next is kref_init \n");//added by hs 
 	kref_init(&elem->ref_cnt);
 	printk("dwcroce: dwcroce_alloc end\n");//added by hs 
+
 	return elem;
 
 out_put_pool:
@@ -531,7 +539,7 @@ err1:
 }
 
 
-int dwcroce_mem_init_dma(struct dwcroce_pd *pd, int access, struct dwcroce_mr *mem)
+int dwcroce_mem_init_dma(struct dwcroce_pd *pd,int access, struct dwcroce_mr *mr)
 {
 	printk("dwcroce: dwcroce_mem_init_dma start \n");//added by hs 
 	dwcroce_mem_init(access,mr);

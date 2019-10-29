@@ -18,7 +18,6 @@
 #include "dwcroce.h"
 #include "dwcroce_verbs.h"
 #include "dwcroce_hw.h"
-#include "dwcroce_loc.h"
 
 int dwcroce_post_send(struct ib_qp *ibqp,const struct ib_send_wr *wr,const struct ib_send_wr **bad_wr)
 {
@@ -76,8 +75,8 @@ int dwcroce_query_device(struct ib_device *ibdev, struct ib_device_attr *props,s
 	struct dwcroce_dev *dev;
 	dev = get_dwcroce_dev(ibdev);
 
-	if(uhw->inlen || uhw->outlen)
-		return -EINVAL;
+//	if(uhw->inlen || uhw->outlen)
+//		return -EINVAL;
 	memset(props,0,sizeof *props);
 	dwcroce_get_guid(dev,(u8 *)&props->sys_image_guid);
 	props->vendor_id = dev->devinfo.pcidev->vendor;
@@ -295,11 +294,12 @@ struct ib_pd *dwcroce_alloc_pd(struct ib_device *ibdev,
 {
 	printk("dwcroce:dwcroce_alloc_pd start!\n");//added by hs for printing start info
 	struct dwcroce_pd *pd;
-	struct dwcroce_dev *dev = get_dwcroce_dev(dev);
+	struct dwcroce_dev *dev = get_dwcroce_dev(ibdev);
 	/*wait to add 2019/6/24*/
-	
+	if(dev)	
 	pd = dwcroce_alloc(&dev->pd_pool);
-	
+	if(pd)
+	printk("pd is exist\n");//added by hs	
 //	mutex_lock(&dev->pd_mutex); // 利用位图来唯一分配PDN。
 //	bitmap_idx = find_first_zero_bit(dev->pd_id,32);
 //	pd->id = bitmap_idx;
@@ -543,9 +543,9 @@ struct ib_mr *dwcroce_get_dma_mr(struct ib_pd *ibpd, int acc)
 	struct dwcroce_mr *mr;
 	struct dwcroce_dev *dev;
 	u32 pdn = 0;
-	pd = get_dwcroce_pd(pd);
+	pd = get_dwcroce_pd(ibpd);
 	dev = get_dwcroce_dev(ibpd->device);
-
+	int err;
 	if (acc & IB_ACCESS_REMOTE_WRITE && !(acc & IB_ACCESS_LOCAL_WRITE)){
 		pr_err("%s err, invalid access rights \n",__func__);
 		return ERR_PTR(-EINVAL);
@@ -570,7 +570,8 @@ err2:
 	dwcroce_drop_ref(pd);
 	dwcroce_drop_index(mr);
 	dwcroce_drop_ref(mr);
-
+err1:
+	return ERR_PTR(err);
 }
 
 struct ib_mr *dwcroce_reg_user_mr(struct ib_pd *ibpd, u64 start, u64 length,
@@ -591,7 +592,7 @@ struct ib_mr *dwcroce_alloc_mr(struct ib_pd *pd,
 	printk("dwcroce:dwcroce_alloc_mr start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
 	struct dwcroce_dev *dev = get_dwcroce_dev(pd->device);
-	struct dwcroce_pd *pd = get_dwcroce_pd(pd);
+	struct dwcroce_pd *dwcpd = get_dwcroce_pd(pd);
 	struct dwcroce_mr *mr;
 	int err;
 
@@ -603,7 +604,7 @@ struct ib_mr *dwcroce_alloc_mr(struct ib_pd *pd,
 			goto err1;
 	}
 	dwcroce_add_index(mr);
-	dwcroce_add_ref(pd);
+	dwcroce_add_ref(dwcpd);
 
 	err = dwcroce_mem_init_fast(dev,max_num_sg,mr);
 	if(err)
@@ -612,7 +613,7 @@ struct ib_mr *dwcroce_alloc_mr(struct ib_pd *pd,
 	printk("dwcroce:dwcroce_alloc_mr succeed end!\n");//added by hs for printing end info
 	return &mr->ibmr;
 err2:
-	dwcroce_drop_ref(pd);
+	dwcroce_drop_ref(dwcpd);
 	dwcroce_drop_index(mr);
 	dwcroce_drop_ref(mr);
 err1:

@@ -18,16 +18,16 @@ enum dwcroce_pool_flags {
 };
 
 enum dwcroce_elem_type {
-	DWCROCE_TYPE_UC,
+//	DWCROCE_TYPE_UC,
 	DWCROCE_TYPE_PD,
-	DWCROCE_TYPE_AH,
-	DWCROCE_TYPE_SRQ,
+//	DWCROCE_TYPE_AH,
+//	DWCROCE_TYPE_SRQ,
 	DWCROCE_TYPE_QP,
 	DWCROCE_TYPE_CQ,
 	DWCROCE_TYPE_MR,
-	DWCROCE_TYPE_MW,
-	DWCROCE_TYPE_MC_GRP,
-	DWCROCE_TYPE_MC_ELEM,
+//	DWCROCE_TYPE_MW,
+//	DWCROCE_TYPE_MC_GRP,
+//	DWCROCE_TYPE_MC_ELEM,
 	DWCROCE_NUM_TYPES,
 };
 
@@ -113,7 +113,8 @@ struct dwcroce_map {
 };
 
 
-*initialize slab caches for managed objects* /
+
+/*initialize slab caches for managed objects*/
 int dwcroce_cache_init(void);
 
 /* cleanup slab caches for managed objects */

@@ -125,5 +125,9 @@ static inline struct dwcroce_qp *get_dwcroce_qp(struct ib_qp *ibqp)
 	return container_of(ibqp,struct dwcroce_qp, ibqp);
 }
 
+int dwcroce_mem_init_fast(struct dwcroce_pd *dwcpd, int max_pages, struct dwcroce_mr *dwcmr);
+
+int dwcroce_mem_init_dma(struct dwcroce_pd *dwcpd,int access, struct dwcroce_mr *dwcmr);
+
 
 #endif

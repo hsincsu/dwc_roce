@@ -24,7 +24,6 @@
 #include "dwcroce_verbs.h"
 #include "dwcroce_ah.h"
 #include "dwcroce_hw.h"
-#include "dwcroce_pool.h"
 #include <rdma/ocrdma-abi.h>
 #define HSDEBUG 1
 
@@ -228,6 +227,7 @@ static int dwcroce_init_pools(struct dwcroce_dev *dev)
 	int err;
 	err = dwcroce_pool_init(dev,&dev->pd_pool,DWCROCE_TYPE_PD,
 							dev->attr.max_pd);
+	
 	if (err)
 		goto err1;
 	err = dwcroce_pool_init(dev,&dev->mr_pool,DWCROCE_TYPE_MR,
@@ -355,6 +355,12 @@ static int __init dwc_init_module(void)
 {
 	int status;
 	printk("dwcroce:init module start!\n");//added by hs for printing init info
+	status = dwcroce_cache_init();
+	if(status){
+		printk("unable to init object pools\n");//added by hs 
+		return status;
+	}
+		
 	status = dwc_roce_register_driver(&dwc_drv);	
 	if(status)
 		goto err_reg;
