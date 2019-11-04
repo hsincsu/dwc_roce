@@ -374,6 +374,7 @@ err_reg:
 static void __exit dwc_exit_module(void)
 {
 	printk("dwcroce:exit module start\n");//added by hs for printing info
+	dwcroce_cache_exit();
 	dwc_roce_unregister_driver(&dwc_drv);
 	printk("dwcroce:exit module succeed!\n");//added by hs for print exit info
 }

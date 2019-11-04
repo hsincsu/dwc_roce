@@ -34,7 +34,7 @@ enum dwcroce_elem_type {
 struct dwcroce_pool_entry;
 
 struct dwcroce_type_info {
-	const char* name;
+	const char *name;
 	size_t			size;
 	void			(*cleanup)(struct dwcroce_pool_entry *obj);
 	enum dwcroce_pool_flags	flags;

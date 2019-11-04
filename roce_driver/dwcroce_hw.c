@@ -472,6 +472,209 @@ err1:
 	printk("query device failed\n");//added by hs 
 	return err;
 }
+
+void dwcroce_init_tlb(void __iomem *base_addr)
+{
+	u32 busy = 0x1;
+	printk("dwcroce: dwcroce_init_tlb start\n");//added by hs 
+
+	while (busy & 0x80000000)//only need the first bit in busy.
+	{
+		writel(PGU_BASE + TLBINIT,base_addr + MPB_WRITE_ADDR);
+		busy = readl(base_addr + MPB_RW_DATA);
+	}
+	printk("dwcroce: dwcroce_init_tlb end\n");//added by hs 
+}
+
+
+static int dwcroce_init_pgu_wqe(struct dwcroce_dev *dev)
+{
+	printk("dwcroce: dwcroce_init_PGU_wqe  start\n");//added by hs
+	/*PGU INIT*/
+	int err = 0;
+	int i = 0;
+	void __iomem *base_addr;
+	base_addr = dev->devinfo.base_addr;
+
+	/*socket id*/
+	writel(PGU_BASE + SOCKETID,base_addr + MPB_WRITE_ADDR);
+	writel(0x0,base_addr + MPB_RW_DATA);
+	/*TLB INIT*/
+	dwcroce_init_tlb(base_addr);
+
+	/*init each WQEQueue entry*/
+	for (i = 0; i <= (1ull << QPNUM - 1); i = i + 1)
+	{
+		writel(PGU_BASE + QPLISTREADQPN,base_addr + MPB_WRITE_ADDR);
+		writel(i,base_addr + MPB_RW_DATA);
+		/*wirtel qp list 0 - 5 start*/
+		writel(PGU_BASE + WPFORQPLIST,base_addr + MPB_WRITE_ADDR); // WP virtual
+		writel(0x0,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + WPFORQPLIST2,base_addr + MPB_WRITE_ADDR);//WP virtual
+		writel(0x0,base_addr + MPB_RW_DATA);
+	
+		writel(PGU_BASE + RPFORQPLIST,base_addr + MPB_WRITE_ADDR);//RP virtual
+		writel(0x0,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + RPFORQPLIST2,base_addr + MPB_WRITE_ADDR);//RP virtual
+		writel(0x0,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + QPNANDVALID,base_addr + MPB_WRITE_ADDR);//valid + phypage
+		writel(0x0,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + QPNANDVALID2,base_addr + MPB_WRITE_ADDR);//valid + phypage
+		writel(0x0,base_addr + MPB_RW_DATA);
+		/*write qp list 0 - 5 end*/
+		writel(PGU_BASE + WRITEORREADQPLIST,base_addr + MPB_WRITE_ADDR);
+		writel(0x1,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + WRITEQPLISTMASK,base_addr + MPB_WRITE_ADDR);
+		writel(0x7,base_addr + MPB_RW_DATA); // WRITEL 3'b111
+
+		writel(PGU_BASE + QPLISTWRITEQPN,base_addr + MPB_WRITE_ADDR);
+		writel(0x1,base_addr + MPB_RW_DATA); // write qp list 4020  1
+
+		writel(PGU_BASE + WRITEORREADQPLIST,base_addr + MPB_WRITE_ADDR);
+		writel(0x0,base_addr + MPB_RW_DATA);
+	}
+	printk("dwcroce: dwcroce_init_PGU_wqe end\n");//added by hs
+	return err;
+}
+
+static int dwcroce_init_pgu_cq(struct dwcroce_dev *dev)
+{
+	printk("dwcroce: dwcroce_init_pgu_cq start \n");//added by hs 
+	int err =0;
+	int i =0;
+	void __iomem *base_addr;
+	base_addr = dev->devinfo.base_addr;
+	u32 txop = 0;
+	u32 rxop = 0;
+	u32 xmitop = 0;
+	for (i = 0; i <= (1ull << QPNUM - 1); i = i + 1) // init tx cq
+	{
+		txop = 0x0;
+		txop = i<<2 + 0x3; // txop = {{(32-QPNUM-2){'b0}},i['QPNUM-1:0],1'b1,1'b1};
+		writel(PGU_BASE + CQQUEUEUP,base_addr + MPB_WRITE_ADDR);
+		writel(0x2000,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + CQQUEUEUP + 0x4,base_addr + MPB_WRITE_ADDR);
+		writel(0x0000,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + CQQUEUEDOWN,base_addr + MPB_WRITE_ADDR);
+		writel(0x0000,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + CQQUEUEDOWN + 0x4,base_addr + MPB_WRITE_ADDR);
+		writel(0x0000,base_addr + MPB_RW_DATA);
+		
+		writel(PGU_BASE + CQREADPTR,base_addr + MPB_WRITE_ADDR);
+		writel(0x0,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + CQREADPTR + 0x4,base_addr + MPB_WRITE_ADDR);
+		writel(0x0,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + CQESIZE,base_addr + MPB_WRITE_ADDR);
+		writel(txop,base_addr + MPB_RW_DATA);
+
+		while (txop & 0xfffff000) //QPNUM = 10,SO 32 -10 -2 = 20
+		{
+			writel(PGU_BASE + CQESIZE,base_addr + MPB_WRITE_ADDR);
+			txop = readl(base_addr + MPB_RW_DATA);
+		}
+			
+	}
+
+	for (i = 0; i <= (1ull << QPNUM - 1); i = i + 1) // init rx cq
+	{
+		rxop = O;
+		rxop = i<<2 + 0x3; // the same to upper one
+		writel(PGU_BASE + RxUpAddrCQE,base_addr + MPB_WRITE_ADDR);
+		writel(0x2000,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + RxUpAddrCQE + 4,base_addr + MPB_WRITE_ADDR);
+		writel(0x0000,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + RxBaseAddrCQE,base_addr + MPB_WRITE_ADDR);
+		writel(0x0000,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + RxBaseAddrCQE + 4,base_addr + MPB_WRITE_ADDR);
+		writel(0x0000,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + RxCQEWP,base_addr + MPB_WRITE_ADDR);
+		writel(0x0000,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + RxCQEWP + 4,base_addr + MPB_WRITE_ADDR);
+		writel(0x0000,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + RxCQEOp,base_addr + MPB_WRITE_ADDR);
+		writel(rxop,base_addr + MPB_RW_DATA);
+
+		while(rxop & 0xfffff000)
+		{
+			writel(PGU_BASE + RxCQEOp,base_addr + MPB_WRITE_ADDR);
+			rxop = readl(base_addr + MPB_RW_DATA);
+		}
+
+	}
+
+	for (i = 0; i <= (1ull << QPNUM - 1); i = i + 1)
+	{
+		xmitop =0;
+		xmitop = i<<2 + 0x3; // the same to uppper one
+		writel(PGU_BASE + XmitUpAddrCQE,base_addr + MPB_WRITE_ADDR);
+		writel(0x2000,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + XmitUpAddrCQE + 4,base_addr + MPB_WRITE_ADDR);
+		writel(0x0000,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + XmitBaseAddrCQE,base_addr + MPB_WRITE_ADDR);
+		writel(0x0000,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + XmitBaseAddrCQE + 4,base_addr + MPB_WRITE_ADDR);
+		writel(0x0000,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + XmitCQEWP,base_addr + MPB_WRITE_ADDR);
+		writel(0x0000,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + XmitCQEWP + 4,base_addr + MPB_WRITE_ADDR);
+		writel(0x0000,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + XmitCQEOp,base_addr + MPB_WRITE_ADDR);
+		writel(xmitop,base_addr + MPB_RW_DATA);
+
+		while (xmitop & 0xfffff000)
+		{
+			writel(PGU_BASE + XmitCQEOp,base_addr + MPB_WRITE_ADDR);
+			xmitop = readl(PGU_BASE + MPB_RW_DATA);
+		}
+	}
+	printk("dwcroce: dwcroce_init_pgu_cq end \n");//added by hs
+	return err;
+	 
+}
+
+static int dwcroce_init_qp(struct dwcroce_dev *dev)
+{
+	int err;
+	void __iomem *base_addr;
+	base_addr = dev->devinfo.base_addr;
+	/*init psn*/
+	writel(PGU_BASE + STARTINITPSN,base_addr + MPB_WRITE_ADDR); // INIT PSN
+	writel(0x0000,base_addr + MPB_RW_DATA);
+
+	writel(PGU_BASE + STARTINITPSN + 0x4,base_addr + MPB_WRITE_ADDR);
+	writel(0x0000,base_addr + MPB_RW_DATA);
+
+	writel(PGU_BASE + STARTINITPSN + 0x8,base_addr + MPB_WRITE_ADDR);
+	writel(0x0000,base_addr + MPB_RW_DATA);
+
+	writel(PGU_BASE + STARTINITPSN + 0xc,base_addr + MPB_WRITE_ADDR);
+	writel(0x10000,base_addr + MPB_RW_DATA);
+	
+	
+
+}
 int dwcroce_init_hw(struct dwcroce_dev *dev)
 {
 	int status;
@@ -481,7 +684,15 @@ int dwcroce_init_hw(struct dwcroce_dev *dev)
 	status = dwcroce_init_cm(dev);
 	if (status)
 		goto errcm;
-
+	status = dwcroce_init_pgu_wqe(dev);
+	if (status)
+		goto errcm;
+	status = dwcroce_init_pgu_cq(dev);
+	if (status)
+		goto errcm;
+	status = dwcroce_init_qp(dev);
+	if (status)
+		goto errcm;
 	status = dwcroce_init_dev_attr(dev);
 	if(status)
 		goto errcm;

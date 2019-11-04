@@ -394,7 +394,8 @@ void *dwcroce_pool_get_index(struct dwcroce_pool *pool, u32 index)
 		else {
 			kref_get(&elem->ref_cnt);
 			break;
-		}
+		} 
+
 	}
 
 out:

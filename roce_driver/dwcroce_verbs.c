@@ -333,6 +333,7 @@ struct ib_cq *dwcroce_create_cq(struct ib_device *ibdev,
 	printk("dwcroce:dwcroce_create_cq start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
 	int entries = attr->cqe;
+	int vector = attr->comp_vector;
 	struct dwcroce_cq *cq;
 	struct dwcroce_dev *dev;
 	u16 pd_id = 0;
@@ -360,7 +361,8 @@ struct ib_cq *dwcroce_create_cq(struct ib_device *ibdev,
 	status = dwcroce_hw_create_cq(dev,cq,entries,pd_id);
 	if (status) {
 		kfree(cq);
-		return ERR_PTR(status);
+		return ERR_PTR(status); 
+
 	}
 	printk("dwcroce:dwcroce_create_cq succeed end!\n");//added by hs for printing end info
 	return &cq->ibcq;
@@ -640,5 +642,14 @@ void dwcroce_qp_cleanup(struct dwcroce_pool_entry* arg)
 }
 void dwcroce_mem_cleanup(struct dwcroce_pool_entry* arg)
 {
-	printk("dwcroce:  dwcroce_mem_cleanup\n");//added by hs 
+	printk("dwcroce:  dwcroce_mem_cleanup start\n");//added by hs 
+	struct dwcroce_mr *mr = container_of(arg, struct dwcroce_mr, pelem);
+	int i;
+	if(mr->umem)
+		ib_umem_release(mr->umem);
+	if (mr->map) {
+		for(i=0;i<mr->num_map;i++)
+			kfree(mr->map[i]);
+		kfree(mr->map);
+	}
 }

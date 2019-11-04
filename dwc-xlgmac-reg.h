@@ -755,21 +755,32 @@
 #define WRONGVECTOR			0x2024	/*err vector*/
 #define WRONGFIELD			0x2028	/*err field*/
 #define TLBINIT				0x202c  /*TLB INIT*/
-#define SOCKETIP			0x2030  /*SOCKET ID TO IP*/
+#define SOCKETID			0x2030  /*SOCKET ID TO IP*/
 #define QPTOQP				0x2034	/*QP TO QP*/
 #define CQQUEUEUP			0x0000	/*the upper border of cq*/
 #define CQQUEUEDOWN			0x0008	/*the lower border of cq*/
 #define CQREADPTR			0x0010	/*cq read ptr*/
 #define CQESIZE				0x0018	/*cqe size*/
 #define CQWRITEPTR			0x001c 	/*cq write ptr*/
+#define RxUpAddrCQE			0x0028
+#define RxBaseAddrCQE		0x0030
+#define RxCQEWP				0x0038
+#define RxCQEOp             0x0040
+#define XmitUpAddrCQE		0x0050
+#define XmitBaseAddrCQE		0x0058
+#define XmitCQEWP			0x0060
+#define XmitCQEOp			0x0068
 #define RCVQ_INF			0x2040  /*RECVQ_INF REGISTER*/
 #define RCVQ_DI				0x2044  /*REVQ_DI REGISTER*/
 #define RCVQ_WRRD			0x2050  /*REVQ_WRRD*/ 
 #define QPLISTREADQPN			0x4000  /*READ QPLIST FOR QPN*/
 #define WRITEORREADQPLIST   		0x4004  /*READ OR WIRTE QPLIST*/
 #define WPFORQPLIST			0x4008  /*WRITE QPLIST DATA: WP*/
+#define WPFORQPLIST2		0x400c
 #define RPFORQPLIST 			0x4010	/*WRITE QPLIST DATA: RP*/
+#define RPFORQPLIST2			0x4014  /*WRITE QPLIST DATA*/
 #define QPNANDVALID			0x4018  /*WRITE QPLIST DATA: QPN AND QPVALID*/
+#define QPNANDVALID2		0x401c	/*WRITE QPLIST DATA*/
 #define QPLISTWRITEQPN			0x4020  /*WRITE QPLIST DATA: WRITE QPN*/
 #define READQPLISTDATA			0x4024	/*READ QPLIST DATA*/
 #define WRITEQPLISTMASK			0x403c  /*MASK FOR PAGE,RP,WP*/
@@ -1413,6 +1424,21 @@
 
 /*MPP REGISTER END*/
 
+/*SOME IMPORTANT DEFINITION*/
+#define QPNUM		10
+#define DESTQP      QPNUM
+#define EECNXT		QPNUM
+#define OPCODE		8
+#define SOCKET		48
+#define ADDRLEN		64
+#define DMALEN		32
+#define QKEY		32
+#define L_KEY		32
+#define RKEY		32
+#define PKEY		16
+#define IMMDT		32
+
+/*END*/
 /*Registers with RoCE functions end
 *					--edited by hs in 2019/10/17
 *
