@@ -478,8 +478,9 @@ void dwcroce_init_tlb(void __iomem *base_addr)
 	u32 busy = 0x1;
 	printk("dwcroce: dwcroce_init_tlb start\n");//added by hs 
 
-	while (busy & 0x80000000)//only need the first bit in busy.
+	while (busy & 0x00000001)//only need the first bit in busy.
 	{
+		printk("dwcroce: busy cycle \n");//added by hs 
 		writel(PGU_BASE + TLBINIT,base_addr + MPB_WRITE_ADDR);
 		busy = readl(base_addr + MPB_RW_DATA);
 	}
@@ -493,8 +494,12 @@ static int dwcroce_init_pgu_wqe(struct dwcroce_dev *dev)
 	/*PGU INIT*/
 	int err = 0;
 	int i = 0;
+	u32 count = 0;
 	void __iomem *base_addr;
 	base_addr = dev->devinfo.base_addr;
+	
+	count = 1ull << QPNUM;
+	count = count -1;
 
 	/*socket id*/
 	writel(PGU_BASE + SOCKETID,base_addr + MPB_WRITE_ADDR);
@@ -503,7 +508,7 @@ static int dwcroce_init_pgu_wqe(struct dwcroce_dev *dev)
 	dwcroce_init_tlb(base_addr);
 
 	/*init each WQEQueue entry*/
-	for (i = 0; i <= (1ull << QPNUM - 1); i = i + 1)
+	for (i = 0; i <= count; i = i + 1)
 	{
 		writel(PGU_BASE + QPLISTREADQPN,base_addr + MPB_WRITE_ADDR);
 		writel(i,base_addr + MPB_RW_DATA);
@@ -552,10 +557,19 @@ static int dwcroce_init_pgu_cq(struct dwcroce_dev *dev)
 	u32 txop = 0;
 	u32 rxop = 0;
 	u32 xmitop = 0;
-	for (i = 0; i <= (1ull << QPNUM - 1); i = i + 1) // init tx cq
+	u32 count = 0;
+
+	count = 1ull << QPNUM;
+	count = count -1;
+
+	printk("init tx cq start \n");//added by hs 
+	for (i = 0; i <= count; i = i + 1) // init tx cq
 	{
 		txop = 0x0;
-		txop = i<<2 + 0x3; // txop = {{(32-QPNUM-2){'b0}},i['QPNUM-1:0],1'b1,1'b1};
+		txop = i<<2; // txop = {{(32-QPNUM-2){'b0}},i['QPNUM-1:0],1'b1,1'b1};
+//		printk("txop is %x\n",txop);//added by hs 
+		txop = txop + 0x3;
+//		printk("txop is %x\n",txop);//added by hs 
 		writel(PGU_BASE + CQQUEUEUP,base_addr + MPB_WRITE_ADDR);
 		writel(0x2000,base_addr + MPB_RW_DATA);
 
@@ -576,19 +590,23 @@ static int dwcroce_init_pgu_cq(struct dwcroce_dev *dev)
 
 		writel(PGU_BASE + CQESIZE,base_addr + MPB_WRITE_ADDR);
 		writel(txop,base_addr + MPB_RW_DATA);
-
-		while (txop & 0xfffff000) //QPNUM = 10,SO 32 -10 -2 = 20
+		printk("dwcroce: tx cq end \n");//added by hs 
+		while (txop & 0x00000001) //QPNUM = 10,SO 32 -10 -2 = 20
 		{
+			printk("dwcroce: txcqcycle \n");//added by hs 
 			writel(PGU_BASE + CQESIZE,base_addr + MPB_WRITE_ADDR);
 			txop = readl(base_addr + MPB_RW_DATA);
 		}
 			
 	}
 
-	for (i = 0; i <= (1ull << QPNUM - 1); i = i + 1) // init rx cq
+	printk("dwcroce: rx cq start \n");//added by hs 
+	for (i = 0; i <= count; i = i + 1) // init rx cq
 	{
-		rxop = O;
-		rxop = i<<2 + 0x3; // the same to upper one
+		rxop = 0;
+		rxop = i << 2; // the same to upper one
+		rxop = rxop + 0x3;
+		printk("rxop is %x \n",rxop);//added by hs 
 		writel(PGU_BASE + RxUpAddrCQE,base_addr + MPB_WRITE_ADDR);
 		writel(0x2000,base_addr + MPB_RW_DATA);
 
@@ -609,19 +627,26 @@ static int dwcroce_init_pgu_cq(struct dwcroce_dev *dev)
 
 		writel(PGU_BASE + RxCQEOp,base_addr + MPB_WRITE_ADDR);
 		writel(rxop,base_addr + MPB_RW_DATA);
-
-		while(rxop & 0xfffff000)
+		printk("dwcroce: rx cq end \n");//added by hs 
+		while(rxop & 0x00000001)
 		{
+			rxop = 0;
+			printk("dwcroce: rx cq cycle \n");//added by hs 
 			writel(PGU_BASE + RxCQEOp,base_addr + MPB_WRITE_ADDR);
 			rxop = readl(base_addr + MPB_RW_DATA);
+			if(rxop)
+				printk("rxop cycle is %x\n",rxop);//added by hs 
 		}
 
 	}
 
-	for (i = 0; i <= (1ull << QPNUM - 1); i = i + 1)
+	printk("dwcroce: xmit cq start \n");//added by hs 
+	for (i = 0; i <= count; i = i + 1)
 	{
 		xmitop =0;
-		xmitop = i<<2 + 0x3; // the same to uppper one
+		xmitop = i<<2; // the same to uppper one
+		xmitop = xmitop + 0x3;
+		printk("dwcroce: xmitop is %x\n",xmitop);//added by hs 
 		writel(PGU_BASE + XmitUpAddrCQE,base_addr + MPB_WRITE_ADDR);
 		writel(0x2000,base_addr + MPB_RW_DATA);
 
@@ -643,10 +668,13 @@ static int dwcroce_init_pgu_cq(struct dwcroce_dev *dev)
 		writel(PGU_BASE + XmitCQEOp,base_addr + MPB_WRITE_ADDR);
 		writel(xmitop,base_addr + MPB_RW_DATA);
 
-		while (xmitop & 0xfffff000)
+		while (xmitop & 0x00000001)
 		{
+			printk("dwcroce: xmitop cycle \n");//added by hs 
+			xmitop = 0;
 			writel(PGU_BASE + XmitCQEOp,base_addr + MPB_WRITE_ADDR);
-			xmitop = readl(PGU_BASE + MPB_RW_DATA);
+			xmitop = readl(base_addr + MPB_RW_DATA);
+			printk("dwcroce: xmitop cycle  is %x\n",xmitop);//added by hs 
 		}
 	}
 	printk("dwcroce: dwcroce_init_pgu_cq end \n");//added by hs

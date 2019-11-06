@@ -519,6 +519,10 @@ int dwcroce_dereg_mr(struct ib_mr *ibmr)
 	struct dwcroce_mr *mr;
 
 	mr = get_dwcroce_mr(ibmr);
+	if(mr)
+	printk("mr exist\n");//added by hs 
+	else 
+		return 0;
 	mr->state = DWCROCE_MEM_STATE_ZOMBIE;
 	dwcroce_drop_ref(mr->pd);
 	dwcroce_drop_index(mr);
@@ -527,7 +531,7 @@ int dwcroce_dereg_mr(struct ib_mr *ibmr)
 	printk("dwcroce:dwcroce_dereg_mr succeed end!\n");//added by hs for printing end info
 	return 0;
 }
-static int dwcroce_alloc_lkey(struct dwcroce_dev* dev, struct dwcroce_mr* mr, u32 pdid, int acc)
+static int dwcroce_alloc_lkey(struct dwcroce_dev *dev, struct dwcroce_mr *mr, u32 pdid, int acc)
 {
 	int status;
 	printk("dwcroce: dwcroce_alloc_lkey start\n");//added by hs
@@ -632,15 +636,15 @@ int dwcroce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,u
 	return 0;
 }
 
-void dwcroce_cq_cleanup(struct dwcroce_pool_entry* arg)
+void dwcroce_cq_cleanup(struct dwcroce_pool_entry *arg)
 {
 	printk("dwcroce: dwcroce_cq_cleanup\n");//added by hs 
 }
-void dwcroce_qp_cleanup(struct dwcroce_pool_entry* arg)
+void dwcroce_qp_cleanup(struct dwcroce_pool_entry *arg)
 {
 	printk("dwcroce£º dwcroce_qp_cleanup\n");//added by hs 
 }
-void dwcroce_mem_cleanup(struct dwcroce_pool_entry* arg)
+void dwcroce_mem_cleanup(struct dwcroce_pool_entry *arg)
 {
 	printk("dwcroce:  dwcroce_mem_cleanup start\n");//added by hs 
 	struct dwcroce_mr *mr = container_of(arg, struct dwcroce_mr, pelem);
