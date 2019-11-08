@@ -243,11 +243,66 @@ err1:
 	return err;
 }
 
+static int dwcroce_init_cqqp(struct dwcroce_dev *dev);//allocate id for cq &qp
+{
+	printk("dwcroce: dwcroce_init_cqqp start \n");//added by hs 
+	u32 max_qp;
+	u32 max_cq;
+	u32 resources_size;
+	void *resource_ptr;
+	
+	max_qp = dev->attr.max_qp;
+	max_cq = dev->attr.max_cq;
+
+	resources_size = sizeof(unsigned long) * BITS_TO_LONGS(max_qp);
+	resources_size += sizeof(unsigned long) * BITS_TO_LONGS(max_cq);
+	resources_size += sizeof(struct dwcroce_qp **) * max_qp;
+	resources_size += sizeof(struct dwcroce_cq **) * max_cq;
+
+	dev->mem_resources = kzalloc(resources_size,GFP_KERNEL);
+
+	if(!dev->mem_resources)
+		return -ENOMEM;
+	resource_ptr = dev->mem_resources;
+
+	dev->allocated_qps = resource_ptr;
+	dev->allocated_cqs = &dev->allocated_qps[BITS_TO_LONGS(max_qp)];
+	dev->qp_table =(struct dwcroce_qp **)(&dev->allocated_cqs[BITS_TO_LONGS(max_cq)]);
+	dev->cq_table =(struct dwcroce_cq **)(&dev->allocated_cqs[BITS_TO_LONGS(max_cq)+sizeof(struct dwcroce_qp **) * max_qp]);
+
+	set_bit(0,dev->allocated_qps);
+	set_bit(0,dev->allocated_cqs);
+	
+	set_bit(1,dev->allocated_qps);
+	set_bit(1,dev->allocated_cqs);
+	set_bit(2,dev->allocated_cqs);
+
+	spin_lock_init(&dev->resource_lock);
+	spin_lock_init(&dev->qptable_lock);
+	printk("dwcroce: dwcroce_init_cqqp end \n");//added by hs 
+	return 0;
+}
+
+static int dwcroce_get_used_rsrc(struct dwcroce_dev *dev)
+{
+	dev->used_qps = find_next_zero_bit(dev->allocated_qps,dev->attr.max_qp,0);
+	dev->used_cqs = find_next_zero_bit(dev->allocated_qps,dev->attr.max_cq,0);
+
+	return 0;
+
+}
+
 static int dwcroce_alloc_resource(struct dwcroce_dev *dev)
 {
 	printk("dwcroce: dwcroce_alloc_resource start\n");//added by hs
 	int status;
 	status = dwcroce_init_pools(dev);
+	if(status)
+		goto err1;
+	status = dwcroce_init_cqqp(dev);
+	if(status)
+		goto err1;
+	status = dwcroce_get_used_rsrc(dev);
 	if(status)
 		goto err1;
 	return 0;
@@ -282,6 +337,7 @@ err_pd:
 	printk("alloc_pd failed\n");//added by hs 
 	return ERR_PTR(-ENOMEM);	
 }
+
 
 static struct dwcroce_dev *dwc_add(struct dwc_dev_info *dev_info)
 {

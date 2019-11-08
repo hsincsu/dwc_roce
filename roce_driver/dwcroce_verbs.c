@@ -338,10 +338,14 @@ struct ib_cq *dwcroce_create_cq(struct ib_device *ibdev,
 	struct dwcroce_dev *dev;
 	u16 pd_id = 0;
 	int status;
+	u32 cq_num = 0;
 
 	dev = get_dwcroce_dev(ibdev);
 	if(attr->flags)
 		return ERR_PTR(-EINVAL);
+	if(entries > dev->attr.max_cqe)
+		return ERR_PTR(-EINVAL);
+
 	if (udata) {
 		printk("dwcroce:create_cq by user space\n");//added by hs
 	}else
@@ -351,19 +355,30 @@ struct ib_cq *dwcroce_create_cq(struct ib_device *ibdev,
 		return ERR_PTR(-ENOMEM);
 
 	spin_lock_init(&cq->lock);
-	INIT_LIST_HEAD(&cq->sq_head);
-	INIT_LIST_HEAD(&cq->rq_head);
+	/*All have 3 types of CQ*/
+	//INIT_LIST_HEAD(&cq->sq_head); // cq for sq ,when send wqe is sent by card.
+	//INIT_LIST_HEAD(&cq->rq_head);// cq for rq, when recv wqe is processed by card.
+	//INIT_LIST_HEAD(&cq->xmit_head);//cq for xmit. when all wqe is ended
+
 	/*wait to add end!*/	
 	if (ib_ctx) {
 		printk("dwcroce:some function for user space");//added by hs
 	}
+	status = dwcroce_alloc_cqqpresource(dev,dev->allocated_cqs,dev->attr.max_cq,&cq_num,&dev->next_cq);
+	if (status)
+	{
+		printk("dwcroce_alloc_resource failed\n");//added by hs 
+		return ERR_PTR(status);
+	}
+	cq->id = cq_num;
 	/*create cq -- access hw for these*/
 	status = dwcroce_hw_create_cq(dev,cq,entries,pd_id);
 	if (status) {
 		kfree(cq);
 		return ERR_PTR(status); 
-
 	}
+
+	dev->cq_table[cq->id] = cq;//for storing cq.
 	printk("dwcroce:dwcroce_create_cq succeed end!\n");//added by hs for printing end info
 	return &cq->ibcq;
 }
@@ -378,32 +393,135 @@ int dwcroce_resize_cq(struct ib_cq *ibcq, int cqe, struct ib_udata *udata)
 	return 0;
 }
 
+/*free resources*/
+static void dwcroce_free_cqqpresource(struct dwcroce_dev *dev, struct dwcroce_cq *cq)
+{
+	struct pci_dev *pdev = dev->devinfo.pcidev;
+	unsigned long flags;
+	/*free kernel dma memory*/
+	dma_free_coherent(&pdev->dev,cq->len,cq->txva,(dma_addr_t)cq->txpa);
+	dma_free_coherent(&pdev->dev,cq->len,cq->rxva,(dma_addr_t)cq->rxpa);
+	dma_free_coherent(&pdev->dev,cq->len,cq->xmitva,(dma_addr_t)cq->xmitpa);
+
+	/*free va*/
+	cq->txva = NULL;
+	cq->rxva= NULL;
+	cq->xmitva = NULL;
+
+	/*free resources*/
+	spin_lock_irqsave(&dev->resource_lock,flags);
+	clear_bit(cq->id,cq->allocated_cqs);
+	spin_unlock_irqrestore(&dev->resource_lock,flags);
+}
+
+/*destroy cq*/
 int dwcroce_destroy_cq(struct ib_cq *ibcq)
 {
 	printk("dwcroce:dwcroce_destroy_cq start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
 	struct dwcroce_cq *cq;
+	struct dwcroce_dev *dev;
 	cq = get_dwcroce_cq(ibcq);
+	dev = get_dwcroce_dev(ibcq->device);
+	if (!ibcq) {
+		printk("ibcq == NULL \n");//added by hs 
+		return 0;
+	}
+	dwcroce_free_cqqpresource(dev,cq);
 	kfree(cq);
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_destroy_cq succeed end!\n");//added by hs for printing end info
 	return 0;
 }
 
+static int dwcroce_check_qp_params(struct ib_pd *ibpd, struct dwcroce_dev *dev,
+								   struct ib_qp_init_attr *attrs, struct ib_udata *udata)
+{
+	if ((attrs->qp_type != IB_QPT_GSI) &&
+		(attrs->qp_type != IB_QPT_RC) &&
+		(attrs->qp_type != IB_QPT_UC) &&
+		(attrs->qp_type != IB_QPT_UD)) {
+		printk("%s unsupported qp type = 0x%x requested \n",__func__,attrs->qp_type);
+		return -EINVAL;
+	}
+
+	 if ((attrs->qp_type != IB_QPT_GSI) &&
+            (attrs->cap.max_send_wr > dev->attr.max_wqe)) {
+                printk("dwcroce: %s unsupported send_wr =0x%x requested\n",__func__,attrs->cap.max_send_wr);//added by hs
+				printk("dwcroce: %s unsupported send_wr = 0x%x\n",__func__,dev->attr.max_wqe);//added by hs 
+                return -EINVAL;
+        }
+
+	 return 0;
+
+}
+
+/*dwcroce_set_qp_init_params. To get init params to private qp dwcroce_qp*/
+static void dwcroce_set_qp_init_params(struct dwcroce_qp *qp, struct dwcroce_pd *pd, struct ib_qp_init_attr *attrs)
+{
+	qp->pd = pd;
+
+	qp->qp_type = attrs->qp_type;
+	qp->max_inline_data = attrs->cap.max_inline_data;
+	qp->sq.max_sges = attrs->cap.max_send_sge;
+	qp->rq.max_sges = attrs->cap.max_recv_sge;
+
+	qp->signaled = (attrs->sq_sig_type == IB_SIGNAL_ALL_WR) ? true:false;
+
+}
+
 struct ib_qp *dwcroce_create_qp(struct ib_pd *ibpd,
 			       struct ib_qp_init_attr *attrs,
 			       struct ib_udata *udata)
 {
-	printk("dwcroce:dwcroce_create_qp start!\n");//added by hs for printing start info
+	printk("dwcroce: dwcroce_create_qp start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
-	
+	struct dwcroce_dev *dev;
 	struct dwcroce_qp *qp;
+	struct dwcroce_pd *pd;
+	struct dwcroce_cq *cq;
+	int status;
+	u32 qp_num = 0;
+	int sq_size;
+	int rq_size;
+	/*get some kernel private data*/
+	sq_size = attrs->cap.max_send_wr;
+	rq_size = attrs->cap.max_recv_wr;
+	pd = get_dwcroce_pd(ibpd);
+	dev = get_dwcroce_dev(ibpd->device);
 
+	cq = get_dwcroce_cq(attrs->send_cq); // To get cq? but Most important that is send_cq && recv_cq  the same one.
+	if(!cq){
+		printk("dwcroce: cq is null \n");//added by hs 
+		return -ENOMEM;
+	}
+	/*check attrs is valid or not*/
+	status = dwcroce_check_qp_params(ibpd,dev,attrs,udata);
+	if (status) {
+		printk("dwcroce: check qp error \n");//added by hs 
+		return status;
+	}
+	/*allocate memory for private qp*/
 	qp = kzalloc(sizeof(*qp),GFP_KERNEL);
+	if (!qp) {
+		printk("dwcroce: qp is null \n");//added by hs 
+		return -ENOMEM;
+	}
 	
-	
-	/*wait to add end!*/	
-	printk("dwcroce:dwcroce_create_qp succeed end!\n");//added by hs for printing end info
+	/*get attrs to private qp */
+	dwcroce_set_qp_init_params(qp,pd,attrs);
+
+	/*alloate id for qp*/
+	status = dwcroce_alloc_cqqpresource(dev,dev->allocated_qps,dev->max_qp,&qp_num,&dev->next_qp);
+	qp->id = qp_num;
+
+	/*kenrel create qp*/
+
+
+
+				 /*wait to add end!*/	
+	dev->qp_table[qp->id] = qp;
+	printk("dwcroce: dwcroce_create_qp succeed end!\n");//added by hs for printing end info
 	return &qp->ibqp;
 }
 

@@ -29,17 +29,7 @@
 #include "dwcroce_loc.h"
 #define DWCROCEDRV_VER "1.0.0.0"
 
-struct dwcroce_dev{
-	struct ib_device ibdev;
-	struct ib_device_attr attr;
-	struct dwc_dev_info devinfo;
-//	unsigned long *pd_id; // for allocate an unique id to each pd.
-	struct mutex pd_mutex;
-	//not finished ,added later.
-
-	struct dwcroce_pool mr_pool;
-	struct dwcroce_pool pd_pool;
-};
+#define  DWCROCE_MIN_Q_PAGE_SIZE 4096
 
 struct dwcroce_pd {
 	struct dwcroce_pool_entry pelem;
@@ -47,18 +37,41 @@ struct dwcroce_pd {
 	u32 id;
 
 };
+struct dwcroce_cqe { // cqe need 16 byte memory.
+	u32 cqe_p1;//4 byte
+	u32 cqe_p2;//4 byte
+	u32 cqe_p3;//4 byte
+	u32 cqe_p4;//4 byte
+};
 
 struct dwcroce_cq {
 	struct ib_cq ibcq;
-        u32 phase;
-        u32 getp;
+	/*three types of cq,tx,rx,xmit*/
+	struct dwcroce_cqe *txva;
+	struct dwcroce_cqe *rxva;
+	struct dwcroce_cqe *xmitva;
+	/*wp ,rp for three types of cq*/
+	struct dwcroce_cqe *txwp;
+	struct dwcroce_cqe *txrp;
+	struct dwcroce_cqe *rxwp;
+	struct dwcroce_cqe *rxrp;
+	struct dwcroce_cqe *xmitwp;
+	struct dwcroce_cqe *xmitrp;
 
+	dma_addr_t txpa;
+	dma_addr_t rxpa;
+	dma_addr_t xmitpa;
+		
+		u32 phase;
+        u32 getp;
+		u32 max_hw_cqe;
+
+		u32 id; // allocate a unique id for cq.
         u32 max_hw_cqe;
-        u32 cqe_cnt;
-        u32 len;
+        u32 cqe_cnt;//cqe count
+        u32 len; // cq's len
         spinlock_t lock; //for serialize accessing to the CQ
-        struct list_head sq_head, rq_head;
- 
+        struct list_head sq_head, rq_head, xmit_head;
 
 };
 
@@ -97,9 +110,87 @@ struct dwcroce_mr {
 	struct dwcroce_map  **map;
 };
 
+struct dwcroce_qp_hwq_info {
+	u8 *va;
+	u32 max_sges;
+	u32 head,tail;
+	u32 entry_size;
+	u32 max_cnt;
+	u32 max_wqe_idx;
+	//u16 dbid;
+	u32 len;
+	dma_addr_t pa;
+};
+
+struct dwcroce_wqe {//defaultly,we use 64 byte WQE.a queue may have 256 wqes.
+	u32 immdt;
+	u16 pkey;
+	u32 rkey;
+	u32 lkey;
+	u32 qkey;
+	u32 dmalen;
+
+	u64 destaddr;
+	u64 localaddr;
+
+	u16 destqp;
+
+	u32 destsocket1;
+	u16 destsocket2;
+
+	u16 localqp;
+	u8  opcode;
+
+	u32 localsocket1;
+	u16 localsocket2;
+
+};
+
 struct dwcroce_qp {
 	struct ib_qp ibqp;
+	
+	u32 id; // qp unique id.
+	u32 len; // qp len.send queue is same to recv queue.
+	u32 max_inline_data;
+	struct dwcroce_cq *cq; 
+	struct dwcroce_pd *pd;
+
+	struct dwcroce_qp_hwq_info rq;
+	struct dwcroce_qp_hwq_info sq;
+
+	enum ib_qp_type qp_type;
+	u32 qkey;
+	bool signaled;
+
+
 };
+
+struct dwcroce_dev{
+	struct ib_device ibdev;
+	struct ib_device_attr attr;
+	struct dwc_dev_info devinfo;
+//	unsigned long *pd_id; // for allocate an unique id to each pd.
+	struct mutex pd_mutex;
+	//not finished ,added later.
+
+	struct dwcroce_pool mr_pool;
+	struct dwcroce_pool pd_pool;
+	u8 *mem_resources; // for bitmap memory
+	unsigned long *allocated_cqs; // allocate id for cqs
+	unsigned long *allocated_qps;//allocated id for qps
+	struct dwcroce_qp **qp_table;
+	struct dwcroce_cq **cq_table;
+
+	u32 next_cq;
+	u32 next_qp;
+	u32	used_cqs;
+	u32 used_qps;
+
+	spinlock_t resource_lock; //for cq,qp resource access
+	spinlock_t qptable_lock;
+};
+
+
 static inline struct dwcroce_dev *get_dwcroce_dev(struct ib_device *ibdev)
 {
 	return container_of(ibdev, struct dwcroce_dev, ibdev);

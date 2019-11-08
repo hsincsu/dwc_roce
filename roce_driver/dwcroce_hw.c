@@ -465,6 +465,8 @@ static int dwcroce_init_dev_attr(struct dwcroce_dev *dev)
 	dev->attr.max_mr = 256*1024;
 	dev->attr.max_cq = 16384;
 	dev->attr.max_qp = 0x10000;
+	dev->attr.max_cqe = 256;
+	dev->attr.max_wqe = 256;
 
 	printk("dwcroce: dwcroce_init_dev_attr \n");//added by hs 
 	return 0;
@@ -610,19 +612,19 @@ static int dwcroce_init_pgu_cq(struct dwcroce_dev *dev)
 		writel(PGU_BASE + RxUpAddrCQE,base_addr + MPB_WRITE_ADDR);
 		writel(0x2000,base_addr + MPB_RW_DATA);
 
-		writel(PGU_BASE + RxUpAddrCQE + 4,base_addr + MPB_WRITE_ADDR);
+		writel(PGU_BASE + RxUpAddrCQE + 0x4,base_addr + MPB_WRITE_ADDR);
 		writel(0x0000,base_addr + MPB_RW_DATA);
 
 		writel(PGU_BASE + RxBaseAddrCQE,base_addr + MPB_WRITE_ADDR);
 		writel(0x0000,base_addr + MPB_RW_DATA);
 
-		writel(PGU_BASE + RxBaseAddrCQE + 4,base_addr + MPB_WRITE_ADDR);
+		writel(PGU_BASE + RxBaseAddrCQE + 0x4,base_addr + MPB_WRITE_ADDR);
 		writel(0x0000,base_addr + MPB_RW_DATA);
 
 		writel(PGU_BASE + RxCQEWP,base_addr + MPB_WRITE_ADDR);
 		writel(0x0000,base_addr + MPB_RW_DATA);
 
-		writel(PGU_BASE + RxCQEWP + 4,base_addr + MPB_WRITE_ADDR);
+		writel(PGU_BASE + RxCQEWP + 0x4,base_addr + MPB_WRITE_ADDR);
 		writel(0x0000,base_addr + MPB_RW_DATA);
 
 		writel(PGU_BASE + RxCQEOp,base_addr + MPB_WRITE_ADDR);
@@ -650,19 +652,19 @@ static int dwcroce_init_pgu_cq(struct dwcroce_dev *dev)
 		writel(PGU_BASE + XmitUpAddrCQE,base_addr + MPB_WRITE_ADDR);
 		writel(0x2000,base_addr + MPB_RW_DATA);
 
-		writel(PGU_BASE + XmitUpAddrCQE + 4,base_addr + MPB_WRITE_ADDR);
+		writel(PGU_BASE + XmitUpAddrCQE + 0x4,base_addr + MPB_WRITE_ADDR);
 		writel(0x0000,base_addr + MPB_RW_DATA);
 
 		writel(PGU_BASE + XmitBaseAddrCQE,base_addr + MPB_WRITE_ADDR);
 		writel(0x0000,base_addr + MPB_RW_DATA);
 
-		writel(PGU_BASE + XmitBaseAddrCQE + 4,base_addr + MPB_WRITE_ADDR);
+		writel(PGU_BASE + XmitBaseAddrCQE + 0x4,base_addr + MPB_WRITE_ADDR);
 		writel(0x0000,base_addr + MPB_RW_DATA);
 
 		writel(PGU_BASE + XmitCQEWP,base_addr + MPB_WRITE_ADDR);
 		writel(0x0000,base_addr + MPB_RW_DATA);
 
-		writel(PGU_BASE + XmitCQEWP + 4,base_addr + MPB_WRITE_ADDR);
+		writel(PGU_BASE + XmitCQEWP + 0x4,base_addr + MPB_WRITE_ADDR);
 		writel(0x0000,base_addr + MPB_RW_DATA);
 
 		writel(PGU_BASE + XmitCQEOp,base_addr + MPB_WRITE_ADDR);
@@ -677,6 +679,17 @@ static int dwcroce_init_pgu_cq(struct dwcroce_dev *dev)
 			printk("dwcroce: xmitop cycle  is %x\n",xmitop);//added by hs 
 		}
 	}
+
+	/*init wqe retrycount and timeout*/
+	writel(PGU_BASE + WQERETRYCOUNT,base_addr + MPB_WRITE_ADDR);
+	writel(0xffffffff,base_addr + MPB_RW_DATA);
+
+	writel(PGU_BASE + WQERETRYTIMER,base_addr + MPB_WRITE_ADDR);
+	writel(0xffffffff,base_addr + MPB_RW_DATA);
+
+	writel(PGU_BASE + WQERETRYTIMER + 0x4,base_addr + MPB_WRITE_ADDR);
+	writel(0xffffffff,base_addr + MPB_RW_DATA);
+
 	printk("dwcroce: dwcroce_init_pgu_cq end \n");//added by hs
 	return err;
 	 
@@ -985,7 +998,75 @@ errphd:
 int dwcroce_hw_create_cq(struct dwcroce_dev *dev, struct dwcroce_cq *cq, int entries, u16 pd_id)
 {
 	printk("dwcroce: dwcroce_hw_create_cq start\n");//added by hs 
+	int max_hw_cqe;
+	u32 hw_pages,cqe_size,cqe_count;
+	struct pci_dev *pdev = dev->devinfo.pcidev;
+
+	/*For kernel*/
+	cq->max_hw_cqe= dev->attr.max_cqe;
+	max_hw_cqe = dev->attr.max_cqe;
+	cqe_size = sizeof(struct dwcroce_cqe);
+	
+	cq->len = roundup(max_hw_cqe*cqe_size,DWCROCE_MIN_Q_PAGE_SIZE);
+	/*tx cq*/
+	cq->txva = dma_alloc_coherent(&pdev->dev,cq->len,&cq->txpa,GFP_KERNEL); // allocate memory for tx cq
+	if (!cq->txva) {
+		status = -ENOMEM;
+		goto mem_err;
+	}
+	cq->txwp = cq->txrp = cq->txva;
+	/*rx cq*/
+	cq->rxva = dma_alloc_coherent(&pdev->dev,cq->len,&cq->rxpa,GFP_KERNEL);//allocate memory for rx cq
+	if (!cq->rxva) {
+		status = -ENOMEM;
+		goto mem_err;
+	}
+	cq->rxwp = cq->rxrp = cq->rxva;
+	/*xmit cq*/
+	cq->xmitva = dma_alloc_coherent(&pdev->dev,cq->len,&cq->xmitpa,GFP_KERNEL);//allocate memory for xmit cq
+	if (!cq->xmitva) {
+		status = -ENOMEM;
+		goto mem_err;
+	}
+	cq->xmitwp = cq->xmitrp = cq->xmitva;
+	cqe_count = cq->len / cqe_size;
+	cq->cqe_cnt = cqe_count;
+	if(cqe_count > 256)
+		printk("dwcroce: cqe_count over 256\n");//added by hs 
 	
 	printk("dwcroce: dwcroce_hw_create_cq end\n");//added by hs 
+mem_err:
+	printk("dwcroce:mem_err\n");//added by hs
+	return 0;
+}
+
+int dwcroce_alloc_cqqpresource(struct dwcroce_dev *dev, unsigned long *resource_array, u32 max_resources, u32 *req_resource_num, u32 *next)
+{
+	u32 resource_num;
+	unsigned long flags;
+	spin_lock_irqsave(&dev->resource_lock,flags);
+	resource_num = find_next_zero_bit(resource_array,max_resources,*next);
+	if (resource_num >= max_resources) {
+		resource_num = find_first_zero_bit(resource_array,max_resources);
+		if (resource_num >= max_resources) {
+			spin_unlock_irqrestore(&dev->resource_lock,flags);
+			return -EOVERFLOW;
+		}
+	}
+	set_bit(resource_num,resource_array);
+	*next = resource_num + 1;
+	if(*next == max_resources)
+		*next = 0;
+	*req_resource_num = resource_num;
+	spin_unlock_irqrestore(&dev->resource_lock,flags);
+	return 0;
+}
+
+/*allocate memory , create qp & cq in hw*/
+int dwcroce_hw_create_qp(struct dwcroce_dev *dev, struct dwcroce_qp *qp, struct dwcroce_cq *cq)
+{
+	printk("dwcroce: dwcroce_hw_create_qp start \n");//added by hs
+
+	printk("dwcroce: dwcroce_hw_create_qp end \n");//added by hs 
 	return 0;
 }
