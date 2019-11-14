@@ -466,7 +466,7 @@ static int dwcroce_init_dev_attr(struct dwcroce_dev *dev)
 	dev->attr.max_cq = 16384;
 	dev->attr.max_qp = 0x10000;
 	dev->attr.max_cqe = 256;
-	dev->attr.max_wqe = 256;
+	dev->attr.max_qp_wr = 256;
 
 	printk("dwcroce: dwcroce_init_dev_attr \n");//added by hs 
 	return 0;
@@ -1001,7 +1001,7 @@ int dwcroce_hw_create_cq(struct dwcroce_dev *dev, struct dwcroce_cq *cq, int ent
 	int max_hw_cqe;
 	u32 hw_pages,cqe_size,cqe_count;
 	struct pci_dev *pdev = dev->devinfo.pcidev;
-
+	int status;
 	/*For kernel*/
 	cq->max_hw_cqe= dev->attr.max_cqe;
 	max_hw_cqe = dev->attr.max_cqe;
@@ -1035,6 +1035,7 @@ int dwcroce_hw_create_cq(struct dwcroce_dev *dev, struct dwcroce_cq *cq, int ent
 		printk("dwcroce: cqe_count over 256\n");//added by hs 
 	
 	printk("dwcroce: dwcroce_hw_create_cq end\n");//added by hs 
+	return 0;
 mem_err:
 	printk("dwcroce:mem_err\n");//added by hs
 	return 0;
@@ -1087,7 +1088,7 @@ int dwcroce_hw_create_qp(struct dwcroce_dev *dev, struct dwcroce_qp *qp, struct 
 	/*For sq*/
 	u32 max_wqe_allocated;
 	u32 max_sges = attrs->cap.max_send_sge;
-	max_wqe_allocated = min_t(u32,attrs->cap.max_send_wr +1,dev->attr.max_wqe);
+	max_wqe_allocated = min_t(u32,attrs->cap.max_send_wr +1,dev->attr.max_qp_wr);
 	len = sizeof(struct dwcroce_wqe) * max_wqe_allocated;
 	qp->sq.va = dma_alloc_coherent(&pdev->dev,len,&pa,GFP_KERNEL);
 	if(!qp->sq.va)

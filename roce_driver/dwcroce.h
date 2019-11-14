@@ -67,7 +67,6 @@ struct dwcroce_cq {
 		u32 max_hw_cqe;
 
 		u32 id; // allocate a unique id for cq.
-        u32 max_hw_cqe;
         u32 cqe_cnt;//cqe count
         u32 len; // cq's len
         spinlock_t lock; //for serialize accessing to the CQ

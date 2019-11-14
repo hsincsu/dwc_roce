@@ -341,11 +341,11 @@ struct ib_cq *dwcroce_create_cq(struct ib_device *ibdev,
 	u32 cq_num = 0;
 
 	dev = get_dwcroce_dev(ibdev);
-	if(attr->flags)
-		return ERR_PTR(-EINVAL);
-	if(entries > dev->attr.max_cqe)
-		return ERR_PTR(-EINVAL);
-
+//	if(attr->flags)
+//		return ERR_PTR(-EINVAL);
+//	if(entries > dev->attr.max_cqe)
+//		return ERR_PTR(-EINVAL);
+	printk("dwcroce: entries is %d, flags is %d\n",entries,attr->flags);//added by hs
 	if (udata) {
 		printk("dwcroce:create_cq by user space\n");//added by hs
 	}else
@@ -371,6 +371,7 @@ struct ib_cq *dwcroce_create_cq(struct ib_device *ibdev,
 		return ERR_PTR(status);
 	}
 	cq->id = cq_num;
+	printk("dwcroce: create_cq for cq_num is %d \n",cq_num);//added by hs 
 	/*create cq -- access hw for these*/
 	status = dwcroce_hw_create_cq(dev,cq,entries,pd_id);
 	if (status) {
@@ -410,7 +411,7 @@ static void dwcroce_free_cqqpresource(struct dwcroce_dev *dev, struct dwcroce_cq
 
 	/*free resources*/
 	spin_lock_irqsave(&dev->resource_lock,flags);
-	clear_bit(cq->id,cq->allocated_cqs);
+	clear_bit(cq->id,dev->allocated_cqs);
 	spin_unlock_irqrestore(&dev->resource_lock,flags);
 }
 
@@ -446,9 +447,9 @@ static int dwcroce_check_qp_params(struct ib_pd *ibpd, struct dwcroce_dev *dev,
 	}
 
 	 if ((attrs->qp_type != IB_QPT_GSI) &&
-            (attrs->cap.max_send_wr > dev->attr.max_wqe)) {
+            (attrs->cap.max_send_wr > dev->attr.max_qp_wr)) {
                 printk("dwcroce: %s unsupported send_wr =0x%x requested\n",__func__,attrs->cap.max_send_wr);//added by hs
-				printk("dwcroce: %s unsupported send_wr = 0x%x\n",__func__,dev->attr.max_wqe);//added by hs 
+				printk("dwcroce: %s unsupported send_wr = 0x%x\n",__func__,dev->attr.max_qp_wr);//added by hs 
                 return -EINVAL;
         }
 
@@ -512,9 +513,9 @@ struct ib_qp *dwcroce_create_qp(struct ib_pd *ibpd,
 	dwcroce_set_qp_init_params(qp,pd,attrs);
 
 	/*alloate id for qp*/
-	status = dwcroce_alloc_cqqpresource(dev,dev->allocated_qps,dev->max_qp,&qp_num,&dev->next_qp);
+	status = dwcroce_alloc_cqqpresource(dev,dev->allocated_qps,dev->attr.max_qp,&qp_num,&dev->next_qp);
 	qp->id = qp_num;
-
+	printk("dwcroce: create_qp for qp_num is %d\n",qp_num);//added by hs 
 	/*kenrel create qp*/
 	status = dwcroce_hw_create_qp(dev,qp,cq,pd,attrs);
 		if (status) {

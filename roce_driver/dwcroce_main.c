@@ -243,7 +243,7 @@ err1:
 	return err;
 }
 
-static int dwcroce_init_cqqp(struct dwcroce_dev *dev);//allocate id for cq &qp
+static int dwcroce_init_cqqp(struct dwcroce_dev *dev)//allocate id for cq &qp
 {
 	printk("dwcroce: dwcroce_init_cqqp start \n");//added by hs 
 	u32 max_qp;
