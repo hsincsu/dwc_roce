@@ -499,7 +499,7 @@ static int dwcroce_init_pgu_wqe(struct dwcroce_dev *dev)
 	u32 count = 0;
 	void __iomem *base_addr;
 	base_addr = dev->devinfo.base_addr;
-	
+
 	count = 1ull << QPNUM;
 	count = count -1;
 
@@ -1063,9 +1063,107 @@ int dwcroce_alloc_cqqpresource(struct dwcroce_dev *dev, unsigned long *resource_
 }
 
 /*allocate memory , create qp & cq in hw*/
-int dwcroce_hw_create_qp(struct dwcroce_dev *dev, struct dwcroce_qp *qp, struct dwcroce_cq *cq)
+int dwcroce_hw_create_qp(struct dwcroce_dev *dev, struct dwcroce_qp *qp, struct dwcroce_cq *cq, struct dwcroce_pd *pd , struct ib_qp_init_attr *attrs)
 {
 	printk("dwcroce: dwcroce_hw_create_qp start \n");//added by hs
+	int status;
+	struct pci_dev *pdev = dev->devinfo.pcidev;
+	u32 len;
+	dma_addr_t pa = 0;
+	/*For rq*/
+	u32 max_rqe_allocated = attrs->cap.max_recv_wr + 1;
+	qp->rq.max_cnt = max_rqe_allocated;
+	len = sizeof(struct dwcroce_wqe) * max_rqe_allocated;
+	qp->rq.va = dma_alloc_coherent(&pdev->dev,len,&pa,GFP_KERNEL); // allocate memory for rq.
+	if(!qp->rq.va)
+		return -EINVAL;
+	qp->rq.len = len;
+	qp->rq.pa = pa;
+	u32 pa_l = 0;
+	u32 pa_h = 0;
+	/*init pa ,len*/
+	pa = 0;
+	len = 0;
+	/*For sq*/
+	u32 max_wqe_allocated;
+	u32 max_sges = attrs->cap.max_send_sge;
+	max_wqe_allocated = min_t(u32,attrs->cap.max_send_wr +1,dev->attr.max_wqe);
+	len = sizeof(struct dwcroce_wqe) * max_wqe_allocated;
+	qp->sq.va = dma_alloc_coherent(&pdev->dev,len,&pa,GFP_KERNEL);
+	if(!qp->sq.va)
+		return -EINVAL;
+	qp->sq.len = len;
+	qp->sq.pa = pa;
+
+
+	/*ACCESS HardWare register*/
+	u32 qpn = qp->id;
+	void __iomem* base_addr;
+	base_addr = dev->devinfo.base_addr;
+	/*init qpn*/
+	writel(PGU_BASE + INITQP,base_addr + MPB_WRITE_ADDR);
+	writel(qpn,base_addr + MPB_RW_DATA);
+
+	/*set psn*/
+	writel(PGU_BASE + INITQPTABLE,base_addr + MPB_WRITE_ADDR);
+	writel(0x1,base_addr + MPB_RW_DATA);
+
+	/*writel receive queue START*/
+	writel(PGU_BASE + RCVQ_INF,base_addr + MPB_WRITE_ADDR);
+	writel(qpn,base_addr + MPB_RW_DATA);
+
+	/*RECVQ DIL*/
+	pa = qp->rq.pa;
+	pa_l = pa<<32;
+	pa_h = pa>>32;
+	writel(PGU_BASE + RCVQ_DI,base_addr + MPB_WRITE_ADDR); //write rq base addr to revq
+	writel(pa_l , base_addr + MPB_RW_DATA);
+	/*RECVQ DIH*/
+	writel(PGU_BASE + RCVQ_DI + 0x4,base_addr + MPB_WRITE_ADDR);
+	writel(pa_h, base_addr + MPB_RW_DATA);
+
+	/*Write RCVQ_WR*/
+	writel(PGU_BASE + RCVQ_WRRD,base_addr + MPB_WRITE_ADDR);
+	writel(0x1, base_addr + MPB_RW_DATA);
+	/*writel receive queue END*/
+
+	/*writel send queue START*/
+	writel(PGU_BASE + QPLISTREADQPN,base_addr + MPB_WRITE_ADDR);
+	writel(qpn,base_addr + MPB_RW_DATA);
+
+	writel(PGU_BASE + WPFORQPLIST,base_addr + MPB_WRITE_ADDR);
+	writel(0x0,base_addr + MPB_RW_DATA);
+
+	writel(PGU_BASE + WPFORQPLIST2,base_addr + MPB_WRITE_ADDR);
+	writel(0x0,base_addr + MPB_RW_DATA);
+
+	writel(PGU_BASE + RPFORQPLIST,base_addr + MPB_WRITE_ADDR);
+	writel(0x0,base_addr + MPB_RW_DATA);
+
+	writel(PGU_BASE + RPFORQPLIST2,base_addr + MPB_WRITE_ADDR);
+	writel(0x0,base_addr + MPB_RW_DATA);
+
+	writel(PGU_BASE + WRITEORREADQPLIST,base_addr + MPB_WRITE_ADDR);
+	writel(0x1,base_addr + MPB_RW_DATA);
+
+	writel(PGU_BASE + WRITEQPLISTMASK,base_addr + MPB_WRITE_ADDR);
+	writel(0x7,base_addr + MPB_RW_DATA);
+
+	writel(PGU_BASE + QPLISTWRITEQPN,base_addr + MPB_WRITE_ADDR);
+	writel(0x1,base_addr + MPB_RW_DATA);
+
+	writel(PGU_BASE + CFGSIZEOFWRENTRY,base_addr + MPB_WRITE_ADDR);
+	writel(64,base_addr + MPB_RW_DATA);
+
+	writel(PGU_BASE + CFGSIZEOFWRENTRY + 0x4,base_addr + MPB_WRITE_ADDR);
+	writel(0x0,base_addr + MPB_RW_DATA);
+
+	writel(PGU_BASE + WRITEORREADQPLIST,base_addr + MPB_WRITE_ADDR);
+	writel(0x0,base_addr + MPB_RW_DATA);
+
+	writel(PGU_BASE + UPLINKDOWNLINK,base_addr + MPB_WRITE_ADDR);
+	writel(0x00080100,base_addr + MPB_RW_DATA);//LINKMTU {4'h0,14'h20,14'h100}
+
 
 	printk("dwcroce: dwcroce_hw_create_qp end \n");//added by hs 
 	return 0;

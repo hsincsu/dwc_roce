@@ -516,9 +516,11 @@ struct ib_qp *dwcroce_create_qp(struct ib_pd *ibpd,
 	qp->id = qp_num;
 
 	/*kenrel create qp*/
-
-
-
+	status = dwcroce_hw_create_qp(dev,qp,cq,pd,attrs);
+		if (status) {
+			kfree(qp);
+			return ERR_PTR(status);
+	}
 				 /*wait to add end!*/	
 	dev->qp_table[qp->id] = qp;
 	printk("dwcroce: dwcroce_create_qp succeed end!\n");//added by hs for printing end info
@@ -569,7 +571,15 @@ int dwcroce_destroy_qp(struct ib_qp *ibqp)
 	printk("dwcroce:dwcroce_destroy_qp start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
 	struct dwcroce_qp *qp;
+	struct dwcroce_dev *dev;
+	struct pci_dev *pdev;
+	dev = get_dwcroce_dev(ibqp->device);
 	qp = get_dwcroce_qp(ibqp);
+	pdev = dev->devinfo.pcidev;
+	if(qp->sq.va)
+		dma_free_coherent(&pdev->dev,qp->sq.len,qp->sq.va,qp->sq.pa);
+	if(qp->rq.va)
+		dma_free_coherent(&pdev->dev,qp->rq.len,qp->rq.va,qp->rq.pa);
 	kfree(qp);
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_destroy_qp succeed end!\n");//added by hs for printing end info
