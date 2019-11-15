@@ -524,6 +524,15 @@ struct ib_qp *dwcroce_create_qp(struct ib_pd *ibpd,
 	}
 				 /*wait to add end!*/	
 	dev->qp_table[qp->id] = qp;
+
+	/*test*/
+	printk("dwcroce: test wqe to get or read start\n");//added by hs
+	struct dwcroce_wqe *wqe;
+	wqe = kzalloc(sizeof(*wqe),GFP_KERNEL);
+	wqe->pkey = 0x1110;
+	printk("dwcroce:wqe's pkey is %x\n",wqe->pkey);//added by hs
+	printk("dwcroce:wqe's pkey is %x\n",*((u32 *)wqe +4 ));//added by hs 
+	kfree(wqe);
 	printk("dwcroce: dwcroce_create_qp succeed end!\n");//added by hs for printing end info
 	return &qp->ibqp;
 }

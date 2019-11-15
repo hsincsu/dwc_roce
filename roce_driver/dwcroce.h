@@ -121,27 +121,20 @@ struct dwcroce_qp_hwq_info {
 	dma_addr_t pa;
 };
 
-struct dwcroce_wqe {//defaultly,we use 64 byte WQE.a queue may have 256 wqes.
+struct dwcroce_wqe {//defaultly,we use 48 byte WQE.a queue may have 256 wqes. 48 bytes long
 	u32 immdt;
 	u16 pkey;
-	u32 rkey;
+	u16 rkey;
 	u32 lkey;
 	u32 qkey;
 	u32 dmalen;
-
 	u64 destaddr;
 	u64 localaddr;
-
-	u16 destqp;
-
+	u16 eecnxt; // 10 bits
+	u16 destqp; // 10 bits
 	u32 destsocket1;
 	u16 destsocket2;
-
-	u16 localqp;
 	u8  opcode;
-
-	u32 localsocket1;
-	u16 localsocket2;
 
 };
 
