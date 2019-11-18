@@ -500,7 +500,7 @@ static int dwcroce_init_pgu_wqe(struct dwcroce_dev *dev)
 	void __iomem *base_addr;
 	base_addr = dev->devinfo.base_addr;
 
-	count = 1ull << QPNUM;
+	count = 1ull << QPNUM; // 1024.
 	count = count -1;
 
 	/*socket id*/
@@ -1117,6 +1117,9 @@ int dwcroce_hw_create_qp(struct dwcroce_dev *dev, struct dwcroce_qp *qp, struct 
 	pa = qp->rq.pa;
 	pa_l = pa<<32;
 	pa_h = pa>>32;
+	printk("dwcroce: create_qp pa is %x\n",pa);//added by hs
+	printk("dwcroce: create_qp pa_l is %x\n",pa_l);//added by hs
+	printk("dwcroce: create_qp pa_h is %x\n",pa_h);//added by hs 
 	writel(PGU_BASE + RCVQ_DI,base_addr + MPB_WRITE_ADDR); //write rq base addr to revq
 	writel(pa_l , base_addr + MPB_RW_DATA);
 	/*RECVQ DIH*/
@@ -1128,21 +1131,28 @@ int dwcroce_hw_create_qp(struct dwcroce_dev *dev, struct dwcroce_qp *qp, struct 
 	writel(0x1, base_addr + MPB_RW_DATA);
 	/*writel receive queue END*/
 
+	pa = 0;
+	pa = qp->sq.pa;
+	pa_l = pa <<32;
+	pa_h = pa >>32;
+	printk("dwcroce: create_qp sqpa is %x\n",pa);//added by hs
+	printk("dwcroce: create_qp sqpa_l is %x\n",pa_l);//added by hs
+	printk("dwcroce: create_qp sqpa_h is %x\n",pa_h);//added by hs 
 	/*writel send queue START*/
 	writel(PGU_BASE + QPLISTREADQPN,base_addr + MPB_WRITE_ADDR);
 	writel(qpn,base_addr + MPB_RW_DATA);
 
-	writel(PGU_BASE + WPFORQPLIST,base_addr + MPB_WRITE_ADDR);
+	writel(PGU_BASE + WPFORQPLIST,base_addr + MPB_WRITE_ADDR); //WP,RP should be zero in the page.
 	writel(0x0,base_addr + MPB_RW_DATA);
 
 	writel(PGU_BASE + WPFORQPLIST2,base_addr + MPB_WRITE_ADDR);
 	writel(0x0,base_addr + MPB_RW_DATA);
 
 	writel(PGU_BASE + RPFORQPLIST,base_addr + MPB_WRITE_ADDR);
-	writel(0x0,base_addr + MPB_RW_DATA);
+	writel(pa_l,base_addr + MPB_RW_DATA);
 
 	writel(PGU_BASE + RPFORQPLIST2,base_addr + MPB_WRITE_ADDR);
-	writel(0x0,base_addr + MPB_RW_DATA);
+	writel(pa_h,base_addr + MPB_RW_DATA);
 
 	writel(PGU_BASE + WRITEORREADQPLIST,base_addr + MPB_WRITE_ADDR);
 	writel(0x1,base_addr + MPB_RW_DATA);
@@ -1164,8 +1174,106 @@ int dwcroce_hw_create_qp(struct dwcroce_dev *dev, struct dwcroce_qp *qp, struct 
 
 	writel(PGU_BASE + UPLINKDOWNLINK,base_addr + MPB_WRITE_ADDR);
 	writel(0x00080100,base_addr + MPB_RW_DATA);//LINKMTU {4'h0,14'h20,14'h100}
+	/*sq write end*/
 
+	/*hw access for cq*/
+	u32 txop;
+	u32 rxop;
+	u32 xmitop;
+	len = 0;
+	len = cq->len;
+	pa = 0;
+	pa = cq->txpa;
+	pa_l = pa << 32;
+	pa_h = pa >> 32;
+	printk("dwcroce: create_qp txcqpa is %x\n",pa);//added by hs
+	printk("dwcroce: create_qp txcqpa_l is %x\n",pa_l);//added by hs
+	printk("dwcroce: create_qp txcqpa_h is %x\n",pa_h);//added by hs 
+	/*1. writel TXCQ,because CQ need qpn,that's why we access hw here.for getting qpn.*/
+	    txop = qpn<<2;
+	    txop = txop + 0x3; // txop should be {{32-'QPNUM-2){1'b0}},LQP,1'b1,1'b1};
+		writel(PGU_BASE + CQQUEUEUP,base_addr + MPB_WRITE_ADDR);
+		writel(pa_l + len,base_addr + MPB_RW_DATA); // upaddr  = baseaddr + len //len is the length of cq memory.
 
+		writel(PGU_BASE + CQQUEUEUP + 0x4,base_addr + MPB_WRITE_ADDR);
+		writel(pa_h,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + CQQUEUEDOWN,base_addr + MPB_WRITE_ADDR);
+		writel(pa_l,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + CQQUEUEDOWN + 0x4,base_addr + MPB_WRITE_ADDR);
+		writel(pa_h,base_addr + MPB_RW_DATA);
+		
+		writel(PGU_BASE + CQREADPTR,base_addr + MPB_WRITE_ADDR);
+		writel(pa_l,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + CQREADPTR + 0x4,base_addr + MPB_WRITE_ADDR);
+		writel(pa_h,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + CQESIZE,base_addr + MPB_WRITE_ADDR);
+		writel(txop,base_addr + MPB_RW_DATA);
+
+	/*2.write RXCQ.*/
+		pa = 0;
+		pa = cq->rxpa;
+		pa_l = pa << 32;
+		pa_h = pa >> 32;
+		rxop = qpn << 2;
+		rxop = rxop + 0x3;
+		printk("dwcroce: create_qp rxcqpa is %x\n",pa);//added by hs
+		printk("dwcroce: create_qp rxcqpa_l is %x\n",pa_l);//added by hs
+		printk("dwcroce: create_qp rxcqpa_h is %x\n",pa_h);//added by hs 
+		writel(PGU_BASE + RxUpAddrCQE,base_addr + MPB_WRITE_ADDR);
+		writel(pa_l + len,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + RxUpAddrCQE + 0x4,base_addr + MPB_WRITE_ADDR);
+		writel(pa_h,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + RxBaseAddrCQE,base_addr + MPB_WRITE_ADDR);
+		writel(pa_l,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + RxBaseAddrCQE + 0x4,base_addr + MPB_WRITE_ADDR);
+		writel(pa_h,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + RxCQEWP,base_addr + MPB_WRITE_ADDR);
+		writel(pa_l,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + RxCQEWP + 0x4,base_addr + MPB_WRITE_ADDR);
+		writel(pa_h,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + RxCQEOp,base_addr + MPB_WRITE_ADDR);
+		writel(rxop,base_addr + MPB_RW_DATA);
+
+	/*3. write XMIT CQ.*/
+		pa = 0;
+		pa = cq->xmitpa;
+		pa_l = pa << 32;
+		pa_h = pa >> 32;
+		xmitop = txop;
+		printk("dwcroce: create_qp xmitcqpa is %x\n",pa);//added by hs
+		printk("dwcroce: create_qp xmitcqpa_l is %x\n",pa_l);//added by hs
+		printk("dwcroce: create_qp xmitcqpa_h is %x\n",pa_h);//added by hs 
+		writel(PGU_BASE + XmitUpAddrCQE,base_addr + MPB_WRITE_ADDR);
+		writel(pa_l + len,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + XmitUpAddrCQE + 0x4,base_addr + MPB_WRITE_ADDR);
+		writel(pa_h,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + XmitBaseAddrCQE,base_addr + MPB_WRITE_ADDR);
+		writel(pa_l,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + XmitBaseAddrCQE + 0x4,base_addr + MPB_WRITE_ADDR);
+		writel(pa_h,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + XmitCQEWP,base_addr + MPB_WRITE_ADDR);
+		writel(pa_l,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + XmitCQEWP + 0x4,base_addr + MPB_WRITE_ADDR);
+		writel(pa_h,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + XmitCQEOp,base_addr + MPB_WRITE_ADDR);
+		writel(xmitop,base_addr + MPB_RW_DATA);
+	/*hw access for cq end*/
 	printk("dwcroce: dwcroce_hw_create_qp end \n");//added by hs 
 	return 0;
 }
