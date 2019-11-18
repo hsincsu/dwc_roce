@@ -164,6 +164,7 @@ struct dwcroce_dev{
 	struct dwc_dev_info devinfo;
 //	unsigned long *pd_id; // for allocate an unique id to each pd.
 	struct mutex pd_mutex;
+	struct mutex dev_lock;
 	//not finished ,added later.
 
 	struct dwcroce_pool mr_pool;

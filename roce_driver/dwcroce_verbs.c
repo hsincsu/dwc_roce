@@ -558,10 +558,10 @@ int dwcroce_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 	printk("dwcroce:dwcroce_modify_qp start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
 	struct dwcroce_qp *qp;
-	
-
+	struct dwcroce_dev *dev;
 	qp = get_dwcroce_qp(ibqp);
-	
+	dev = get_dwcroce_dev(ibqp->device);
+
 
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_modify_qp succeed end!\n");//added by hs for printing end info

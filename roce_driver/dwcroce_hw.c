@@ -1101,6 +1101,18 @@ int dwcroce_hw_create_qp(struct dwcroce_dev *dev, struct dwcroce_qp *qp, struct 
 	u32 qpn = qp->id;
 	void __iomem* base_addr;
 	base_addr = dev->devinfo.base_addr;
+	/*init psn*/
+	writel(PGU_BASE + STARTINITPSN,base_addr + MPB_WRITE_ADDR); // INIT PSN
+	writel(0x0000,base_addr + MPB_RW_DATA);
+
+	writel(PGU_BASE + STARTINITPSN + 0x4,base_addr + MPB_WRITE_ADDR);
+	writel(0x0000,base_addr + MPB_RW_DATA);
+
+	writel(PGU_BASE + STARTINITPSN + 0x8,base_addr + MPB_WRITE_ADDR);
+	writel(0x0000,base_addr + MPB_RW_DATA);
+
+	writel(PGU_BASE + STARTINITPSN + 0xc,base_addr + MPB_WRITE_ADDR);
+	writel(0x10000,base_addr + MPB_RW_DATA);
 	/*init qpn*/
 	writel(PGU_BASE + INITQP,base_addr + MPB_WRITE_ADDR);
 	writel(qpn,base_addr + MPB_RW_DATA);
@@ -1110,16 +1122,18 @@ int dwcroce_hw_create_qp(struct dwcroce_dev *dev, struct dwcroce_qp *qp, struct 
 	writel(0x1,base_addr + MPB_RW_DATA);
 
 	/*writel receive queue START*/
-	writel(PGU_BASE + RCVQ_INF,base_addr + MPB_WRITE_ADDR);
-	writel(qpn,base_addr + MPB_RW_DATA);
-
 	/*RECVQ DIL*/
 	pa = qp->rq.pa;
-	pa_l = pa;
+	printk("dwcroce: create_qp pa_a is %0llx\n",pa);//added by hs
+	pa = pa >> 12;
+	pa_l = pa; // rigth move 12 bits
 	pa_h = pa >> 32;
 	printk("dwcroce: create_qp pa is %0llx\n",pa);//added by hs
 	printk("dwcroce: create_qp pa_l is %0lx\n",pa_l);//added by hs
 	printk("dwcroce: create_qp pa_h is %0lx\n",pa_h);//added by hs 
+	writel(PGU_BASE + RCVQ_INF,base_addr + MPB_WRITE_ADDR);
+	writel(qpn,base_addr + MPB_RW_DATA);
+
 	writel(PGU_BASE + RCVQ_DI,base_addr + MPB_WRITE_ADDR); //write rq base addr to revq
 	writel(pa_l , base_addr + MPB_RW_DATA);
 	/*RECVQ DIH*/
@@ -1128,13 +1142,43 @@ int dwcroce_hw_create_qp(struct dwcroce_dev *dev, struct dwcroce_qp *qp, struct 
 
 	/*Write RCVQ_WR*/
 	writel(PGU_BASE + RCVQ_WRRD,base_addr + MPB_WRITE_ADDR);
-	writel(0x1, base_addr + MPB_RW_DATA);
+	writel(0x1, base_addr + MPB_RW_DATA);//means base addr is written.
 	/*writel receive queue END*/
+	/*write wp for recevice queue*/
+	writel(PGU_BASE + RCVQ_INF,base_addr + MPB_WRITE_ADDR);
+	writel(qpn,base_addr + MPB_RW_DATA);
 
+	writel(PGU_BASE + RCVQ_DI,base_addr + MPB_WRITE_ADDR); //write rq base addr to revq
+	writel(0x0 , base_addr + MPB_RW_DATA);
+	/*RECVQ DIH*/
+	writel(PGU_BASE + RCVQ_DI + 0x4,base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	/*Write RCVQ_WR*/
+	writel(PGU_BASE + RCVQ_WRRD,base_addr + MPB_WRITE_ADDR);
+	writel(0x2, base_addr + MPB_RW_DATA);//means wp is written.
+	/*writel receive queue for wp end*/
+	/*writel receive queue for wp start*/
+	writel(PGU_BASE + RCVQ_INF,base_addr + MPB_WRITE_ADDR);
+	writel(qpn,base_addr + MPB_RW_DATA);
+
+	writel(PGU_BASE + RCVQ_DI,base_addr + MPB_WRITE_ADDR); //write rq base addr to revq
+	writel(0x0, base_addr + MPB_RW_DATA);
+	/*RECVQ DIH*/
+	writel(PGU_BASE + RCVQ_DI + 0x4,base_addr + MPB_WRITE_ADDR);
+	writel(0x0, base_addr + MPB_RW_DATA);
+
+	/*Write RCVQ_WR*/
+	writel(PGU_BASE + RCVQ_WRRD,base_addr + MPB_WRITE_ADDR);
+	writel(0x4, base_addr + MPB_RW_DATA);//means wp for readding is written.
+	/*writel receive queue for wp end*/
+	
 	pa = 0;
 	pa = qp->sq.pa;
-	pa_l = pa;
-	pa_h = pa >>32;
+	printk("dwcroce: create_qp sqpa_a is %0llx\n",pa);//added by hs
+	pa = pa >>12;
+	pa_l = pa;//SendQAddr[43:12]
+	pa_h = pa >> 32 + 0x10000; // {1'b1,SendQAddr[63:44]}
 	printk("dwcroce: create_qp sqpa is %0llx\n",pa);//added by hs
 	printk("dwcroce: create_qp sqpa_l is %0lx\n",pa_l);//added by hs
 	printk("dwcroce: create_qp sqpa_h is %0lx\n",pa_h);//added by hs 
