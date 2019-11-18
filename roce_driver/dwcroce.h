@@ -121,23 +121,24 @@ struct dwcroce_qp_hwq_info {
 	dma_addr_t pa;
 };
 
+#pragma pack(1)//we don't need the default align,we need to make sure the wqe is 48 bytes.
 struct dwcroce_wqe {//defaultly,we use 48 byte WQE.a queue may have 256 wqes. 48 bytes long
 	u32 immdt;
 	u16 pkey;
-	u16 rkey;
+	u32 rkey;
 	u32 lkey;
 	u32 qkey;
 	u32 dmalen;
 	u64 destaddr;
 	u64 localaddr;
-	u16 eecnxt; // 10 bits
-	u16 destqp; // 10 bits
+	u16 eecntx; // just the first 10 bits is for eecntx,the later 6bits is for destqp;
+	u16 destqp; //just the first 4 bits is for destqp.the later 12 bits is for destsocket1.
 	u32 destsocket1;
-	u16 destsocket2;
-	u8  opcode;
+	u8 destsocket2;//just the first 4 bits is for destsocket2,the later 4 bits is for opcode.
+	u8  opcode; // just the first 4 bits is for opcode .the later 4 bits is useless.
 
 };
-
+#pragma pack()
 struct dwcroce_qp {
 	struct ib_qp ibqp;
 	
