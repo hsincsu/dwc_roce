@@ -1116,10 +1116,10 @@ int dwcroce_hw_create_qp(struct dwcroce_dev *dev, struct dwcroce_qp *qp, struct 
 	/*RECVQ DIL*/
 	pa = qp->rq.pa;
 	pa_l = pa;
-	pa_h = pa>>32;
-	printk("dwcroce: create_qp pa is %x\n",pa);//added by hs
-	printk("dwcroce: create_qp pa_l is %x\n",pa_l);//added by hs
-	printk("dwcroce: create_qp pa_h is %x\n",pa_h);//added by hs 
+	pa_h = pa >> 32;
+	printk("dwcroce: create_qp pa is %0llx\n",pa);//added by hs
+	printk("dwcroce: create_qp pa_l is %0lx\n",pa_l);//added by hs
+	printk("dwcroce: create_qp pa_h is %0lx\n",pa_h);//added by hs 
 	writel(PGU_BASE + RCVQ_DI,base_addr + MPB_WRITE_ADDR); //write rq base addr to revq
 	writel(pa_l , base_addr + MPB_RW_DATA);
 	/*RECVQ DIH*/
@@ -1135,9 +1135,9 @@ int dwcroce_hw_create_qp(struct dwcroce_dev *dev, struct dwcroce_qp *qp, struct 
 	pa = qp->sq.pa;
 	pa_l = pa;
 	pa_h = pa >>32;
-	printk("dwcroce: create_qp sqpa is %x\n",pa);//added by hs
-	printk("dwcroce: create_qp sqpa_l is %x\n",pa_l);//added by hs
-	printk("dwcroce: create_qp sqpa_h is %x\n",pa_h);//added by hs 
+	printk("dwcroce: create_qp sqpa is %0llx\n",pa);//added by hs
+	printk("dwcroce: create_qp sqpa_l is %0lx\n",pa_l);//added by hs
+	printk("dwcroce: create_qp sqpa_h is %0lx\n",pa_h);//added by hs 
 	/*writel send queue START*/
 	writel(PGU_BASE + QPLISTREADQPN,base_addr + MPB_WRITE_ADDR);
 	writel(qpn,base_addr + MPB_RW_DATA);
@@ -1186,9 +1186,9 @@ int dwcroce_hw_create_qp(struct dwcroce_dev *dev, struct dwcroce_qp *qp, struct 
 	pa = cq->txpa;
 	pa_l = pa;
 	pa_h = pa >> 32;
-	printk("dwcroce: create_qp txcqpa is %x\n",pa);//added by hs
-	printk("dwcroce: create_qp txcqpa_l is %x\n",pa_l);//added by hs
-	printk("dwcroce: create_qp txcqpa_h is %x\n",pa_h);//added by hs 
+	printk("dwcroce: create_qp txcqpa is %0llx\n",pa);//added by hs
+	printk("dwcroce: create_qp txcqpa_l is %0lx\n",pa_l);//added by hs
+	printk("dwcroce: create_qp txcqpa_h is %0lx\n",pa_h);//added by hs 
 	/*1. writel TXCQ,because CQ need qpn,that's why we access hw here.for getting qpn.*/
 	    txop = qpn<<2;
 	    txop = txop + 0x3; // txop should be {{32-'QPNUM-2){1'b0}},LQP,1'b1,1'b1};
@@ -1220,9 +1220,9 @@ int dwcroce_hw_create_qp(struct dwcroce_dev *dev, struct dwcroce_qp *qp, struct 
 		pa_h = pa >> 32;
 		rxop = qpn << 2;
 		rxop = rxop + 0x3;
-		printk("dwcroce: create_qp rxcqpa is %x\n",pa);//added by hs
-		printk("dwcroce: create_qp rxcqpa_l is %x\n",pa_l);//added by hs
-		printk("dwcroce: create_qp rxcqpa_h is %x\n",pa_h);//added by hs 
+		printk("dwcroce: create_qp rxcqpa is %0llx\n",pa);//added by hs
+		printk("dwcroce: create_qp rxcqpa_l is %0lx\n",pa_l);//added by hs
+		printk("dwcroce: create_qp rxcqpa_h is %0lx\n",pa_h);//added by hs 
 		writel(PGU_BASE + RxUpAddrCQE,base_addr + MPB_WRITE_ADDR);
 		writel(pa_l + len,base_addr + MPB_RW_DATA);
 
@@ -1250,9 +1250,9 @@ int dwcroce_hw_create_qp(struct dwcroce_dev *dev, struct dwcroce_qp *qp, struct 
 		pa_l = pa;
 		pa_h = pa >> 32;
 		xmitop = txop;
-		printk("dwcroce: create_qp xmitcqpa is %x\n",pa);//added by hs
-		printk("dwcroce: create_qp xmitcqpa_l is %x\n",pa_l);//added by hs
-		printk("dwcroce: create_qp xmitcqpa_h is %x\n",pa_h);//added by hs 
+		printk("dwcroce: create_qp xmitcqpa is %0llx\n",pa);//added by hs
+		printk("dwcroce: create_qp xmitcqpa_l is %0lx\n",pa_l);//added by hs
+		printk("dwcroce: create_qp xmitcqpa_h is %0lx\n",pa_h);//added by hs 
 		writel(PGU_BASE + XmitUpAddrCQE,base_addr + MPB_WRITE_ADDR);
 		writel(pa_l + len,base_addr + MPB_RW_DATA);
 
