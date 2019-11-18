@@ -1115,7 +1115,7 @@ int dwcroce_hw_create_qp(struct dwcroce_dev *dev, struct dwcroce_qp *qp, struct 
 
 	/*RECVQ DIL*/
 	pa = qp->rq.pa;
-	pa_l = pa<<32;
+	pa_l = pa;
 	pa_h = pa>>32;
 	printk("dwcroce: create_qp pa is %x\n",pa);//added by hs
 	printk("dwcroce: create_qp pa_l is %x\n",pa_l);//added by hs
@@ -1133,7 +1133,7 @@ int dwcroce_hw_create_qp(struct dwcroce_dev *dev, struct dwcroce_qp *qp, struct 
 
 	pa = 0;
 	pa = qp->sq.pa;
-	pa_l = pa <<32;
+	pa_l = pa;
 	pa_h = pa >>32;
 	printk("dwcroce: create_qp sqpa is %x\n",pa);//added by hs
 	printk("dwcroce: create_qp sqpa_l is %x\n",pa_l);//added by hs
@@ -1184,7 +1184,7 @@ int dwcroce_hw_create_qp(struct dwcroce_dev *dev, struct dwcroce_qp *qp, struct 
 	len = cq->len;
 	pa = 0;
 	pa = cq->txpa;
-	pa_l = pa << 32;
+	pa_l = pa;
 	pa_h = pa >> 32;
 	printk("dwcroce: create_qp txcqpa is %x\n",pa);//added by hs
 	printk("dwcroce: create_qp txcqpa_l is %x\n",pa_l);//added by hs
@@ -1216,7 +1216,7 @@ int dwcroce_hw_create_qp(struct dwcroce_dev *dev, struct dwcroce_qp *qp, struct 
 	/*2.write RXCQ.*/
 		pa = 0;
 		pa = cq->rxpa;
-		pa_l = pa << 32;
+		pa_l = pa;
 		pa_h = pa >> 32;
 		rxop = qpn << 2;
 		rxop = rxop + 0x3;
@@ -1247,7 +1247,7 @@ int dwcroce_hw_create_qp(struct dwcroce_dev *dev, struct dwcroce_qp *qp, struct 
 	/*3. write XMIT CQ.*/
 		pa = 0;
 		pa = cq->xmitpa;
-		pa_l = pa << 32;
+		pa_l = pa;
 		pa_h = pa >> 32;
 		xmitop = txop;
 		printk("dwcroce: create_qp xmitcqpa is %x\n",pa);//added by hs
