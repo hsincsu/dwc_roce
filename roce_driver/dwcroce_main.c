@@ -295,6 +295,7 @@ static int dwcroce_get_used_rsrc(struct dwcroce_dev *dev)
 static int dwcroce_alloc_resource(struct dwcroce_dev *dev)
 {
 	printk("dwcroce: dwcroce_alloc_resource start\n");//added by hs
+	mutex_init(&dev->dev_lock);
 	int status;
 	status = dwcroce_init_pools(dev);
 	if(status)

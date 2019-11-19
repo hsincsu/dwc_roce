@@ -466,7 +466,7 @@ static void dwcroce_set_qp_init_params(struct dwcroce_qp *qp, struct dwcroce_pd 
 	qp->max_inline_data = attrs->cap.max_inline_data;
 	qp->sq.max_sges = attrs->cap.max_send_sge;
 	qp->rq.max_sges = attrs->cap.max_recv_sge;
-
+	qp->qp_state = DWCROCE_QPS_RST;
 	qp->signaled = (attrs->sq_sig_type == IB_SIGNAL_ALL_WR) ? true:false;
 
 }
@@ -546,10 +546,40 @@ int _dwcroce_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 {
 	printk("dwcroce:dwcroce_modify_qp start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
-
+	int status = 0;
+	struct dwcroce_qp *qp;
+	struct dwcroce_dev *dev;
+	enum ib_qp_state cur_state,new_state;
+	u32 lqp = qp->id;
+	qp = get_dwcroce_qp(ibqp);
+	dev = get_dwcroce_dev(ibqp->device);
+	new_state = get_dwcroce_qp_state(attr->qp_state);
+	if(attr_mask & IB_QP_STATE)
+		status = dwcroce_qp_state_change(qp,attr->qp_state,&cur_state);
+	if(status < 0)
+		return status;
 	/*wait to add end!*/	
+	status = dwcroce_set_qp_params(qp,attr,attr_mask);
+	if(status)
+		return status;
+	if(qp->qp_state == DWCROCE_QPS_RTR)//now we may have got dest qp.we should map destqp and srcqp.
+	{
+		/*access hw for map destqp and srcqp*/
+		printk("dwcroce: modify_qp in RTR,map destqp and srcqp\n");//added by hs 
+		void __iomem* base_addr;
+		base_addr = dev->devinfo.base_addr;
+		u32 destqp = qp->destqp;
+		writel(PGU_BASE + SRCQP,base_addr + MPB_WRITE_ADDR); // INIT PSN
+		writel(lqp,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + DESTQP,base_addr + MPB_WRITE_ADDR);
+		writel(destqp,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + RC_QPMAPPING,base_addr + MPB_WRITE_ADDR);
+		writel(0x1,base_addr + MPB_RW_DATA);
+	}
 	printk("dwcroce:dwcroce_modify_qp succeed end!\n");//added by hs for printing end info
-	return 0;
+	return status;
 }
 
 int dwcroce_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
@@ -559,13 +589,33 @@ int dwcroce_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 	/*wait to add 2019/6/24*/
 	struct dwcroce_qp *qp;
 	struct dwcroce_dev *dev;
+	enum ib_qp_type qp_type;
+	enum ib_qp_state cur_state, new_state;
+	int status = -EINVAL;
+
 	qp = get_dwcroce_qp(ibqp);
 	dev = get_dwcroce_dev(ibqp->device);
+	mutex_lock(&dev->dev_lock);
 
+	cur_state = get_ibqp_state(qp->qp_state);
+	if(attr_mask & IB_QP_STATE)
+		new_state = attr->qp_state;
+	else
+		new_state = cur_state;
 
+	if (!ib_modify_qp_is_ok(cur_state, new_state, ibqp->qp_type, attr_mask)) {
+		printk("%s invalid attribute mask=0x%x specified for\n"
+               "qpn=0x%x of type=0x%x old_qps=0x%x, new_qps=0x%x\n",
+               __func__,attr_mask,qp->id,ibqp->qp_type,cur_state,new_state);//added by hs 
+	}
+
+	status = _dwcroce_modify_qp(ibqp,attr,attr_mask);
+	if(status > 0)
+		status = 0;
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_modify_qp succeed end!\n");//added by hs for printing end info
-	return 0;
+	mutex_unlock(&dev->dev_lock);
+	return status;
 }
 
 int dwcroce_query_qp(struct ib_qp *ibqp,

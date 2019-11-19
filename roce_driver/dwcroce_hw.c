@@ -1321,3 +1321,87 @@ int dwcroce_hw_create_qp(struct dwcroce_dev *dev, struct dwcroce_qp *qp, struct 
 	printk("dwcroce: dwcroce_hw_create_qp end \n");//added by hs 
 	return 0;
 }
+
+
+enum ib_qp_state get_ibqp_state(enum dwcroce_qp_state qps) {
+	 switch (qps) {
+        case DWCROCE_QPS_RST:
+                return IB_QPS_RESET;
+        case DWCROCE_QPS_INIT:
+                return IB_QPS_INIT;
+        case DWCROCE_QPS_RTR:
+                return IB_QPS_RTR;
+        case DWCROCE_QPS_RTS:
+                return IB_QPS_RTS;
+        case DWCROCE_QPS_SQD:
+        case DWCROCE_QPS_SQ_DRAINING:
+                return IB_QPS_SQD;
+        case DWCROCE_QPS_SQE:
+                return IB_QPS_SQE;
+        case DWCROCE_QPS_ERR:
+                return IB_QPS_ERR;
+        }
+        return IB_QPS_ERR;
+
+
+}
+
+enum dwcroce_qp_state get_dwcroce_qp_state(enum ib_qp_state qps) {
+	switch (qps) {
+        case IB_QPS_RESET:
+                return DWCROCE_QPS_RST;
+        case IB_QPS_INIT:
+                return DWCROCE_QPS_INIT;
+        case IB_QPS_RTR:
+                return DWCROCE_QPS_RTR; 
+        case IB_QPS_RTS:
+                return DWCROCE_QPS_RTS;
+        case IB_QPS_SQD:
+                return DWCROCE_QPS_SQD;
+        case IB_QPS_SQE:
+                return DWCROCE_QPS_SQE;
+        case IB_QPS_ERR:
+                return DWCROCE_QPS_ERR;
+        }
+        return DWCROCE_QPS_ERR;
+
+}
+
+int dwcroce_qp_state_change(struct dwcroce_qp *qp, enum ib_qp_state new_ib_state, enum ib_qp_state *old_ib_state) {
+	unsigned long flags;
+	enum dwcroce_qp_state new_state;
+	new_state = get_dwcroce_qp_state(new_ib_state);
+
+	if(old_ib_state)
+		*old_ib_state = get_ibqp_state(qp->qp_state);
+	if (new_state == qp->state) {
+		return 1;
+	}
+	if (new_state == DWCROCE_QPS_INIT) {
+		printk("dwcroce: modify_qp INIT_STATE \n");//added by hs 
+	}
+	else if (new_state == DWCROCE_QPS_ERR) {
+		printk("dwcroce: modify_qp ERR_STATE \n");//added by hs 
+	}
+	qp->qp_state = new_state;
+
+	return 0;
+}
+
+int dwcroce_set_qp_params(struct dwcroce_qp *qp, struct ib_qp_attr *attrs, int attr_mask) {
+	int status = 0;
+	struct dwcroce_dev *dev;
+	dev = get_dwcroce_dev(qp->ibqp.device);
+
+	if (attr_mask & IB_QP_PKEY_INDEX) {
+		qp->pkey_index = attrs->pkey_index;
+	}
+	if (attr_mask & IB_QP_QKEY) {
+		qp->qkey = attrs->qkey;
+	}
+	if (attr_mask & IB_QP_DEST_QPN) { // get dest qpn.
+		qp->destqp = attrs->dest_qp_num;
+	}
+	return status;
+
+}

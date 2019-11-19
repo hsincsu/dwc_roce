@@ -139,6 +139,19 @@ struct dwcroce_wqe {//defaultly,we use 48 byte WQE.a queue may have 256 wqes. 48
 
 };
 #pragma pack()
+
+enum dwcroce_qp_state {
+	DWCROCE_QPS_RST				=0,
+	DWCROCE_QPS_INIT			=1,
+	DWCROCE_QPS_RTR				=2,
+	DWCROCE_QPS_RTS				=3,
+	DWCROCE_QPS_SQE				=4,
+	DWCROCE_QPS_SQ_DRAINING		=2,
+	DWCROCE_QPS_ERR				=2,
+	DWCROCE_QPS_SQD				=2,
+
+};
+
 struct dwcroce_qp {
 	struct ib_qp ibqp;
 	
@@ -152,9 +165,12 @@ struct dwcroce_qp {
 	struct dwcroce_qp_hwq_info sq;
 
 	enum ib_qp_type qp_type;
+	enum dwcroce_qp_state qp_state;
 	u32 qkey;
 	bool signaled;
-
+	u32 destqp;
+	u32 pkey_index;
+	
 
 };
 
@@ -164,7 +180,7 @@ struct dwcroce_dev{
 	struct dwc_dev_info devinfo;
 //	unsigned long *pd_id; // for allocate an unique id to each pd.
 	struct mutex pd_mutex;
-	struct mutex dev_lock;
+	struct mutex dev_lock; 
 	//not finished ,added later.
 
 	struct dwcroce_pool mr_pool;

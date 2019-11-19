@@ -756,7 +756,9 @@
 #define WRONGFIELD			0x2028	/*err field*/
 #define TLBINIT				0x202c  /*TLB INIT*/
 #define SOCKETID			0x2030  /*SOCKET ID TO IP*/
-#define QPTOQP				0x2034	/*QP TO QP*/
+#define SRCQP				0x2034	/*QP TO QP*/
+#define DESTQP				0x2038  /*DEST QP*/
+#define RC_QPMAPPING		0x203c	/*RC MAPPING*/
 #define CQQUEUEUP			0x0000	/*the upper border of cq*/
 #define CQQUEUEDOWN			0x0008	/*the lower border of cq*/
 #define CQREADPTR			0x0010	/*cq read ptr*/
