@@ -1374,7 +1374,7 @@ int dwcroce_qp_state_change(struct dwcroce_qp *qp, enum ib_qp_state new_ib_state
 
 	if(old_ib_state)
 		*old_ib_state = get_ibqp_state(qp->qp_state);
-	if (new_state == qp->state) {
+	if (new_state == qp->qp_state) {
 		return 1;
 	}
 	if (new_state == DWCROCE_QPS_INIT) {

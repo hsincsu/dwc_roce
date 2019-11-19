@@ -550,10 +550,11 @@ int _dwcroce_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 	struct dwcroce_qp *qp;
 	struct dwcroce_dev *dev;
 	enum ib_qp_state cur_state,new_state;
-	u32 lqp = qp->id;
 	qp = get_dwcroce_qp(ibqp);
 	dev = get_dwcroce_dev(ibqp->device);
 	new_state = get_dwcroce_qp_state(attr->qp_state);
+	u32 lqp = qp->id;
+	
 	if(attr_mask & IB_QP_STATE)
 		status = dwcroce_qp_state_change(qp,attr->qp_state,&cur_state);
 	if(status < 0)
