@@ -19,19 +19,390 @@
 #include "dwcroce_verbs.h"
 #include "dwcroce_hw.h"
 
+static void dwcroce_build_sges(struct dwcroce_wqe *wqe, int num_sge, struct ib_sge *sg_list)
+{
+	int i;
+	struct dwcroce_wqe *tmpwqe = wqe;
+	for (i = 0; i < num_sge; i++) {
+		tmpwqe.rkey = sg_list[i].lkey;
+		tmpwqe.lkey = sg_list[i].lkey;
+		tmpwqe.localaddr = sg_list[i].addr;
+		tmpwqe.dmalen = sg_list[i].length;
+		tmpwqe += 1;
+	}
+	if (num_sge == 0) {
+		memset(wqe,0,sizeof(*wqe));
+	}
+}
+
+static void dwcroce_buildwrite_sges(struct dwcroce_wqe *wqe,int num_sge, struct ib_sge *sg_list, struct ib_send_wr *wr)
+{
+	int i;
+	struct dwcroce_wqe *tmpwqe = wqe;
+	for (i = 0; i < num_sge; i++) {
+		tmpwqe.rkey = rdma_wr(wr)->rkey;
+		tmpwqe.lkey = sg_list[i].lkey;
+		tmpwqe.localaddr = sg_list[i].addr;
+		tmpwqe.dma_len = sg_list[i].length;
+		tmpwqe.destaddr = rdma_wr(wr)->remote_addr;
+		tmpwqe += 1;
+	}
+	if (num_sge == 0) {
+		memset(wqe,0,sizeof(*wqe));
+	}
+
+}
+
+static inline uint32_t dwcroce_sglist_len(struct ib_sge *sg_list, int num_sge)
+{
+	uint32_t total_len =0, i;
+	for(i=0;i < num_sge; i++)
+		total_len += sg_list[i].length;
+	return total_len;
+}
+
+static int dwcroce_build_inline_sges(struct dwcroce_qp *qp, struct dwcroce_wqe *wqe, const struct ib_send_wr *wr, u32 wqe_size)
+{
+	int i;
+
+	if (wr->send_flags & IB_SEND_INLINE && qp->qp_type != IB_QPT_UD) {//
+		wqe->dmalen = dwcroce_sglist_len(wr->sg_list,wr->num_sge);
+			printk("%s() supported_len = 0x%x,\n"
+				   "unsupported len req =0x%x,\n,the funtion is not supported now\n",__func__,qp->max_inline_data,wqe->dmalen);//added by hs 
+			return -EINVAL;
+	}
+	else {
+		dwcroce_build_sges(wqe,wr->num_sge,wr->sg_list);
+		if(wr->num_sge){
+			wqe_size +=((wr->num_sge-1) * sizeof(struct dwcroce_wqe));
+			qp->sq.head = (qp->sq.head + num_sge) % qp->sq.max_cnt; // update the head ptr,and check if the queue if full.
+			if(qp->sq.head == qp->sq.tail){
+				qp->sq.qp_foe == DWCROCE_Q_FULL;
+			}
+		}
+		else {
+			qp->sq.head = (qp->sq.head + 1) % qp->sq.max_cnt; // update the head ptr, and check if the queue if full.
+			if(qp->sq.head == qp->sq.tail){
+				qp->sq.qp_foe == DWCROCE_Q_FULL;
+			}
+		}
+	}
+
+	return 0;
+
+
+}
+
+static void dwcroce_set_wqe_destqp(struct dwcroce_qp *qp, struct dwcroce_wqe *wqe, const struct ib_send_wr *wr) {
+	
+	u16 tempqpn;
+	u16 tempqpn_l = 0;
+	u16 tempqpn_h = 0;
+
+	tempqpn =ud_wr(wr)->remote_qpn; // get lower 16bits ,but qpn only 10 bits.
+	tempqpn_l = tempqpn & 0x003f;
+	tempqpn_l = tempqpn_l << 10;
+
+	tempqpn_h = tempqpn& 0x03c0; // get higher 4 bits;
+	tempqpn_h = tempqpn_h >> 6;
+
+	/*make sure the wqe's eecntx higher 6 bits is zero*/
+	if(wqe->eecntx >> 10)
+		wqe->eecntx = wqe->eecntx & 0x03ff; // mask is 0000 0011 1111 1111 to make higher 6 bits zero.
+	wqe->eecntx += tempqpn_l;
+
+	if(wqe->destqp << 12)
+		wqe->destqp = wqe->destqp & 0xfff0;
+	wqe->destqp += tempqpn_h;
+
+}
+
+static int dwcroce_buildwrite_inline_sges(struct dwcroce_qp *qp,struct dwcroce_wqe *wqe,const struct ib_send_wr *wr, u32 wqe_size)
+{
+	int i;
+	if (wr->send_flags & IB_SEND_INLINE && qp->qp_type != IB_QPT_UD) {//
+		wqe->dmalen = dwcroce_sglist_len(wr->sg_list,wr->num_sge);
+			printk("%s() supported_len = 0x%x,\n"
+				   "unsupported len req =0x%x,\n,the funtion is not supported now\n",__func__,qp->max_inline_data,wqe->dmalen);//added by hs 
+			return -EINVAL;
+	}
+	else {
+		dwcroce_buildwrite_sges(wqe,wr->num_sge,wr->sg_list,wr);
+		if(wr->num_sge){
+			wqe_size +=((wr->num_sge-1)*sizeof(struct dwcroce_wqe));
+			qp->sq.head = (qp->sq.head + num_sge) % qp->sq.max_cnt; // update the head ptr,and check if the queue if full.
+			if(qp->sq.head == qp->sq.tail){
+				qp->sq.qp_foe == DWCROCE_Q_FULL;
+			}
+		}
+		else {
+			qp->sq.head = (qp->sq.head + 1) % qp->sq.max_cnt; // update the head ptr, and check if the queue if full.
+			if(qp->sq.head == qp->sq.tail){
+				qp->sq.qp_foe == DWCROCE_Q_FULL;
+			}
+		}
+	}
+	return 0;
+}
+
+static void dwcroce_set_wqe_opcode(struct dwcroce_wqe *wqe,u8 qp_type,u8 opcode)
+{
+	u8 opcode_l = 0;
+	u8 opcode_h = 0;
+	opcode_l = opcode;
+	opcode_l = opcode_l << 4;
+	opcode_h = qp_type;
+	if(wqe->destsocket2 >> 4)
+		wqe->destsocket2 = wqe->destsocket2 & 0x0f;
+	wqe->destsocket2 += opcode_l;
+
+	if(wqe->opcode << 4)
+		wqe->opcode = wqe->destsocket2 & 0xf0;
+	wqe->opcode += opcode_h;
+}
+
+static int  dwcroce_build_wqe_opcode(struct dwcroce_qp *qp,struct dwcroce_wqe *wqe,struct ib_send_wr *wr)
+{
+	int status;
+	u8 qp_type;
+	u8 opcode;
+	swtich(qp->qp_type) {
+		case IB_QPT_UD:
+				qp_type = UD;
+				break;
+		case IB_QPT_UC:
+				qp_type = UC;
+				break;
+		case IB_QPT_RD:
+				qp_type = RD;
+				break;
+		case IB_QPT_RC:
+				qp_type = RC;
+				break;
+	}
+	switch (wr->opcode) {
+	case IB_WR_SEND:
+				opcode = SEND;
+				break;
+	case IB_WR_SEND_WITH_IMM:
+				opcode = SEND_WITH_IMM;
+				break;
+	case IB_WR_SEND_WITH_INV:
+				opcode = SEND_WITH_INV;
+				break;
+	case IB_WR_WRITE:
+				opcode = WRITE;
+				break;
+	case IB_WR_WRITE_WITH_IMM:
+				opcode = WRITE_WITH_IMM;
+				break;
+	case IB_WR_READ:
+				opcode = READ;
+				break;		
+	}
+	if(qp_type == UD && !(opcode & (SEND|SEND_WITH_IMM)))
+		return -EINVAL;
+	if(qp_type == UC && !(opcode &(SEND|SEND_WITH_IMM|WRITE|WRITE_WITH_IMM )))
+		return -EINVAL;
+	if(qp_type == RD && (opcode & SEND_WITH_INV))
+		return -EINVAL;
+
+	dwcroce_set_wqe_opcode(wqe,qp_type,opcode);
+	return 0;
+
+}
+
+static int dwcroce_build_send(struct dwcroce_qp *qp, struct dwcroce_wqe *wqe, const struct ib_send_wr *wr)
+{
+	int status;
+	struct dwcroce_sge *sge;
+	u32 wqe_size = sizeof(*wqe);
+
+	if (qp->qp_type == IB_QPT_UD || qp->qp_type == IB_QPT_GSI) {
+			dwcroce_set_wqe_destqp(qp,wqe,wr);
+			if(qp->qp_type == IB_QPT_GSI)
+				wqe->qkey = qp->qkey;
+			else
+				wqe->qkey = ud_wr(wr)->remote_qkey;
+	}
+	status = dwcroce_build_inline_sges(qp,wqe,wr,wqe_size);
+	return status;
+}
+
+static int dwcroce_build_write(struct dwcroce_qp *qp, struct dwcroce_wqe *wqe, const struct ib_send_wr *wr) 
+{
+	int status;
+	u32 wqe_size = sizeof(*wqe);
+
+	status = dwcroce_buildwrite_inline_sges(qp,wqe,wr,wqe_size);
+	if(status)
+		return status;
+	
+}
+
+static void dwcroce_build_read(struct dwcroce_qp *qp, struct dwcroce_wqe *wqe, const struct ib_send_wr *wr)
+{
+	u32 wqe_size = sizeof(*wqe);
+	dwcroce_buildwrite_inline_sges(qp,wqe,wr,wqe_size);
+}
+
+static int dwcroce_build_reg(struct dwcroce_qp *qp, struct dwcroce_wqe *wqe, const struct ib_reg_wr *wr)
+{
+	u32 wqe_size = sizeof(*wqe);
+	printk("don't support reg mr now\n");//added by hs 
+	return 0;
+}
+
+static void dwcroce_ring_sq_hw(struct dwcroce_qp *qp) {
+	struct dwcroce_dev *dev;
+	u32 qpn;
+	dev = get_dwcroce_dev(qp->ibqp.device);
+	/*from head to get dma address*/
+	u32 phyaddr;
+	phyaddr =qp->sq.head * sizeof(struct dwcroce_wqe); //head * sizeof(wqe)
+	
+	/*access hw ,write wp to notify hw*/
+	void __iomem* base_addr;
+	base_addr = dev->devinfo.base_addr;
+	qpn = qp->id;
+
+	writel(PGU_BASE + QPLISTREADQPN,base_addr + MPB_WRITE_ADDR);
+	writel(qpn,base_addr + MPB_RW_DATA);
+
+	writel(PGU_BASE + WRITEORREADQPLIST,base_addr + MPB_WRITE_ADDR);
+	writel(0x1,base_addr + MPB_RW_DATA);
+
+	writel(PGU_BASE + WRITEQPLISTMASK,base_addr + MPB_WRITE_ADDR);
+	writel(0x7,base_addr + MPB_RW_DATA);
+
+	writel(PGU_BASE + QPLISTWRITEQPN,base_addr + MPB_WRITE_ADDR);
+	writel(0x0,base_addr + MPB_RW_DATA);
+
+	writel(PGU_BASE + WPFORQPLIST, base_addr + MPB_WRITE_ADDR);
+	writel(phyaddr,base_addr + MPB_RW_DATA);
+
+	writel(PGU_BASE + WRITEQPLISTMASK,base_addr + MPB_WRITE_ADDR);
+	writel(0x1,base_addr + MPB_RW_DATA);
+
+	writel(PGU_BASE + QPLISTWRITEQPN,base_addr + MPB_WRITE_ADDR);
+	writel(0x1,base_addr + MPB_RW_DATA);
+
+	writel(PGU_BASE + WRITEORREADQPLIST,base_addr + MPB_WRITE_ADDR);
+	writel(0x0,base_addr + MPB_RW_DATA);
+
+
+
+}
+
+static int dwcroce_check_foe(struct dwcroce_qp_hwq_info *q, struct ib_send_wr *wr, u32 free_cnt)
+{
+	if (wr->num_sge > free_cnt)
+		return -ENOMEM;
+	else return 0;
+}
+
+static int dwcroce_hwq_free_cnt(struct dwcroce_qp_hwq_info *q)
+{
+	if(q->head > q->tail)
+		return ((q->max_wqe_idx - q->head) + q->tail)% q->max_cnt;
+	if (q->head == q->tail) {
+		if(q->qp_foe == DWCROCE_Q_EMPTY)
+			return q->max_cnt;
+		else
+			return 0;	
+	}
+	if(q->head < q->tail)
+		return q->tail - q->head;
+}
+
+static void *dwcroce_hwq_head(struct dwcroce_qp_hwq_info *q) {
+	return q->va + (q->head * q->entry_size);
+}
+
 int dwcroce_post_send(struct ib_qp *ibqp,const struct ib_send_wr *wr,const struct ib_send_wr **bad_wr)
 {
 	printk("dwcroce:dwcroce_post_send start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
 	struct dwcroce_qp *qp;
-	
-
+	struct dwcroce_dev *dev;
+	struct dwcroce_wqe *hdwqe;
+	unsigned long flags;
+	int status = 0;
+	u32 free_cnt;
 	qp = get_dwcroce_qp(ibqp);
+	dev = get_dwcroce_dev(ibqp->device);
+	spin_lock_irqsave(&qp->sq.lock,flags);
+	if (qp->qp_state != DWCROCE_QPS_RST) {
+		spin_unlock_irqrestore(&qp->sq.lock,flags);
+		*bad_wr = wr;
+		return -EINVAL;
+	}
 
+	while(wr){ //if UD, should support SEND OR SEND WITH IMM,or it can't do anything.
+		if(qp->qp_type == IB_QPT_UD &&
+		  (wr->opcode != IB_WR_SEND &&
+		   wr->opcode != IB_WR_SEND_WITH_IMM)){
+			*bad_wr = wr;
+			status = -EINVAL;
+			break;
+		}
+		free_cnt = dwcroce_hwq_free_cnt(&qp->sq);
+
+		if(free_cnt == 0 || wr->num_sge > qp->sq.max_sges){
+			*bad_wr = wr;
+			status = -ENOMEM;
+			break;
+		}
+		status = dwcroce_check_foe(&qp->sq,wr,free_cnt);// check if the wr can be processed with enough memory.
+		if(status) break;
+
+		hdwqe = dwcroce_hwq_head(&qp->sq); // To get the head ptr.
+		status = dwcroce_build_wqe_opcode(qp,hdwqe);//added by hs 
+		if(status) break;
+
+		swtich(wr->opcode){
+		case IB_WR_SEND_WITH_IMM:
+			hdwqe->immdt = ntohl(wr->ex.imm_data);
+		case IB_WR_SEND:
+			dwcroce_build_send(qp,hdwqe,wr);
+			break;
+		case IB_WR_SEND_WITH_INV:
+			hdwqe->lkey = wr->ex.invalidate_rkey;
+			status = dwcroce_build_send(qp,hdwqe,wr);
+			break;
+		case IB_WR_RDMA_WRITE_WITH_IMM:
+			hdwqe->immdt = ntohl(wr->ex.imm_data);
+		case IB_WR_RDMA_WRITE:
+			status = dwcroce_build_write(qp,hdwqe,wr);
+			break;
+		case IB_WR_RDMA_READ:
+			dwcroce_build_read(qp,hdwqe,wr);
+			break;
+		case IB_WR_LOCAL_INV:
+			hdwqe->lkey = wr->ex.invalidate_rkey;
+		case IB_WR_REG_MR:
+			status = dwcroce_build_reg(qp,hdwqe,reg_wr(wr));
+			break;
+		default:
+			status = -EINVAL;
+			break;
+		}
+		if (status) {
+			*bad_wr = wr;
+			break;
+		}
+		/*make sure wqe is written befor adapter can access it*/
+		wmb();
+
+		dwcroce_ring_sq_hw(qp); // notify hw to send wqe.
+
+
+	
+	}
 
 	/*wait to add end!*/
 	printk("dwcroce:dwcroce_post_send succeed end!\n");//added by hs for printing end info
-	return 0;
+	return status;
 }
 
 int dwcroce_post_recv(struct ib_qp *ibqp,const struct ib_recv_wr *wr,const struct ib_recv_wr **bad_wr)
@@ -461,6 +832,9 @@ static int dwcroce_check_qp_params(struct ib_pd *ibpd, struct dwcroce_dev *dev,
 static void dwcroce_set_qp_init_params(struct dwcroce_qp *qp, struct dwcroce_pd *pd, struct ib_qp_init_attr *attrs)
 {
 	qp->pd = pd;
+	spin_lock_init(&qp->sq.lock);
+	spin_lock_init(&qp->rq.lock);
+	mutex_init(&qp->mutex);
 
 	qp->qp_type = attrs->qp_type;
 	qp->max_inline_data = attrs->cap.max_inline_data;
@@ -502,6 +876,7 @@ struct ib_qp *dwcroce_create_qp(struct ib_pd *ibpd,
 		printk("dwcroce: check qp error \n");//added by hs 
 		return status;
 	}
+
 	/*allocate memory for private qp*/
 	qp = kzalloc(sizeof(*qp),GFP_KERNEL);
 	if (!qp) {
@@ -578,6 +953,15 @@ int _dwcroce_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 
 		writel(PGU_BASE + RC_QPMAPPING,base_addr + MPB_WRITE_ADDR);
 		writel(0x1,base_addr + MPB_RW_DATA);
+		/*map destqp and srcqp end*/
+
+		/*start nic*/
+		writel(PGU_BASE + GENRSP,base_addr + MPB_WRITE_ADDR);
+		writel(0x00100000,base_addr + MPB_RW_DATA);
+
+		writel(PGU_BASE + CFGRNR,base_addr + MPB_WRITE_ADDR);
+		writel(0x30010041,base_addr + MPB_RW_DATA);
+		/*END*/
 	}
 	printk("dwcroce:dwcroce_modify_qp succeed end!\n");//added by hs for printing end info
 	return status;
@@ -596,8 +980,9 @@ int dwcroce_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 
 	qp = get_dwcroce_qp(ibqp);
 	dev = get_dwcroce_dev(ibqp->device);
+	
 	mutex_lock(&dev->dev_lock);
-
+	mutex_lock(&qp->mutex);
 	cur_state = get_ibqp_state(qp->qp_state);
 	if(attr_mask & IB_QP_STATE)
 		new_state = attr->qp_state;
@@ -615,6 +1000,7 @@ int dwcroce_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 		status = 0;
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_modify_qp succeed end!\n");//added by hs for printing end info
+	mutex_unlock(&qp->mutex);
 	mutex_unlock(&dev->dev_lock);
 	return status;
 }

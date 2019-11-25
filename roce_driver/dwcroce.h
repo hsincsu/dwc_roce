@@ -119,10 +119,19 @@ struct dwcroce_qp_hwq_info {
 	//u16 dbid;
 	u32 len;
 	dma_addr_t pa;
+	enum dwcroce_qp_foe qp_foe;
+	spinlock_t lock;
+};
+
+struct dwcroce_sge {
+	u32 addr_hi;
+	u32 addr_lo;
+	u32 lrkey;
+	u32 len;
 };
 
 #pragma pack(1)//we don't need the default align,we need to make sure the wqe is 48 bytes.
-struct dwcroce_wqe {//defaultly,we use 48 byte WQE.a queue may have 256 wqes. 48 bytes long
+struct dwcroce_wqe {//defaultly,we use 48 byte WQE.a queue may have 256 wqes. 48 bytes long,but length is 64 bytes.
 	u32 immdt;
 	u16 pkey;
 	u32 rkey;
@@ -136,7 +145,8 @@ struct dwcroce_wqe {//defaultly,we use 48 byte WQE.a queue may have 256 wqes. 48
 	u32 destsocket1;
 	u8 destsocket2;//just the first 4 bits is for destsocket2,the later 4 bits is for opcode.
 	u8  opcode; // just the first 4 bits is for opcode .the later 4 bits is useless.
-
+	u64 reserved1;
+	u64 reserved2; // 
 };
 #pragma pack()
 
@@ -150,6 +160,11 @@ enum dwcroce_qp_state {
 	DWCROCE_QPS_ERR				=6,
 	DWCROCE_QPS_SQD				=7,
 
+};
+enum dwcroce_qp_foe {
+	DWCROCE_Q_FULL = 0,
+	DWCROCE_Q_EMPTY = 1,
+	DWCROCE_Q_FREE = 2,
 };
 
 struct dwcroce_qp {
@@ -166,11 +181,13 @@ struct dwcroce_qp {
 
 	enum ib_qp_type qp_type;
 	enum dwcroce_qp_state qp_state;
+	
 	u32 qkey;
 	bool signaled;
 	u32 destqp;
 	u32 pkey_index;
-	
+	struct mutex mutex;
+
 
 };
 

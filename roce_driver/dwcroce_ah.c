@@ -30,7 +30,8 @@ struct ib_ah *dwcroce_create_ah(struct ib_pd *pd, struct rdma_ah_attr *ah_attr,u
 
 int dwcroce_destroy_ah(struct ib_ah *ah,u32 flags)
 {
-	printk("dwcroce:dwcroce_destroy_ah start!\n");//added by hs for printing start info
+	printk("dwcroce:dwcroce_d
+		estroy_ah start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
 
 	/*wait to add end!*/	

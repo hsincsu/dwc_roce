@@ -1073,13 +1073,17 @@ int dwcroce_hw_create_qp(struct dwcroce_dev *dev, struct dwcroce_qp *qp, struct 
 	dma_addr_t pa = 0;
 	/*For rq*/
 	u32 max_rqe_allocated = attrs->cap.max_recv_wr + 1;
+	max_rqe_allocated = min_t(u32,attrs->cap.max_recv_wr +1,dev->attr.max_qp_wr); // to sure the rqe num is under 256.
 	qp->rq.max_cnt = max_rqe_allocated;
 	len = sizeof(struct dwcroce_wqe) * max_rqe_allocated;
+	qp->rq.max_cnt= max_rqe_allocated;
+	qp->rq.max_wqe_idx= max_rqe_allocated - 1;
 	qp->rq.va = dma_alloc_coherent(&pdev->dev,len,&pa,GFP_KERNEL); // allocate memory for rq.
 	if(!qp->rq.va)
 		return -EINVAL;
 	qp->rq.len = len;
 	qp->rq.pa = pa;
+	qp->rq.entry_size = sizeof(struct dwcroce_wqe);
 	u32 pa_l = 0;
 	u32 pa_h = 0;
 	/*init pa ,len*/
@@ -1089,12 +1093,16 @@ int dwcroce_hw_create_qp(struct dwcroce_dev *dev, struct dwcroce_qp *qp, struct 
 	u32 max_wqe_allocated;
 	u32 max_sges = attrs->cap.max_send_sge;
 	max_wqe_allocated = min_t(u32,attrs->cap.max_send_wr +1,dev->attr.max_qp_wr);
+	max_sges = min_t(u32,max_wqe_allocated,max_sges); // For a sge need a wqe, so sglist 'lenghth can't over wqe 's mounts.
 	len = sizeof(struct dwcroce_wqe) * max_wqe_allocated;
+	qp->sq.max_cnt= max_wqe_allocated;
+	qp->sq.max_wqe_idx = max_wqe_allocated -1;
 	qp->sq.va = dma_alloc_coherent(&pdev->dev,len,&pa,GFP_KERNEL);
 	if(!qp->sq.va)
 		return -EINVAL;
 	qp->sq.len = len;
 	qp->sq.pa = pa;
+	qp->sq.entry_size = sizeof(struct dwcroce_wqe);
 
 
 	/*ACCESS HardWare register*/
@@ -1379,9 +1387,16 @@ int dwcroce_qp_state_change(struct dwcroce_qp *qp, enum ib_qp_state new_ib_state
 	}
 	if (new_state == DWCROCE_QPS_INIT) {
 		printk("dwcroce: modify_qp INIT_STATE \n");//added by hs 
+		qp->sq.head= 0;
+		qp->sq.tail= 0;
+		qp->rq.head= 0;
+		qp->rq.tail= 0;
+		qp->sq.qp_foe = DWCROCE_Q_EMPTY;
+		qp->rq.qp_foe = DWCROCE_Q_EMPTY;
 	}
 	else if (new_state == DWCROCE_QPS_ERR) {
 		printk("dwcroce: modify_qp ERR_STATE \n");//added by hs 
+	
 	}
 	qp->qp_state = new_state;
 

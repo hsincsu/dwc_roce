@@ -1442,6 +1442,18 @@
 #define PKEY		16
 #define IMMDT		32
 
+
+/*Transport mode definition*/
+#define UD				0x6
+#define UC				0x2
+#define RC				0x0
+#define RD				0x4
+#define SEND			0x4
+#define SEND_WITH_IMM	0x5
+#define SEND_WITH_INV   0x6
+#define WRITE			0x8
+#define WRITE_WITH_IMM	0x9
+#define READ			0x0
 /*END*/
 /*Registers with RoCE functions end
 *					--edited by hs in 2019/10/17
