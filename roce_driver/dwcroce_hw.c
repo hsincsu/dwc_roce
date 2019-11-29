@@ -449,7 +449,19 @@ phdtxrxdesc_err:
 
 static int dwcroce_init_cm(struct dwcroce_dev *dev)
 {
-	printk("cm is no need to init?!\n");//added by hs 
+	printk("cm  init!\n");//added by hs 
+	void __iomem *base_addr;
+	base_addr = dev->devinfo.base_addr;
+
+	/*write cmcfg*/
+	writel(CM_CFG + CMLOGEN,base_addr + MPB_WRITE_ADDR);
+	writel(0x7,base_addr + MPB_RW_DATA);
+
+	writel(CM_CFG + CMERREN,base_addr + MPB_WRITE_ADDR);
+	writel(0x7,base_addr + MPB_RW_DATA);
+
+	writel(CM_CFG + CMINTEN,base_addr + MPB_WRITE_ADDR);
+	writel(0x7,base_addr + MPB_RW_DATA);
 	return 0;
 }
 
@@ -1075,7 +1087,7 @@ int dwcroce_hw_create_qp(struct dwcroce_dev *dev, struct dwcroce_qp *qp, struct 
 	u32 max_rqe_allocated = attrs->cap.max_recv_wr + 1;
 	max_rqe_allocated = min_t(u32,attrs->cap.max_recv_wr +1,dev->attr.max_qp_wr); // to sure the rqe num is under 256.
 	qp->rq.max_cnt = max_rqe_allocated;
-	len = sizeof(struct dwcroce_wqe) * max_rqe_allocated;
+	len = sizeof(struct dwcroce_rqe) * max_rqe_allocated;
 	qp->rq.max_cnt= max_rqe_allocated;
 	qp->rq.max_wqe_idx= max_rqe_allocated - 1;
 	qp->rq.va = dma_alloc_coherent(&pdev->dev,len,&pa,GFP_KERNEL); // allocate memory for rq.
@@ -1083,7 +1095,7 @@ int dwcroce_hw_create_qp(struct dwcroce_dev *dev, struct dwcroce_qp *qp, struct 
 		return -EINVAL;
 	qp->rq.len = len;
 	qp->rq.pa = pa;
-	qp->rq.entry_size = sizeof(struct dwcroce_wqe);
+	qp->rq.entry_size = sizeof(struct dwcroce_rqe);
 	u32 pa_l = 0;
 	u32 pa_h = 0;
 	/*init pa ,len*/

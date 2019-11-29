@@ -19,11 +19,81 @@
 #include "dwcroce_verbs.h"
 #include "dwcroce_hw.h"
 
-static void dwcroce_build_sges(struct dwcroce_wqe *wqe, int num_sge, struct ib_sge *sg_list)
+static void dwcroce_set_wqe_opcode(struct dwcroce_wqe *wqe,u8 qp_type,u8 opcode)
+{
+	u8 opcode_l = 0;
+	u8 opcode_h = 0;
+	opcode_l = opcode;
+	opcode_l = opcode_l << 4;
+	opcode_h = qp_type;
+	if(wqe->destsocket2 >> 4)
+		wqe->destsocket2 = wqe->destsocket2 & 0x0f;
+	wqe->destsocket2 += opcode_l;
+	if(wqe->opcode << 4)
+		wqe->opcode = wqe->destsocket2 & 0xf0;
+	wqe->opcode += opcode_h;
+}
+
+static int  dwcroce_build_wqe_opcode(struct dwcroce_qp *qp,struct dwcroce_wqe *wqe,struct ib_send_wr *wr)
+{
+	int status;
+	u8 qp_type;
+	u8 opcode;
+	swtich(qp->qp_type) {
+		case IB_QPT_UD:
+				qp_type = UD;
+				break;
+		case IB_QPT_UC:
+				qp_type = UC;
+				break;
+		case IB_QPT_RD:
+				qp_type = RD;
+				break;
+		case IB_QPT_RC:
+				qp_type = RC;
+				break;
+	}
+	switch (wr->opcode) {
+	case IB_WR_SEND:
+				opcode = SEND;
+				break;
+	case IB_WR_SEND_WITH_IMM:
+				opcode = SEND_WITH_IMM;
+				break;
+	case IB_WR_SEND_WITH_INV:
+				opcode = SEND_WITH_INV;
+				break;
+	case IB_WR_WRITE:
+				opcode = WRITE;
+				break;
+	case IB_WR_WRITE_WITH_IMM:
+				opcode = WRITE_WITH_IMM;
+				break;
+	case IB_WR_READ:
+				opcode = READ;
+				break;		
+	}
+	if(qp_type == UD && !(opcode & (SEND|SEND_WITH_IMM)))
+		return -EINVAL;
+	if(qp_type == UC && !(opcode &(SEND|SEND_WITH_IMM|WRITE|WRITE_WITH_IMM )))
+		return -EINVAL;
+	if(qp_type == RD && (opcode & SEND_WITH_INV))
+		return -EINVAL;
+
+	dwcroce_set_wqe_opcode(wqe,qp_type,opcode);
+	return 0;
+
+}
+
+static int dwcroce_build_sges(struct dwcroce_wqe *wqe, int num_sge, struct ib_sge *sg_list,struct ib_send_wr *wr)
 {
 	int i;
+	int status = 0;
 	struct dwcroce_wqe *tmpwqe = wqe;
 	for (i = 0; i < num_sge; i++) {
+		status = dwcroce_build_wqe_opcode(qp,tmpwqe,wr);//added by hs 
+		if(status)
+			return status;
 		tmpwqe.rkey = sg_list[i].lkey;
 		tmpwqe.lkey = sg_list[i].lkey;
 		tmpwqe.localaddr = sg_list[i].addr;
@@ -33,13 +103,18 @@ static void dwcroce_build_sges(struct dwcroce_wqe *wqe, int num_sge, struct ib_s
 	if (num_sge == 0) {
 		memset(wqe,0,sizeof(*wqe));
 	}
+	return status;
 }
 
-static void dwcroce_buildwrite_sges(struct dwcroce_wqe *wqe,int num_sge, struct ib_sge *sg_list, struct ib_send_wr *wr)
+static int dwcroce_buildwrite_sges(struct dwcroce_wqe *wqe,int num_sge, struct ib_sge *sg_list, struct ib_send_wr *wr)
 {
 	int i;
+	int status = 0;
 	struct dwcroce_wqe *tmpwqe = wqe;
 	for (i = 0; i < num_sge; i++) {
+		status = dwcroce_build_wqe_opcode(qp,tmpwqe,wr);//added by hs 
+		if(status)
+			return -EINVAL;
 		tmpwqe.rkey = rdma_wr(wr)->rkey;
 		tmpwqe.lkey = sg_list[i].lkey;
 		tmpwqe.localaddr = sg_list[i].addr;
@@ -50,7 +125,7 @@ static void dwcroce_buildwrite_sges(struct dwcroce_wqe *wqe,int num_sge, struct 
 	if (num_sge == 0) {
 		memset(wqe,0,sizeof(*wqe));
 	}
-
+	return status;
 }
 
 static inline uint32_t dwcroce_sglist_len(struct ib_sge *sg_list, int num_sge)
@@ -72,7 +147,7 @@ static int dwcroce_build_inline_sges(struct dwcroce_qp *qp, struct dwcroce_wqe *
 			return -EINVAL;
 	}
 	else {
-		dwcroce_build_sges(wqe,wr->num_sge,wr->sg_list);
+		dwcroce_build_sges(wqe,wr->num_sge,wr->sg_list,wr);
 		if(wr->num_sge){
 			wqe_size +=((wr->num_sge-1) * sizeof(struct dwcroce_wqe));
 			qp->sq.head = (qp->sq.head + num_sge) % qp->sq.max_cnt; // update the head ptr,and check if the queue if full.
@@ -145,72 +220,6 @@ static int dwcroce_buildwrite_inline_sges(struct dwcroce_qp *qp,struct dwcroce_w
 	return 0;
 }
 
-static void dwcroce_set_wqe_opcode(struct dwcroce_wqe *wqe,u8 qp_type,u8 opcode)
-{
-	u8 opcode_l = 0;
-	u8 opcode_h = 0;
-	opcode_l = opcode;
-	opcode_l = opcode_l << 4;
-	opcode_h = qp_type;
-	if(wqe->destsocket2 >> 4)
-		wqe->destsocket2 = wqe->destsocket2 & 0x0f;
-	wqe->destsocket2 += opcode_l;
-
-	if(wqe->opcode << 4)
-		wqe->opcode = wqe->destsocket2 & 0xf0;
-	wqe->opcode += opcode_h;
-}
-
-static int  dwcroce_build_wqe_opcode(struct dwcroce_qp *qp,struct dwcroce_wqe *wqe,struct ib_send_wr *wr)
-{
-	int status;
-	u8 qp_type;
-	u8 opcode;
-	swtich(qp->qp_type) {
-		case IB_QPT_UD:
-				qp_type = UD;
-				break;
-		case IB_QPT_UC:
-				qp_type = UC;
-				break;
-		case IB_QPT_RD:
-				qp_type = RD;
-				break;
-		case IB_QPT_RC:
-				qp_type = RC;
-				break;
-	}
-	switch (wr->opcode) {
-	case IB_WR_SEND:
-				opcode = SEND;
-				break;
-	case IB_WR_SEND_WITH_IMM:
-				opcode = SEND_WITH_IMM;
-				break;
-	case IB_WR_SEND_WITH_INV:
-				opcode = SEND_WITH_INV;
-				break;
-	case IB_WR_WRITE:
-				opcode = WRITE;
-				break;
-	case IB_WR_WRITE_WITH_IMM:
-				opcode = WRITE_WITH_IMM;
-				break;
-	case IB_WR_READ:
-				opcode = READ;
-				break;		
-	}
-	if(qp_type == UD && !(opcode & (SEND|SEND_WITH_IMM)))
-		return -EINVAL;
-	if(qp_type == UC && !(opcode &(SEND|SEND_WITH_IMM|WRITE|WRITE_WITH_IMM )))
-		return -EINVAL;
-	if(qp_type == RD && (opcode & SEND_WITH_INV))
-		return -EINVAL;
-
-	dwcroce_set_wqe_opcode(wqe,qp_type,opcode);
-	return 0;
-
-}
 
 static int dwcroce_build_send(struct dwcroce_qp *qp, struct dwcroce_wqe *wqe, const struct ib_send_wr *wr)
 {
@@ -278,8 +287,8 @@ static void dwcroce_ring_sq_hw(struct dwcroce_qp *qp) {
 	writel(PGU_BASE + QPLISTWRITEQPN,base_addr + MPB_WRITE_ADDR);
 	writel(0x0,base_addr + MPB_RW_DATA);
 
-	writel(PGU_BASE + WPFORQPLIST, base_addr + MPB_WRITE_ADDR);
-	writel(phyaddr,base_addr + MPB_RW_DATA);
+	writel(PGU_BASE + WPFORQPLIST, base_addr + MPB_WRITE_ADDR); // give the offset in the sq.
+	writel(phyaddr,base_addr + MPB_RW_DATA); 
 
 	writel(PGU_BASE + WRITEQPLISTMASK,base_addr + MPB_WRITE_ADDR);
 	writel(0x1,base_addr + MPB_RW_DATA);
@@ -289,7 +298,7 @@ static void dwcroce_ring_sq_hw(struct dwcroce_qp *qp) {
 
 	writel(PGU_BASE + WRITEORREADQPLIST,base_addr + MPB_WRITE_ADDR);
 	writel(0x0,base_addr + MPB_RW_DATA);
-
+	// end
 
 
 }
@@ -357,14 +366,12 @@ int dwcroce_post_send(struct ib_qp *ibqp,const struct ib_send_wr *wr,const struc
 		if(status) break;
 
 		hdwqe = dwcroce_hwq_head(&qp->sq); // To get the head ptr.
-		status = dwcroce_build_wqe_opcode(qp,hdwqe);//added by hs 
-		if(status) break;
 
 		swtich(wr->opcode){
 		case IB_WR_SEND_WITH_IMM:
 			hdwqe->immdt = ntohl(wr->ex.imm_data);
 		case IB_WR_SEND:
-			dwcroce_build_send(qp,hdwqe,wr);
+			status = dwcroce_build_send(qp,hdwqe,wr);
 			break;
 		case IB_WR_SEND_WITH_INV:
 			hdwqe->lkey = wr->ex.invalidate_rkey;
@@ -397,22 +404,66 @@ int dwcroce_post_send(struct ib_qp *ibqp,const struct ib_send_wr *wr,const struc
 		dwcroce_ring_sq_hw(qp); // notify hw to send wqe.
 
 
-	
+		wr = wr->next;
 	}
 
 	/*wait to add end!*/
+	spin_unlock_irqrestore(&qp->sq.lock,flags);
 	printk("dwcroce:dwcroce_post_send succeed end!\n");//added by hs for printing end info
 	return status;
+}
+
+static void dwcroce_build_rqsges(struct dwcroce_rqe *rqe, struct ib_recv_wr *wr)
+{
+	int i;
+	int num_sge = wr->num_sge;
+	struct dwcroce_rqe *tmprqe = rqe;
+	struct ib_sge *sg_list;
+	sg_list = wr->sg_list;
+	for (i = 0; i < num_sge; i++) {
+		
+	}
+}
+
+static void dwcroce_build_rqe(struct dwcroce_rqe* rqe, const struct ib_recv_wr* wr) {
+	u32 wqe_size = 0;
+	if(wr->num_sge)
+		wqe_size = (wr->num_sge-1) * sizeof(*rqe) + sizeof(*rqe);
+	else
+		wqe_size = sizeof(*rqe);
+
+	dwcroce_build_rqsges(rqe,wr);
+
+
 }
 
 int dwcroce_post_recv(struct ib_qp *ibqp,const struct ib_recv_wr *wr,const struct ib_recv_wr **bad_wr)
 {
 	printk("dwcroce:dwcroce_post_recv start!\n");//added by hs for printing start info
+	int status = 0;
+	unsigned long flags;
+	struct dwcroce_qp *qp = get_dwcroce_qp(ibqp);
+	struct dwcroce_rqe *rqe;
+	struct dwcroce_dev *dev = get_dwcroce_dev(ibqp->device);
+	u32 free_cnt;
 	/*wait to add 2019/6/24*/
-	struct dwcroce_qp *qp;
-	
+	spin_lock_irqsave(&qp->rq.lock,flags);
+	if (qp->qp_state == DWCROCE_QPS_RST || qp->qp_state == DWCROCE_QPS_ERR) {
+		spin_unlock_irqrestore(&qp->rq.lock,flags);
+		*bad_wr = wr;
+		return -EINVAL;
+	}
+	while (wr) {
+		free_cnt = dwcroce_hwq_free_cnt(&qp->rq);
+		if (free_cnt == 0 || wr->num_sge > qp->rq.max_sges) {
+			*bad_wr = wr;
+			status = -ENOMEM;
+			break;
+		}
 
-	qp = get_dwcroce_qp(ibqp);
+		dwcroce_build_rqe(rqe,wr);
+
+	}
 	
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_post_recv succeed end!\n");//added by hs for printing end info

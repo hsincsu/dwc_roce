@@ -129,6 +129,11 @@ struct dwcroce_sge {
 	u32 lrkey;
 	u32 len;
 };
+struct dwcroce_rqe {
+	u8 datawidth;	//lower 4 bits is for datawidth,higher 4 bits is for ptr.
+	u8 datawidth;   //lower 4 bits is for ptr, higher 4 bits is for phyaddr.
+	u48 phypage;	
+};
 
 #pragma pack(1)//we don't need the default align,we need to make sure the wqe is 48 bytes.
 struct dwcroce_wqe {//defaultly,we use 48 byte WQE.a queue may have 256 wqes. 48 bytes long,but length is 64 bytes.
