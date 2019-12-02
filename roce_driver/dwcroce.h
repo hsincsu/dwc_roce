@@ -30,6 +30,11 @@
 #define DWCROCEDRV_VER "1.0.0.0"
 
 #define  DWCROCE_MIN_Q_PAGE_SIZE 4096
+enum dwcroce_qp_foe {
+        DWCROCE_Q_FULL = 0,
+        DWCROCE_Q_EMPTY = 1,
+        DWCROCE_Q_FREE = 2,
+};
 
 struct dwcroce_pd {
 	struct dwcroce_pool_entry pelem;
@@ -130,9 +135,7 @@ struct dwcroce_sge {
 	u32 len;
 };
 struct dwcroce_rqe {
-	u8 datawidth;	//lower 4 bits is for datawidth,higher 4 bits is for ptr.
-	u8 datawidth;   //lower 4 bits is for ptr, higher 4 bits is for phyaddr.
-	u48 phypage;	
+	u64  phypage;	
 };
 
 #pragma pack(1)//we don't need the default align,we need to make sure the wqe is 48 bytes.
@@ -165,11 +168,6 @@ enum dwcroce_qp_state {
 	DWCROCE_QPS_ERR				=6,
 	DWCROCE_QPS_SQD				=7,
 
-};
-enum dwcroce_qp_foe {
-	DWCROCE_Q_FULL = 0,
-	DWCROCE_Q_EMPTY = 1,
-	DWCROCE_Q_FREE = 2,
 };
 
 struct dwcroce_qp {

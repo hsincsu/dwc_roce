@@ -1430,7 +1430,7 @@
 
 /*SOME IMPORTANT DEFINITION*/
 #define QPNUM		10
-#define DESTQP      QPNUM
+#define DESTIQP      QPNUM
 #define EECNXT		QPNUM
 #define OPCODE		8
 #define SOCKET		48
@@ -1451,9 +1451,9 @@
 #define SEND			0x4
 #define SEND_WITH_IMM	0x5
 #define SEND_WITH_INV   0x6
-#define WRITE			0x8
+#define RDMA_WRITE			0x8
 #define WRITE_WITH_IMM	0x9
-#define READ			0x0
+#define RDMA_READ			0x0
 /*END*/
 /*Registers with RoCE functions end
 *					--edited by hs in 2019/10/17

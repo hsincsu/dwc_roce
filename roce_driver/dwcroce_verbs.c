@@ -39,20 +39,24 @@ static int  dwcroce_build_wqe_opcode(struct dwcroce_qp *qp,struct dwcroce_wqe *w
 	int status;
 	u8 qp_type;
 	u8 opcode;
-	swtich(qp->qp_type) {
+	switch(qp->qp_type) {
 		case IB_QPT_UD:
 				qp_type = UD;
 				break;
 		case IB_QPT_UC:
 				qp_type = UC;
 				break;
-		case IB_QPT_RD:
+		case IB_QPT_RESERVED2:
 				qp_type = RD;
 				break;
 		case IB_QPT_RC:
 				qp_type = RC;
 				break;
+		default:
+				status = 0x1;
+				break;
 	}
+
 	switch (wr->opcode) {
 	case IB_WR_SEND:
 				opcode = SEND;
@@ -63,15 +67,23 @@ static int  dwcroce_build_wqe_opcode(struct dwcroce_qp *qp,struct dwcroce_wqe *w
 	case IB_WR_SEND_WITH_INV:
 				opcode = SEND_WITH_INV;
 				break;
-	case IB_WR_WRITE:
-				opcode = WRITE;
+	case IB_WR_RDMA_WRITE:
+				opcode = RDMA_WRITE;
 				break;
-	case IB_WR_WRITE_WITH_IMM:
+	case IB_WR_RDMA_WRITE_WITH_IMM:
 				opcode = WRITE_WITH_IMM;
 				break;
-	case IB_WR_READ:
-				opcode = READ;
-				break;		
+	case IB_WR_RDMA_READ:
+				opcode = RDMA_READ;
+				break;	
+	default:
+				status = status | 0x2;	
+				break;	
+	}
+	if(status & 0x1||status & 0x2)
+	{
+		printk("dwcroce: transport or  opcode not supported \n");//added by hs 	
+		return -EINVAL;
 	}
 	if(qp_type == UD && !(opcode & (SEND|SEND_WITH_IMM)))
 		return -EINVAL;
@@ -85,7 +97,7 @@ static int  dwcroce_build_wqe_opcode(struct dwcroce_qp *qp,struct dwcroce_wqe *w
 
 }
 
-static int dwcroce_build_sges(struct dwcroce_wqe *wqe, int num_sge, struct ib_sge *sg_list,struct ib_send_wr *wr)
+static int dwcroce_build_sges(struct dwcroce_qp *qp, struct dwcroce_wqe *wqe, int num_sge, struct ib_sge *sg_list,struct ib_send_wr *wr)
 {
 	int i;
 	int status = 0;
@@ -94,10 +106,10 @@ static int dwcroce_build_sges(struct dwcroce_wqe *wqe, int num_sge, struct ib_sg
 		status = dwcroce_build_wqe_opcode(qp,tmpwqe,wr);//added by hs 
 		if(status)
 			return status;
-		tmpwqe.rkey = sg_list[i].lkey;
-		tmpwqe.lkey = sg_list[i].lkey;
-		tmpwqe.localaddr = sg_list[i].addr;
-		tmpwqe.dmalen = sg_list[i].length;
+		tmpwqe->rkey = sg_list[i].lkey;
+		tmpwqe->lkey = sg_list[i].lkey;
+		tmpwqe->localaddr = sg_list[i].addr;
+		tmpwqe->dmalen = sg_list[i].length;
 		tmpwqe += 1;
 	}
 	if (num_sge == 0) {
@@ -106,7 +118,7 @@ static int dwcroce_build_sges(struct dwcroce_wqe *wqe, int num_sge, struct ib_sg
 	return status;
 }
 
-static int dwcroce_buildwrite_sges(struct dwcroce_wqe *wqe,int num_sge, struct ib_sge *sg_list, struct ib_send_wr *wr)
+static int dwcroce_buildwrite_sges(struct dwcroce_qp *qp, struct dwcroce_wqe *wqe,int num_sge, struct ib_sge *sg_list, struct ib_send_wr *wr)
 {
 	int i;
 	int status = 0;
@@ -115,11 +127,11 @@ static int dwcroce_buildwrite_sges(struct dwcroce_wqe *wqe,int num_sge, struct i
 		status = dwcroce_build_wqe_opcode(qp,tmpwqe,wr);//added by hs 
 		if(status)
 			return -EINVAL;
-		tmpwqe.rkey = rdma_wr(wr)->rkey;
-		tmpwqe.lkey = sg_list[i].lkey;
-		tmpwqe.localaddr = sg_list[i].addr;
-		tmpwqe.dma_len = sg_list[i].length;
-		tmpwqe.destaddr = rdma_wr(wr)->remote_addr;
+		tmpwqe->rkey = rdma_wr(wr)->rkey;
+		tmpwqe->lkey = sg_list[i].lkey;
+		tmpwqe->localaddr = sg_list[i].addr;
+		tmpwqe->dmalen = sg_list[i].length;
+		tmpwqe->destaddr = rdma_wr(wr)->remote_addr;
 		tmpwqe += 1;
 	}
 	if (num_sge == 0) {
@@ -147,10 +159,10 @@ static int dwcroce_build_inline_sges(struct dwcroce_qp *qp, struct dwcroce_wqe *
 			return -EINVAL;
 	}
 	else {
-		dwcroce_build_sges(wqe,wr->num_sge,wr->sg_list,wr);
+		dwcroce_build_sges(qp,wqe,wr->num_sge,wr->sg_list,wr);
 		if(wr->num_sge){
 			wqe_size +=((wr->num_sge-1) * sizeof(struct dwcroce_wqe));
-			qp->sq.head = (qp->sq.head + num_sge) % qp->sq.max_cnt; // update the head ptr,and check if the queue if full.
+			qp->sq.head = (qp->sq.head + wr->num_sge) % qp->sq.max_cnt; // update the head ptr,and check if the queue if full.
 			if(qp->sq.head == qp->sq.tail){
 				qp->sq.qp_foe == DWCROCE_Q_FULL;
 			}
@@ -202,10 +214,10 @@ static int dwcroce_buildwrite_inline_sges(struct dwcroce_qp *qp,struct dwcroce_w
 			return -EINVAL;
 	}
 	else {
-		dwcroce_buildwrite_sges(wqe,wr->num_sge,wr->sg_list,wr);
+		dwcroce_buildwrite_sges(qp,wqe,wr->num_sge,wr->sg_list,wr);
 		if(wr->num_sge){
 			wqe_size +=((wr->num_sge-1)*sizeof(struct dwcroce_wqe));
-			qp->sq.head = (qp->sq.head + num_sge) % qp->sq.max_cnt; // update the head ptr,and check if the queue if full.
+			qp->sq.head = (qp->sq.head + wr->num_sge) % qp->sq.max_cnt; // update the head ptr,and check if the queue if full.
 			if(qp->sq.head == qp->sq.tail){
 				qp->sq.qp_foe == DWCROCE_Q_FULL;
 			}
@@ -367,7 +379,7 @@ int dwcroce_post_send(struct ib_qp *ibqp,const struct ib_send_wr *wr,const struc
 
 		hdwqe = dwcroce_hwq_head(&qp->sq); // To get the head ptr.
 
-		swtich(wr->opcode){
+		switch(wr->opcode){
 		case IB_WR_SEND_WITH_IMM:
 			hdwqe->immdt = ntohl(wr->ex.imm_data);
 		case IB_WR_SEND:
@@ -454,18 +466,20 @@ int dwcroce_post_recv(struct ib_qp *ibqp,const struct ib_recv_wr *wr,const struc
 		return -EINVAL;
 	}
 	while (wr) {
-		free_cnt = dwcroce_hwq_free_cnt(&qp->rq);
-		if (free_cnt == 0 || wr->num_sge > qp->rq.max_sges) {
-			*bad_wr = wr;
-			status = -ENOMEM;
-			break;
-		}
+//		free_cnt = dwcroce_hwq_free_cnt(&qp->rq);
+//		if (free_cnt == 0 || wr->num_sge > qp->rq.max_sges) {
+//			*bad_wr = wr;
+//			status = -ENOMEM;
+//			break;
+//		}
 
-		dwcroce_build_rqe(rqe,wr);
+//		dwcroce_build_rqe(rqe,wr);
 
+		wr = wr->next;
 	}
 	
 	/*wait to add end!*/	
+	spin_unlock_irqrestore(&qp->rq.lock,flags);
 	printk("dwcroce:dwcroce_post_recv succeed end!\n");//added by hs for printing end info
 	return 0;
 }
@@ -496,18 +510,32 @@ int dwcroce_query_device(struct ib_device *ibdev, struct ib_device_attr *props,s
 	/*wait to add 2019/6/24*/
 	struct dwcroce_dev *dev;
 	dev = get_dwcroce_dev(ibdev);
-
+/*a little mistake is that props should be attrs, may fix later*/
 //	if(uhw->inlen || uhw->outlen)
 //		return -EINVAL;
 	memset(props,0,sizeof *props);
 	dwcroce_get_guid(dev,(u8 *)&props->sys_image_guid);
 	props->vendor_id = dev->devinfo.pcidev->vendor;
 	props->vendor_part_id = dev->devinfo.pcidev->device;
-	
+	props->page_size_cap = 0xffff000;
+	props->device_cap_flags = IB_DEVICE_CURR_QP_STATE_MOD |
+                                        IB_DEVICE_RC_RNR_NAK_GEN |
+                                        IB_DEVICE_SHUTDOWN_PORT |
+                                        IB_DEVICE_SYS_IMAGE_GUID |
+                                        IB_DEVICE_LOCAL_DMA_LKEY |
+                                        IB_DEVICE_MEM_MGT_EXTENSIONS;	
+	props->max_pd = 0x1024;
+        props->max_mr = 256*1024;
+        props->max_cq = 16384;
+       	props->max_qp = 0x10000;
+        props->max_cqe = 256;
+        props->max_qp_wr = 256;
+
+
 	props->atomic_cap = 0;
 	props->max_fmr = 0;
 	props->max_map_per_fmr = 0;
-
+	props->max_pkeys = 1;
 
 
 	/*wait to add end!*/	
@@ -548,14 +576,14 @@ int dwcroce_query_port(struct ib_device *ibdev, u8 port, struct ib_port_attr *pr
 							IB_PORT_VENDOR_CLASS_SUP;
 	/* not sure,need verified!*/
 	props->ip_gids = true;
-	props->gid_tbl_len = 0;
+	props->gid_tbl_len = 16;
 	props->pkey_tbl_len = 1;
 	props->bad_pkey_cntr = 0;
 	props->qkey_viol_cntr = 0;
-	props->active_speed = 0;
-	props->active_width = 0;
-	props->max_msg_sz = 0x80000000;
-	props->max_vl_num = 4;
+	props->active_speed = IB_SPEED_DDR;
+	props->active_width = IB_WIDTH_4X;
+	props->max_msg_sz = 1 << 16;
+	props->max_vl_num = 0;
 	/*end */
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_query_port succeed end!\n");//added by hs for printing end info
@@ -589,16 +617,18 @@ void dwcroce_get_guid(struct dwcroce_dev *dev, u8 *guid)
 {
 	printk("dwcroce:dwcroce_get_guid start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
-        u8 *addr;
-        addr = dev->devinfo.netdev->dev_addr;
-        guid[0] = addr[0]^2;
-        guid[1] = addr[1];
-        guid[2] = addr[2];
+       // u8 *addr;
+       u8 mac[ETH_ALEN];
+	// addr = dev->devinfo.netdev->dev_addr;
+        memcpy(mac, dev->devinfo.netdev->dev_addr, ETH_ALEN);
+	guid[0] = mac[0] ^ 2;
+        guid[1] = mac[1];
+        guid[2] = mac[2];
         guid[3] = 0xff;
         guid[4] = 0xfe;
-        guid[5] = addr[3];
-        guid[6] = addr[4];
-        guid[7] = addr[5];
+        guid[5] = mac[3];
+        guid[6] = mac[4];
+        guid[7] = mac[5];
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_get_guid succeed end!\n");//added by hs for printing end info
 }
@@ -664,6 +694,11 @@ int dwcroce_query_pkey(struct ib_device *ibdev, u8 port, u16 index, u16 *pkey)
 {
 	printk("dwcroce:dwcroce_query_pkey start!\n");//added by hs for printing start info
 	/*wait to add 2019/6/24*/
+	if (index > 1)
+                return -EINVAL;
+
+        *pkey = 0xffff;
+        return 0;
 
 	/*wait to add end!*/	
 	printk("dwcroce:dwcroce_query_pkey succeed end!\n");//added by hs for printing end info
@@ -938,9 +973,15 @@ struct ib_qp *dwcroce_create_qp(struct ib_pd *ibpd,
 	/*get attrs to private qp */
 	dwcroce_set_qp_init_params(qp,pd,attrs);
 
-	/*alloate id for qp*/
-	status = dwcroce_alloc_cqqpresource(dev,dev->allocated_qps,dev->attr.max_qp,&qp_num,&dev->next_qp);
+	/*alloate id for qp,should consider servral situation*/
+	if(attrs->qp_type == IB_QPT_SMI)/*In Roce, SM is not supportted*/
+		return -EINVAL;
+	else if(attrs->qp_type == IB_QPT_GSI)
+		qp_num = 1;
+	else 
+		status = dwcroce_alloc_cqqpresource(dev,dev->allocated_qps,dev->attr.max_qp,&qp_num,&dev->next_qp);
 	qp->id = qp_num;
+	qp->ibqp.qp_num = qp_num;
 	printk("dwcroce: create_qp for qp_num is %d\n",qp_num);//added by hs 
 	/*kenrel create qp*/
 	status = dwcroce_hw_create_qp(dev,qp,cq,pd,attrs);
@@ -952,16 +993,6 @@ struct ib_qp *dwcroce_create_qp(struct ib_pd *ibpd,
 	dev->qp_table[qp->id] = qp;
 
 	/*test wqe wether wqe is 48 byte*/
-	printk("dwcroce: test wqe to get or read start\n");//added by hs
-	struct dwcroce_wqe *wqe;
-	wqe = kzalloc(sizeof(*wqe),GFP_KERNEL);
-	wqe->pkey = 0x1110;
-	printk("dwcroce:wqe's size is %d",sizeof(struct dwcroce_wqe));//added by hs 
-	printk("dwcroce:wqe's pkey is %x\n",wqe->pkey);//added by hs
-	printk("dwcroce:wqe's pkey is %x\n",*(u32 *)((u8 *)wqe +4 ));//added by hs 
-	printk("dwcroce:wqe's eecnxt1's addr is %x\n",&wqe->eecntx);//added by hs 
-	printk("dwcroce:wqe's destsocket1's addr is %x\n",&wqe->destsocket1);//added by hs 
-	kfree(wqe);
 	/*test end*/
 	printk("dwcroce: dwcroce_create_qp succeed end!\n");//added by hs for printing end info
 	return &qp->ibqp;

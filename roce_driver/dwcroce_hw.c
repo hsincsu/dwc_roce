@@ -472,14 +472,6 @@ static int dwcroce_init_dev_attr(struct dwcroce_dev *dev)
 	err = dwcroce_query_device(&dev->ibdev,&dev->attr,NULL);
 	if(err)
 		goto err1;
-	/*temple value*/
-	dev->attr.max_pd = 0x1024;
-	dev->attr.max_mr = 256*1024;
-	dev->attr.max_cq = 16384;
-	dev->attr.max_qp = 0x10000;
-	dev->attr.max_cqe = 256;
-	dev->attr.max_qp_wr = 256;
-
 	printk("dwcroce: dwcroce_init_dev_attr \n");//added by hs 
 	return 0;
 err1:
@@ -604,7 +596,7 @@ static int dwcroce_init_pgu_cq(struct dwcroce_dev *dev)
 
 		writel(PGU_BASE + CQESIZE,base_addr + MPB_WRITE_ADDR);
 		writel(txop,base_addr + MPB_RW_DATA);
-		printk("dwcroce: tx cq end \n");//added by hs 
+	//	printk("dwcroce: tx cq end \n");//added by hs 
 		while (txop & 0x00000001) //QPNUM = 10,SO 32 -10 -2 = 20
 		{
 			printk("dwcroce: txcqcycle \n");//added by hs 
@@ -620,7 +612,7 @@ static int dwcroce_init_pgu_cq(struct dwcroce_dev *dev)
 		rxop = 0;
 		rxop = i << 2; // the same to upper one
 		rxop = rxop + 0x3;
-		printk("rxop is %x \n",rxop);//added by hs 
+	//	printk("rxop is %x \n",rxop);//added by hs 
 		writel(PGU_BASE + RxUpAddrCQE,base_addr + MPB_WRITE_ADDR);
 		writel(0x2000,base_addr + MPB_RW_DATA);
 
@@ -641,7 +633,7 @@ static int dwcroce_init_pgu_cq(struct dwcroce_dev *dev)
 
 		writel(PGU_BASE + RxCQEOp,base_addr + MPB_WRITE_ADDR);
 		writel(rxop,base_addr + MPB_RW_DATA);
-		printk("dwcroce: rx cq end \n");//added by hs 
+	//	printk("dwcroce: rx cq end \n");//added by hs 
 		while(rxop & 0x00000001)
 		{
 			rxop = 0;
@@ -660,7 +652,7 @@ static int dwcroce_init_pgu_cq(struct dwcroce_dev *dev)
 		xmitop =0;
 		xmitop = i<<2; // the same to uppper one
 		xmitop = xmitop + 0x3;
-		printk("dwcroce: xmitop is %x\n",xmitop);//added by hs 
+	//	printk("dwcroce: xmitop is %x\n",xmitop);//added by hs 
 		writel(PGU_BASE + XmitUpAddrCQE,base_addr + MPB_WRITE_ADDR);
 		writel(0x2000,base_addr + MPB_RW_DATA);
 
@@ -688,7 +680,7 @@ static int dwcroce_init_pgu_cq(struct dwcroce_dev *dev)
 			xmitop = 0;
 			writel(PGU_BASE + XmitCQEOp,base_addr + MPB_WRITE_ADDR);
 			xmitop = readl(base_addr + MPB_RW_DATA);
-			printk("dwcroce: xmitop cycle  is %x\n",xmitop);//added by hs 
+	//		printk("dwcroce: xmitop cycle  is %x\n",xmitop);//added by hs 
 		}
 	}
 
