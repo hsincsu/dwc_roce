@@ -30,6 +30,38 @@
 #define DWCROCEDRV_VER "1.0.0.0"
 
 #define  DWCROCE_MIN_Q_PAGE_SIZE 4096
+
+struct dwcroce_eth_vlan {
+		u8 dmac[6];
+        u8 smac[6];
+        __be16 eth_type;
+        __be16 vlan_tag;
+        __be16 roce_eth_type;
+};
+
+
+struct dwcroce_grh {
+		__be32  tclass_flow;
+        __be32  pdid_hoplimit;
+        u8      sgid[16];
+        u8      dgid[16];      
+        u16     rsvd;
+};
+
+struct dwcroce_av {
+	 struct dwcroce_eth_vlan eth_hdr;
+	 struct dwcroce_grh grh;
+	 u32 valid;
+};
+
+struct dwcroce_ib_ah {
+	struct ib_ah	ibah;
+	struct dwcroce_av *av;
+	u16 sgid_index;
+	u32 id;
+	u8 hdr_type;
+};
+
 enum dwcroce_qp_foe {
         DWCROCE_Q_FULL = 0,
         DWCROCE_Q_EMPTY = 1,
@@ -194,6 +226,12 @@ struct dwcroce_qp {
 
 };
 
+struct dwcroce_pbl {
+	void *va;
+	dma_addr_t pa;
+	u32 size;
+};
+
 struct dwcroce_dev{
 	struct ib_device ibdev;
 	struct ib_device_attr attr;
@@ -210,6 +248,17 @@ struct dwcroce_dev{
 	unsigned long *allocated_qps;//allocated id for qps
 	struct dwcroce_qp **qp_table;
 	struct dwcroce_cq **cq_table;
+
+	struct {
+		struct dwcroce_av *va;
+		dma_addr_t pa;
+		u32 size;
+		u32 num_ah;
+
+		spinlock_t lock;/*for synchronization*/
+		u32 ahid;
+		struct dwcroce_pbl pbl;
+	} av_tbl;
 
 	u32 next_cq;
 	u32 next_qp;

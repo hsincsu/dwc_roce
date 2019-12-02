@@ -292,6 +292,11 @@ static int dwcroce_get_used_rsrc(struct dwcroce_dev *dev)
 
 }
 
+static int dwcroce_create_ah_tbl(struct dwcroce_dev* dev)
+{
+
+}
+
 static int dwcroce_alloc_resource(struct dwcroce_dev *dev)
 {
 	printk("dwcroce: dwcroce_alloc_resource start\n");//added by hs
@@ -304,6 +309,9 @@ static int dwcroce_alloc_resource(struct dwcroce_dev *dev)
 	if(status)
 		goto err1;
 	status = dwcroce_get_used_rsrc(dev);
+	if(status)
+		goto err1;
+	status = dwcroce_create_ah_tbl(dev);
 	if(status)
 		goto err1;
 	return 0;
