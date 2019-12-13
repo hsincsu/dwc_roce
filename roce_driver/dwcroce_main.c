@@ -270,10 +270,10 @@ static int dwcroce_init_cqqp(struct dwcroce_dev *dev)//allocate id for cq &qp
 	dev->qp_table =(struct dwcroce_qp **)(&dev->allocated_cqs[BITS_TO_LONGS(max_cq)]);
 	dev->cq_table =(struct dwcroce_cq **)(&dev->allocated_cqs[BITS_TO_LONGS(max_cq)+sizeof(struct dwcroce_qp **) * max_qp]);
 
-	set_bit(0,dev->allocated_qps);
+	set_bit(0,dev->allocated_qps); // qp0 is not used in Roce
 	set_bit(0,dev->allocated_cqs);
 	
-	set_bit(1,dev->allocated_qps);
+	set_bit(1,dev->allocated_qps); // qp1 is for GSI/ CM.
 	set_bit(1,dev->allocated_cqs);
 	set_bit(2,dev->allocated_cqs);
 
@@ -294,6 +294,48 @@ static int dwcroce_get_used_rsrc(struct dwcroce_dev *dev)
 
 static int dwcroce_create_ah_tbl(struct dwcroce_dev* dev)
 {
+	int i;
+	int status = -ENOMEM;
+	int max_ah;
+	struct pci_dev *pdev = dev->devinfo.pcidev;
+	dma_addr_t pa;
+	struct dwcroce_pbe *pbes;
+	
+	max_ah = 256; // not sure
+	dev->av_tbl.size = sizeof(struct dwcroce_av) * max_ah;
+
+	dev->av_tbl.pbl.va = dma_alloc_coherent(&pdev->dev,PAGE_SIZE,
+											&dev->av_tbl.pbl.pa,
+											GFP_KERNEL);
+	if(dev->av_tbl.pbl.va == NULL)
+		goto mem_err;
+
+	dev->av_tbl.va = dma_alloc_coherent(&pdev->dev,dev->av_tbl.size,
+										&pa,GFP_KERNEL);
+	if(dev->av_tbl.va == NULL)
+		goto mem_err_ah;
+	dev->av_tbl.pa = pa;
+	dev->av_tbl.num_ah = max_ah;
+	memset(dev->av_tbl.va,0,dev->av_tbl.size);
+
+	pbes = (struct dwcroce_pbe *)dev->av_tbl.pbl.va;
+	for (i = 0; i < dev->av_tbl.size / 4096; i++) {
+		pbes[i].pa_lo = (u32)cpu_to_le32(pa & 0xffffffff);
+		pbes[i].pa_hi = (u32)cpu_to_le32(upper_32_bits(pa));
+		pa += PAGE_SIZE;
+	}
+
+	dev->av_tbl.ahid = (u32)(dev->av_tbl.pbl.pa & 0xffffffff); // need an unique id , alter this later. --added by hs.
+	
+	spin_lock_init(&dev->av_tbl.lock);
+	return 0;
+mem_err_ah:
+	dma_free_coherent(&pdev->dev,PAGE_SIZE,dev->av_tbl.pbl.va,
+					  dev->av_tbl.pbl.pa);
+	dev->av_tbl.pbl.va = NULL;
+	dev->av_tbl.size= 0;
+mem_err:
+	return status;
 
 }
 

@@ -27,10 +27,22 @@
 #include "../dwc-xlgmac-reg.h"
 #include "dwcroce_pool.h"
 #include "dwcroce_loc.h"
+
 #define DWCROCEDRV_VER "1.0.0.0"
 
-#define  DWCROCE_MIN_Q_PAGE_SIZE 4096
+#define  DWCROCE_MIN_Q_PAGE_SIZE	4096
+#define  DWCROCE_AV_VALID			BIT(7)
+#define  DWCROCE_AV_VLAN_VALID		BIT(1)
+struct dwcroce_pbe {
+	u32 pa_hi;
+	u32 pa_lo;
+};
 
+struct dwcroce_eth_basic {
+		u8 dmac[6];
+        u8 smac[6];
+        __be16 eth_type;
+};
 struct dwcroce_eth_vlan {
 		u8 dmac[6];
         u8 smac[6];
@@ -54,7 +66,7 @@ struct dwcroce_av {
 	 u32 valid;
 };
 
-struct dwcroce_ib_ah {
+struct dwcroce_ah {
 	struct ib_ah	ibah;
 	struct dwcroce_av *av;
 	u16 sgid_index;
@@ -293,6 +305,11 @@ static inline struct dwcroce_mr *get_dwcroce_mr(struct ib_mr *ibmr)
 static inline struct dwcroce_qp *get_dwcroce_qp(struct ib_qp *ibqp)
 {
 	return container_of(ibqp,struct dwcroce_qp, ibqp);
+}
+
+static inline struct dwcroce_ah *get_dwcroce_ah(struct ib_ah* ibah)
+{
+	return container_of(ibah,struct dwcroce_ah, ibah);
 }
 
 int dwcroce_mem_init_fast(struct dwcroce_pd *dwcpd, int max_pages, struct dwcroce_mr *dwcmr);
