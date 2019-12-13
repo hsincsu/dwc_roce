@@ -179,7 +179,9 @@ struct dwcroce_sge {
 	u32 len;
 };
 struct dwcroce_rqe {
-	u64  phypage;	
+	u64  descbascaddr;
+	u32  dmalength;
+	u32  opcode;
 };
 
 #pragma pack(1)//we don't need the default align,we need to make sure the wqe is 48 bytes.
@@ -220,6 +222,15 @@ struct dwcroce_qp {
 	u32 id; // qp unique id.
 	u32 len; // qp len.send queue is same to recv queue.
 	u32 max_inline_data;
+	struct {
+		uint64_t wrid;
+		uint16_t dpp_wqe_idx;
+		uint16_t dpp_wqe;
+		uint8_t  signaled;
+		uint8_t  rsvd[3];
+	} *wqe_wr_id_tbl;
+	u64 *rqe_wr_id_tbl;
+
 	struct dwcroce_cq *cq; 
 	struct dwcroce_pd *pd;
 

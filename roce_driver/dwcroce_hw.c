@@ -1018,21 +1018,21 @@ int dwcroce_hw_create_cq(struct dwcroce_dev *dev, struct dwcroce_cq *cq, int ent
 		status = -ENOMEM;
 		goto mem_err;
 	}
-	cq->txwp = cq->txrp = cq->txva;
+	cq->txwp = cq->txrp = 0; // because wp,rp means the offset of the phypage, shoule be 0 at first.
 	/*rx cq*/
 	cq->rxva = dma_alloc_coherent(&pdev->dev,cq->len,&cq->rxpa,GFP_KERNEL);//allocate memory for rx cq
 	if (!cq->rxva) {
 		status = -ENOMEM;
 		goto mem_err;
 	}
-	cq->rxwp = cq->rxrp = cq->rxva;
+	cq->rxwp = cq->rxrp = 0;
 	/*xmit cq*/
 	cq->xmitva = dma_alloc_coherent(&pdev->dev,cq->len,&cq->xmitpa,GFP_KERNEL);//allocate memory for xmit cq
 	if (!cq->xmitva) {
 		status = -ENOMEM;
 		goto mem_err;
 	}
-	cq->xmitwp = cq->xmitrp = cq->xmitva;
+	cq->xmitwp = cq->xmitrp = 0;
 	cqe_count = cq->len / cqe_size;
 	cq->cqe_cnt = cqe_count;
 	if(cqe_count > 256)
