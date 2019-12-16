@@ -545,6 +545,29 @@ int dwcroce_post_recv(struct ib_qp *ibqp,const struct ib_recv_wr *wr,const struc
 		return status;
 }
 
+/*access hw for cqe*/
+static int dwcroce_poll_hwcq(struct dwcroce_cq *cq, int num_entries, struct ib_wc *ibwc)
+{
+		u16 qpn = 0;
+        int i = 0;
+        bool expand = false;
+        int polled_hw_cqes = 0;
+        struct dwcroce_qp *qp = NULL;
+        struct dwcroce_dev *dev = get_dwcroce_dev(cq->ibcq.device);
+        struct dwcroce_cqe *cqe;
+        u16 cur_getp; bool polled = false; bool stop = false; 
+
+		while (num_entries) {
+			/*get tx cqe*/
+			break;
+		}
+		
+		
+
+		return num_entries;
+}
+
+/*poll cqe from cq.*/
 int dwcroce_poll_cq(struct ib_cq *ibcq, int num_entries, struct ib_wc *wc)
 {
 		printk("dwcroce:dwcroce_poll_cq start!\n");//added by hs for printing start info
@@ -559,6 +582,8 @@ int dwcroce_poll_cq(struct ib_cq *ibcq, int num_entries, struct ib_wc *wc)
 		/*poll cq from hw*/
 		spin_lock_irqsave(&cq->cq_lock,flags);
 		num_os_cqe = dwcroce_poll_hwcq(cq, cqe);//To get cq from hw,Please note that there is 3 types cq queues for one cq.
+		spin_unlock_irqrestore(&cq->cq_lock,flags);
+		cqes_to_poll -= num_os_cqe; //if cqes_to_poll ==0,means all cqs needed have been received.
 		/*wait to add end!*/	
 		printk("dwcroce:dwcroce_poll_cq succeed end!\n");//added by hs for printing end info	
 		return 0;
