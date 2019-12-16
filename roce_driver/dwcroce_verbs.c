@@ -619,7 +619,7 @@ int dwcroce_query_device(struct ib_device *ibdev, struct ib_device_attr *props,s
 											IB_DEVICE_RC_RNR_NAK_GEN |
 											IB_DEVICE_SHUTDOWN_PORT |
 											IB_DEVICE_SYS_IMAGE_GUID |
-											IB_DEVICE_LOCAL_DMA_LKEY |
+											//IB_DEVICE_LOCAL_DMA_LKEY |
 											IB_DEVICE_MEM_MGT_EXTENSIONS;	
 		props->max_pd = 0x1024;
 		props->max_mr = 256*1024;
@@ -627,7 +627,8 @@ int dwcroce_query_device(struct ib_device *ibdev, struct ib_device_attr *props,s
        	props->max_qp = 0x10000;
 		props->max_cqe = 256;
 		props->max_qp_wr = 256;
-
+		props->max_send_sge = 256;
+		props->max_recv_sge = 256;
 
 		props->atomic_cap = 0;
 		props->max_fmr = 0;
@@ -992,34 +993,35 @@ int dwcroce_destroy_cq(struct ib_cq *ibcq)
 static int dwcroce_check_qp_params(struct ib_pd *ibpd, struct dwcroce_dev *dev,
 								   struct ib_qp_init_attr *attrs, struct ib_udata *udata)
 {
-	if ((attrs->qp_type != IB_QPT_GSI) &&
+	    if ((attrs->qp_type != IB_QPT_GSI) &&
 			(attrs->qp_type != IB_QPT_RC) &&
 			(attrs->qp_type != IB_QPT_UC) &&
 			(attrs->qp_type != IB_QPT_UD)) {
 			printk("%s unsupported qp type = 0x%x requested \n",__func__,attrs->qp_type);
 			return -EINVAL;
-	}
+	    }
 
-	if ((attrs->qp_type != IB_QPT_GSI) &&
+	    if ((attrs->qp_type != IB_QPT_GSI) &&
 				(attrs->cap.max_send_wr > dev->attr.max_qp_wr)) {
 					printk("dwcroce: %s unsupported send_wr =0x%x requested\n",__func__,attrs->cap.max_send_wr);//added by hs
 					printk("dwcroce: %s unsupported send_wr = 0x%x\n",__func__,dev->attr.max_qp_wr);//added by hs 
 					return -EINVAL;
-			}
-	if (!attrs->srq && (attrs->cap.max_recv_wr > dev->attr.max_rqe)) {
-                pr_err("%s(%d) unsupported recv_wr=0x%x requested\n",
-                       __func__, dev->id, attrs->cap.max_recv_wr);
+		}
+	    if (!attrs->srq && (attrs->cap.max_recv_wr > dev->attr.max_qp_wr)) {
+                pr_err("%s unsupported recv_wr=0x%x requested\n",
+                       __func__,attrs->cap.max_recv_wr);
                 pr_err("%s(%d) supported recv_wr=0x%x\n",
                        __func__, dev->id, dev->attr.max_rqe);
                 return -EINVAL;
         }
-        if (attrs->cap.max_inline_data > dev->attr.max_inline_data) {
-                pr_err("%s(%d) unsupported inline data size=0x%x requested\n",
-                       __func__, dev->id, attrs->cap.max_inline_data);
-                pr_err("%s(%d) supported inline data size=0x%x\n",
-                       __func__, dev->id, dev->attr.max_inline_data);
+        if (attrs->cap.max_inline_data > 0) {
+                pr_err("%s unsupported inline data size=0x%x requested\n",
+                       __func__,attrs->cap.max_inline_data);
+                pr_err("%s supported inline data size=0\n",
+                       __func__);
                 return -EINVAL;
         }
+
 
 		
 
