@@ -993,13 +993,26 @@ int dwcroce_destroy_cq(struct ib_cq *ibcq)
 static int dwcroce_check_qp_params(struct ib_pd *ibpd, struct dwcroce_dev *dev,
 								   struct ib_qp_init_attr *attrs, struct ib_udata *udata)
 {
-	    if ((attrs->qp_type != IB_QPT_GSI) &&
-			(attrs->qp_type != IB_QPT_RC) &&
-			(attrs->qp_type != IB_QPT_UC) &&
-			(attrs->qp_type != IB_QPT_UD)) {
-			printk("%s unsupported qp type = 0x%x requested \n",__func__,attrs->qp_type);
-			return -EINVAL;
-	    }
+	   
+		printk("--------------check qp1's ib_qp_init_attr start---------------\n");//added by hs
+		printk("cap.max_send_wr is %d \n",attrs->cap.max_send_wr);
+		printk("cap.max_recv_wr is %d \n",attrs->cap.max_recv_wr);
+		printk("cap.max_send_sge is %d \n",attrs->cap.max_send_sge);
+		printk("cap.max_recv_sge is %d \n",attrs->cap.max_recv_sge);
+		printk("cap.max_inline_data is %d \n",attrs->cap.max_inline_data);
+		printk("cap.max_rdma_ctxs is %d \n",attrs->cap.max_rdma_ctxs);
+		printk("qptype is %d \n",attrs->qp_type);
+		printk("port_num is %d \n",attrs->port_num);
+		printk("source_qpn is %d \n",attrs->source_qpn);
+		printk("--------------check qp1's ib_qp_init_attr  end---------------\n");//added by hs
+
+		if ((attrs->qp_type != IB_QPT_GSI) &&
+				(attrs->qp_type != IB_QPT_RC) &&
+				(attrs->qp_type != IB_QPT_UC) &&
+				(attrs->qp_type != IB_QPT_UD)) {
+				printk("%s unsupported qp type = 0x%x requested \n",__func__,attrs->qp_type);
+				return -EINVAL;
+		}
 
 	    if ((attrs->qp_type != IB_QPT_GSI) &&
 				(attrs->cap.max_send_wr > dev->attr.max_qp_wr)) {
