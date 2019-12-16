@@ -621,10 +621,10 @@ int dwcroce_query_device(struct ib_device *ibdev, struct ib_device_attr *props,s
 											IB_DEVICE_SYS_IMAGE_GUID |
 											//IB_DEVICE_LOCAL_DMA_LKEY |
 											IB_DEVICE_MEM_MGT_EXTENSIONS;	
-		props->max_pd = 0x1024;
+		props->max_pd = 1024;
 		props->max_mr = 256*1024;
 		props->max_cq = 16384;
-       	props->max_qp = 0x10000;
+       	props->max_qp = 1024;
 		props->max_cqe = 256;
 		props->max_qp_wr = 256;
 		props->max_send_sge = 256;
@@ -1024,7 +1024,7 @@ static int dwcroce_check_qp_params(struct ib_pd *ibpd, struct dwcroce_dev *dev,
                 pr_err("%s unsupported recv_wr=0x%x requested\n",
                        __func__,attrs->cap.max_recv_wr);
                 pr_err("%s(%d) supported recv_wr=0x%x\n",
-                       __func__, dev->id, dev->attr.max_rqe);
+                       __func__,dev->attr.max_qp_wr);
                 return -EINVAL;
         }
         if (attrs->cap.max_inline_data > 0) {
