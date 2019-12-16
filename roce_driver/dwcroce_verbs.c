@@ -277,7 +277,7 @@ static int dwcroce_build_reg(struct dwcroce_qp *qp, struct dwcroce_wqe *wqe, con
 static void dwcroce_ring_sq_hw(struct dwcroce_qp *qp) {
 	struct dwcroce_dev *dev;
 	u32 qpn;
-	dev = get_dwcroce_dev(qp->ibqp->device);
+	dev = get_dwcroce_dev(qp->ibqp.device);
 	/*from head to get dma address*/
 	u32 phyaddr;
 	phyaddr =qp->sq.head * sizeof(struct dwcroce_wqe); //head * sizeof(wqe)
@@ -434,16 +434,18 @@ int dwcroce_post_send(struct ib_qp *ibqp,const struct ib_send_wr *wr,const struc
 static void dwcroce_ring_rq_hw(struct dwcroce_qp *qp)
 {
 	 struct dwcroce_dev *dev;
-	 dev = get_dwcroce_dev(qp->ibqp->device);
+	 dev = get_dwcroce_dev(qp->ibqp.device);
 	 /*from head to get dma address*/
 	u32 phyaddr;
-	phyaddr =qp->sq.head * sizeof(struct dwcroce_wqe); //head * sizeof(wqe)
+	phyaddr =qp->rq.head * sizeof(struct dwcroce_rqe); //head * sizeof(wqe)
 	printk("rq wp's phyaddr is %x\n",phyaddr);//added by hs
 	/*access hw ,write wp to notify hw*/
 	void __iomem* base_addr;
+	u32 qpn;
 	base_addr = dev->devinfo.base_addr;
 	qpn = qp->id;
 	phyaddr = phyaddr << 10; // because wp 's postition is 10 bytes from revq_inf.
+	printk("rq wp's phyadr is %x \n");//added by hs
 	qpn = qpn + phyaddr;
 	printk("rq wp+qpn is %x \n",qpn);//added by hs
 
@@ -466,9 +468,9 @@ static void dwcroce_build_rqsges(struct dwcroce_rqe *rqe, struct ib_recv_wr *wr)
 	struct ib_sge *sg_list;
 	sg_list = wr->sg_list;
 	for (i = 0; i < num_sge; i++) {
-		tmprqe[i]->descbaseaddr = sg_list[i].addr;
-		tmprqe[i]->dmalen = sg_list[i].length;
-		tmprqe[i]->opcode = 0x80000000;
+		tmprqe[i].descbaseaddr = sg_list[i].addr;
+		tmprqe[i].dmalen = sg_list[i].length;
+		tmprqe[i].opcode = 0x80000000;
 		tmprqe += 1;
 		printk("dwcroce: in rq,num_sge = %d, tmprqe 's addr is %x\n",num_sge,tmprqe);//added by hs
 	}
@@ -476,26 +478,26 @@ static void dwcroce_build_rqsges(struct dwcroce_rqe *rqe, struct ib_recv_wr *wr)
 		memset(tmprqe,0,sizeof(*tmprqe));
 }
 
-static void dwcroce_build_rqe(struct dwcroce_rqe* rqe, const struct ib_recv_wr* wr) 
+static void dwcroce_build_rqe(struct dwcroce_qp *qp,struct dwcroce_rqe* rqe, const struct ib_recv_wr* wr) 
 {
 	u32 wqe_size = 0;
 
 	dwcroce_build_rqsges(rqe,wr);
 	if(wr->num_sge){
 			wqe_size +=((wr->num_sge-1) * sizeof(struct dwcroce_wqe));
-			qp->sq.head = (qp->sq.head + wr->num_sge) % qp->sq.max_cnt; // update the head ptr,and check if the queue if full.
-			if(qp->sq.head == qp->sq.tail){
-				qp->sq.qp_foe == DWCROCE_Q_FULL;
+			qp->rq.head = (qp->rq.head + wr->num_sge) % qp->rq.max_cnt; // update the head ptr,and check if the queue if full.
+			if(qp->rq.head == qp->rq.tail){
+				qp->rq.qp_foe == DWCROCE_Q_FULL;
 			}
 			
 	}
 		else {
-			qp->sq.head = (qp->sq.head + 1) % qp->sq.max_cnt; // update the head ptr, and check if the queue if full.
-			if(qp->sq.head == qp->sq.tail){
-				qp->sq.qp_foe == DWCROCE_Q_FULL;
+			qp->rq.head = (qp->rq.head + 1) % qp->rq.max_cnt; // update the head ptr, and check if the queue if full.
+			if(qp->rq.head == qp->rq.tail){
+				qp->rq.qp_foe == DWCROCE_Q_FULL;
 			}
 	}
-	printk("dwcroce: in rq,qp->sq.head is %d, qp->sq.tail is %d \n",qp->sq.head,qp->sq.tail);//added by hs
+	printk("dwcroce: in rq,qp->rq.head is %d, qp->rq.tail is %d \n",qp->rq.head,qp->rq.tail);//added by hs
 	
 }
 
@@ -523,12 +525,12 @@ int dwcroce_post_recv(struct ib_qp *ibqp,const struct ib_recv_wr *wr,const struc
 				status = -ENOMEM;
 				break;
 			}
-			status = dwcroce_check_foe(&qp->sq,wr,free_cnt);// check if the wr can be processed with enough memory.
+			status = dwcroce_check_foe(&qp->rq,wr,free_cnt);// check if the wr can be processed with enough memory.
 			if(status) break;
 
 			rqe = dwcroce_hwq_head(&qp->rq);
 			printk("dwcroce: in rq, free_cnt=%d, rqe is %x \n",free_cnt,rqe);//added by hs
-			dwcroce_build_rqe(rqe,wr); // update rq->head & set rqe 's value
+			dwcroce_build_rqe(qp,rqe,wr); // update rq->head & set rqe 's value
 	
 			qp->rqe_wr_id_tbl[qp->rq.head] = wr->wr_id; // to store the wr ,so CQ can verify which one is for this wr.
 			/*make sure rqe is written before hw access it*/
@@ -580,9 +582,9 @@ int dwcroce_poll_cq(struct ib_cq *ibcq, int num_entries, struct ib_wc *wc)
 		unsigned long flags;
 
 		/*poll cq from hw*/
-		spin_lock_irqsave(&cq->cq_lock,flags);
-		num_os_cqe = dwcroce_poll_hwcq(cq, cqe);//To get cq from hw,Please note that there is 3 types cq queues for one cq.
-		spin_unlock_irqrestore(&cq->cq_lock,flags);
+		spin_lock_irqsave(&cq->lock,flags);
+		num_os_cqe = dwcroce_poll_hwcq(cq, cqes_to_poll,wc);//To get cq from hw,Please note that there is 3 types cq queues for one cq.
+		spin_unlock_irqrestore(&cq->lock,flags);
 		cqes_to_poll -= num_os_cqe; //if cqes_to_poll ==0,means all cqs needed have been received.
 		/*wait to add end!*/	
 		printk("dwcroce:dwcroce_poll_cq succeed end!\n");//added by hs for printing end info	
@@ -990,20 +992,36 @@ int dwcroce_destroy_cq(struct ib_cq *ibcq)
 static int dwcroce_check_qp_params(struct ib_pd *ibpd, struct dwcroce_dev *dev,
 								   struct ib_qp_init_attr *attrs, struct ib_udata *udata)
 {
-		if ((attrs->qp_type != IB_QPT_GSI) &&
+	if ((attrs->qp_type != IB_QPT_GSI) &&
 			(attrs->qp_type != IB_QPT_RC) &&
 			(attrs->qp_type != IB_QPT_UC) &&
 			(attrs->qp_type != IB_QPT_UD)) {
 			printk("%s unsupported qp type = 0x%x requested \n",__func__,attrs->qp_type);
 			return -EINVAL;
-		}
+	}
 
-		 if ((attrs->qp_type != IB_QPT_GSI) &&
+	if ((attrs->qp_type != IB_QPT_GSI) &&
 				(attrs->cap.max_send_wr > dev->attr.max_qp_wr)) {
 					printk("dwcroce: %s unsupported send_wr =0x%x requested\n",__func__,attrs->cap.max_send_wr);//added by hs
 					printk("dwcroce: %s unsupported send_wr = 0x%x\n",__func__,dev->attr.max_qp_wr);//added by hs 
 					return -EINVAL;
 			}
+	if (!attrs->srq && (attrs->cap.max_recv_wr > dev->attr.max_rqe)) {
+                pr_err("%s(%d) unsupported recv_wr=0x%x requested\n",
+                       __func__, dev->id, attrs->cap.max_recv_wr);
+                pr_err("%s(%d) supported recv_wr=0x%x\n",
+                       __func__, dev->id, dev->attr.max_rqe);
+                return -EINVAL;
+        }
+        if (attrs->cap.max_inline_data > dev->attr.max_inline_data) {
+                pr_err("%s(%d) unsupported inline data size=0x%x requested\n",
+                       __func__, dev->id, attrs->cap.max_inline_data);
+                pr_err("%s(%d) supported inline data size=0x%x\n",
+                       __func__, dev->id, dev->attr.max_inline_data);
+                return -EINVAL;
+        }
+
+		
 
 		 return 0;
 

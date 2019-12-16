@@ -179,8 +179,8 @@ struct dwcroce_sge {
 	u32 len;
 };
 struct dwcroce_rqe {
-	u64  descbascaddr;
-	u32  dmalength;
+	u64  descbaseaddr;
+	u32  dmalen;
 	u32  opcode;
 };
 

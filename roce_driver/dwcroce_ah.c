@@ -84,7 +84,7 @@ static inline int set_av_attr(struct dwcroce_dev *dev, struct dwcroce_ah *ah,
 				eth.eth_type = cpu_to_be16(0x8100);
                 eth.roce_eth_type = cpu_to_be16(proto_num);
                 eth.vlan_tag = cpu_to_be16(vlan_tag);
-                eth_sz = sizeof(struct ocrdma_eth_vlan);
+                eth_sz = sizeof(struct dwcroce_eth_vlan);
                 *isvlan = true;
 		}
 		else {
@@ -127,7 +127,7 @@ static inline int set_av_attr(struct dwcroce_dev *dev, struct dwcroce_ah *ah,
                 grh.pdid_hoplimit = cpu_to_be32((pdid << 16) |
                                                 (nxthdr << 8) |
                                                 ib_grh->hop_limit);
-                memcpy((u8 *)ah->av + eth_sz, &grh, sizeof(struct ocrdma_grh));
+                memcpy((u8 *)ah->av + eth_sz, &grh, sizeof(struct dwcroce_grh));
 			}
 			if(*isvlan)
 				ah->av->valid |= DWCROCE_AV_VLAN_VALID;
@@ -171,7 +171,7 @@ int dwcroce_free_av(struct dwcroce_dev* dev, struct dwcroce_ah* ah)
 	return 0;
 }
 
-struct ib_ah *dwcroce_create_ah(struct ib_pd *pd, struct rdma_ah_attr *ah_attr,u32 flags,
+struct ib_ah *dwcroce_create_ah(struct ib_pd *ibpd, struct rdma_ah_attr *attr,u32 flags,
 		struct ib_udata *udata)
 {
 		printk("dwcroce:dwcroce_create_ah start!\n");//added by hs for printing start info
@@ -181,13 +181,13 @@ struct ib_ah *dwcroce_create_ah(struct ib_pd *pd, struct rdma_ah_attr *ah_attr,u
 		bool isvlan = false;
 		u16 vlan_tag = 0xffff;
 		const struct ib_gid_attr *sgid_attr;
-		struct dwcroce_ib_ah *ah;
-		struct dwcroce_pd *pd = get_dwcroce_pd(pd);
-		struct dwcroce_dev = get_dwcroce_dev(pd->device);
-		enum rdma_ah_attr_type ah_type = ah_attr->type;
+		struct dwcroce_ah *ah;
+		struct dwcroce_pd *pd = get_dwcroce_pd(ibpd);
+		struct dwcroce_dev *dev= get_dwcroce_dev(ibpd->device);
+		enum rdma_ah_attr_type ah_type = attr->type;
 
 		if ((ah_type == RDMA_AH_ATTR_TYPE_ROCE) &&
-				!(rdma_ah_get_ah_flags(ah_attr) & IB_AH_GRH))
+				!(rdma_ah_get_ah_flags(attr) & IB_AH_GRH))
 					return ERR_PTR(-EINVAL);
 
 		if (ah_type == RDMA_AH_ATTR_TYPE_ROCE && udata) {
@@ -228,37 +228,38 @@ struct ib_ah *dwcroce_create_ah(struct ib_pd *pd, struct rdma_ah_attr *ah_attr,u
 		return ERR_PTR(status);
 }
 
-int dwcroce_destroy_ah(struct ib_ah *ah,u32 flags)
+int dwcroce_destroy_ah(struct ib_ah *ibah,u32 flags)
 {
 		printk("dwcroce:dwcroce_destroy_ah start!\n");//added by hs for printing start info
 		/*wait to add 2019/6/24*/
-		struct dwcroce_ah *ah = get_dwcroce_ah(ah);
-		struct dwcroce_dev *dev = get_dwcroce_dev(ah->device);
+		struct dwcroce_ah *ah = get_dwcroce_ah(ibah);
+		struct dwcroce_dev *dev = get_dwcroce_dev(ibah->device);
 
-		dwcroce_free_av(dev,av);
+		dwcroce_free_av(dev,ah);
 		kfree(ah);
 		/*wait to add end!*/	
 		printk("dwcroce:dwcroce_destroy_ah succeed end!\n");//added by hs for printing end info
 		return 0;
 }
 
-int dwcroce_query_ah(struct ib_ah *ah, struct rdma_ah_attr *ah_attr)
+int dwcroce_query_ah(struct ib_ah *ibah, struct rdma_ah_attr *attr)
 {
 		printk("dwcroce:dwcroce_query_ah start!\n");//added by hs for printing start info
 		/*wait to add 2019/6/24*/
-		struct dwcroce_ah *ah = get_dwcroce_ah(ah);
-		struct dwcroce_dev *dev = get_dwcroce_dev(ah->device);
+		struct dwcroce_ah *ah = get_dwcroce_ah(ibah);
+		struct dwcroce_dev *dev = get_dwcroce_dev(ibah->device);
 		struct dwcroce_grh *grh;
+		struct dwcroce_av *av = ah->av;
 
 		attr->type = ibah->type;
 		if (ah->av->valid & DWCROCE_AV_VALID) {
 			grh = (struct dwcroce_grh *)((u8 *)ah->av +
-                                sizeof(struct ocrdma_eth_vlan));
+                                sizeof(struct dwcroce_eth_vlan));
             rdma_ah_set_sl(attr, be16_to_cpu(av->eth_hdr.vlan_tag) >> 13);
 		}
 		else {
 			 grh = (struct dwcroce_grh *)((u8 *)ah->av +
-                                        sizeof(struct ocrdma_eth_basic));
+                                        sizeof(struct dwcroce_eth_basic));
              rdma_ah_set_sl(attr, 0);
 		}
 
