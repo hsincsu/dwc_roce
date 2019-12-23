@@ -599,7 +599,7 @@ static int dwcroce_init_pgu_cq(struct dwcroce_dev *dev)
 	//	printk("dwcroce: tx cq end \n");//added by hs 
 		while (txop & 0x00000001) //QPNUM = 10,SO 32 -10 -2 = 20
 		{
-			printk("dwcroce: txcqcycle \n");//added by hs 
+	//		printk("dwcroce: txcqcycle \n");//added by hs 
 			writel(PGU_BASE + CQESIZE,base_addr + MPB_WRITE_ADDR);
 			txop = readl(base_addr + MPB_RW_DATA);
 		}
@@ -637,11 +637,11 @@ static int dwcroce_init_pgu_cq(struct dwcroce_dev *dev)
 		while(rxop & 0x00000001)
 		{
 			rxop = 0;
-			printk("dwcroce: rx cq cycle \n");//added by hs 
+	//		printk("dwcroce: rx cq cycle \n");//added by hs 
 			writel(PGU_BASE + RxCQEOp,base_addr + MPB_WRITE_ADDR);
 			rxop = readl(base_addr + MPB_RW_DATA);
-			if(rxop)
-				printk("rxop cycle is %x\n",rxop);//added by hs 
+		//	if(rxop)
+		//		printk("rxop cycle is %x\n",rxop);//added by hs 
 		}
 
 	}
@@ -676,7 +676,7 @@ static int dwcroce_init_pgu_cq(struct dwcroce_dev *dev)
 
 		while (xmitop & 0x00000001)
 		{
-			printk("dwcroce: xmitop cycle \n");//added by hs 
+		//	printk("dwcroce: xmitop cycle \n");//added by hs 
 			xmitop = 0;
 			writel(PGU_BASE + XmitCQEOp,base_addr + MPB_WRITE_ADDR);
 			xmitop = readl(base_addr + MPB_RW_DATA);
@@ -1383,7 +1383,7 @@ int dwcroce_qp_state_change(struct dwcroce_qp *qp, enum ib_qp_state new_ib_state
 	unsigned long flags;
 	enum dwcroce_qp_state new_state;
 	new_state = get_dwcroce_qp_state(new_ib_state);
-
+	printk("dwcroce:%s start \n",__func__);//added by hs
 	if(old_ib_state)
 		*old_ib_state = get_ibqp_state(qp->qp_state);
 	if (new_state == qp->qp_state) {
@@ -1403,7 +1403,7 @@ int dwcroce_qp_state_change(struct dwcroce_qp *qp, enum ib_qp_state new_ib_state
 	
 	}
 	qp->qp_state = new_state;
-
+	printk("dwcroce:%s end\n",__func__);//added by hs
 	return 0;
 }
 
@@ -1411,7 +1411,7 @@ int dwcroce_set_qp_params(struct dwcroce_qp *qp, struct ib_qp_attr *attrs, int a
 	int status = 0;
 	struct dwcroce_dev *dev;
 	dev = get_dwcroce_dev(qp->ibqp.device);
-
+	printk("dwcroce:%s start \n",__func__);//added by hs
 	if (attr_mask & IB_QP_PKEY_INDEX) {
 		qp->pkey_index = attrs->pkey_index;
 	}
@@ -1421,6 +1421,7 @@ int dwcroce_set_qp_params(struct dwcroce_qp *qp, struct ib_qp_attr *attrs, int a
 	if (attr_mask & IB_QP_DEST_QPN) { // get dest qpn.
 		qp->destqp = attrs->dest_qp_num;
 	}
+	printk("dwcroce:%s end \n",__func__);//added by hs
 	return status;
 
 }

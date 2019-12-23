@@ -36,7 +36,7 @@ static void dwcroce_set_wqe_opcode(struct dwcroce_wqe *wqe,u8 qp_type,u8 opcode)
 
 static int  dwcroce_build_wqe_opcode(struct dwcroce_qp *qp,struct dwcroce_wqe *wqe,struct ib_send_wr *wr)
 {
-	int status;
+	int status= 0;
 	u8 qp_type;
 	u8 opcode;
 	switch(qp->qp_type) {
@@ -53,6 +53,7 @@ static int  dwcroce_build_wqe_opcode(struct dwcroce_qp *qp,struct dwcroce_wqe *w
 				qp_type = RC;
 				break;
 		default:
+				printk("dwcroce: qp type default ...\n");//added by hs
 				status = 0x1;
 				break;
 	}
@@ -77,6 +78,7 @@ static int  dwcroce_build_wqe_opcode(struct dwcroce_qp *qp,struct dwcroce_wqe *w
 				opcode = RDMA_READ;
 				break;	
 	default:
+				printk("dwcroce: wr opcode default...\n");//added by hs
 				status = status | 0x2;	
 				break;	
 	}
@@ -174,7 +176,7 @@ static int dwcroce_build_inline_sges(struct dwcroce_qp *qp, struct dwcroce_wqe *
 			}
 		}
 	}
-
+	printk("dwcroce: post send, sq.head is %d, sq.tail is %d \n",qp->sq.head,qp->sq.tail);//added by hs
 	return 0;
 
 
@@ -229,6 +231,7 @@ static int dwcroce_buildwrite_inline_sges(struct dwcroce_qp *qp,struct dwcroce_w
 			}
 		}
 	}
+	printk("dwcroce: post send, sq.head is %d, sq.tail is %d\n",qp->sq.head,qp->sq.tail);//added by hs
 	return 0;
 }
 
@@ -281,7 +284,7 @@ static void dwcroce_ring_sq_hw(struct dwcroce_qp *qp) {
 	/*from head to get dma address*/
 	u32 phyaddr;
 	phyaddr =qp->sq.head * sizeof(struct dwcroce_wqe); //head * sizeof(wqe)
-	
+	printk("dwcroce: post send wp's phyaddr is %x \n",phyaddr);//added by hs	
 	/*access hw ,write wp to notify hw*/
 	void __iomem* base_addr;
 	base_addr = dev->devinfo.base_addr;
@@ -353,12 +356,13 @@ int dwcroce_post_send(struct ib_qp *ibqp,const struct ib_send_wr *wr,const struc
 	qp = get_dwcroce_qp(ibqp);
 	dev = get_dwcroce_dev(ibqp->device);
 	spin_lock_irqsave(&qp->sq.lock,flags);
-	if (qp->qp_state != DWCROCE_QPS_RST) {
+	if (qp->qp_state != DWCROCE_QPS_RTS) {
 		spin_unlock_irqrestore(&qp->sq.lock,flags);
 		*bad_wr = wr;
 		return -EINVAL;
 	}
 
+	printk("dwcroce: post_send, process sge.. \n");//added by hs
 	while(wr){ //if UD, should support SEND OR SEND WITH IMM,or it can't do anything.
 		if(qp->qp_type == IB_QPT_UD &&
 		  (wr->opcode != IB_WR_SEND &&
@@ -445,7 +449,7 @@ static void dwcroce_ring_rq_hw(struct dwcroce_qp *qp)
 	base_addr = dev->devinfo.base_addr;
 	qpn = qp->id;
 	phyaddr = phyaddr << 10; // because wp 's postition is 10 bytes from revq_inf.
-	printk("rq wp's phyadr is %x \n");//added by hs
+	printk("rq wp's phyadr is %x \n",phyaddr);//added by hs
 	qpn = qpn + phyaddr;
 	printk("rq wp+qpn is %x \n",qpn);//added by hs
 
@@ -624,9 +628,9 @@ int dwcroce_query_device(struct ib_device *ibdev, struct ib_device_attr *props,s
 		props->max_pd = 1024;
 		props->max_mr = 256*1024;
 		props->max_cq = 16384;
-       	props->max_qp = 1024;
+       		props->max_qp = 1024;
 		props->max_cqe = 256;
-		props->max_qp_wr = 256;
+		props->max_qp_wr = 1024;
 		props->max_send_sge = 256;
 		props->max_recv_sge = 256;
 
@@ -719,7 +723,8 @@ void dwcroce_get_guid(struct dwcroce_dev *dev, u8 *guid)
 		   u8 mac[ETH_ALEN];
 		// addr = dev->devinfo.netdev->dev_addr;
 			memcpy(mac, dev->devinfo.netdev->dev_addr, ETH_ALEN);
-		guid[0] = mac[0] ^ 2;
+		printk("dwcroce:mac address is %s \n",dev->devinfo.netdev->dev_addr);//added by hs
+			guid[0] = mac[0] ^ 2;
 			guid[1] = mac[1];
 			guid[2] = mac[2];
 			guid[3] = 0xff;
@@ -995,16 +1000,16 @@ static int dwcroce_check_qp_params(struct ib_pd *ibpd, struct dwcroce_dev *dev,
 {
 	   
 		printk("--------------check qp1's ib_qp_init_attr start---------------\n");//added by hs
-		printk("cap.max_send_wr is %d \n",attrs->cap.max_send_wr);
-		printk("cap.max_recv_wr is %d \n",attrs->cap.max_recv_wr);
-		printk("cap.max_send_sge is %d \n",attrs->cap.max_send_sge);
-		printk("cap.max_recv_sge is %d \n",attrs->cap.max_recv_sge);
-		printk("cap.max_inline_data is %d \n",attrs->cap.max_inline_data);
-		printk("cap.max_rdma_ctxs is %d \n",attrs->cap.max_rdma_ctxs);
-		printk("qptype is %d \n",attrs->qp_type);
-		printk("port_num is %d \n",attrs->port_num);
-		printk("source_qpn is %d \n",attrs->source_qpn);
-		printk("--------------check qp1's ib_qp_init_attr  end---------------\n");//added by hs
+//		printk("cap.max_send_wr is %d \n",attrs->cap.max_send_wr);
+//		printk("cap.max_recv_wr is %d \n",attrs->cap.max_recv_wr);
+//		printk("cap.max_send_sge is %d \n",attrs->cap.max_send_sge);
+//		printk("cap.max_recv_sge is %d \n",attrs->cap.max_recv_sge);
+//		printk("cap.max_inline_data is %d \n",attrs->cap.max_inline_data);
+//		printk("cap.max_rdma_ctxs is %d \n",attrs->cap.max_rdma_ctxs);
+//		printk("qptype is %d \n",attrs->qp_type);
+//		printk("port_num is %d \n",attrs->port_num);
+//		printk("source_qpn is %d \n",attrs->source_qpn);
+//		printk("--------------check qp1's ib_qp_init_attr  end---------------\n");//added by hs
 
 		if ((attrs->qp_type != IB_QPT_GSI) &&
 				(attrs->qp_type != IB_QPT_RC) &&
@@ -1013,20 +1018,21 @@ static int dwcroce_check_qp_params(struct ib_pd *ibpd, struct dwcroce_dev *dev,
 				printk("%s unsupported qp type = 0x%x requested \n",__func__,attrs->qp_type);
 				return -EINVAL;
 		}
-
+		printk("dwcroce: gsi ,max_send_wr \n");//added by hs
 	    if ((attrs->qp_type != IB_QPT_GSI) &&
 				(attrs->cap.max_send_wr > dev->attr.max_qp_wr)) {
 					printk("dwcroce: %s unsupported send_wr =0x%x requested\n",__func__,attrs->cap.max_send_wr);//added by hs
 					printk("dwcroce: %s unsupported send_wr = 0x%x\n",__func__,dev->attr.max_qp_wr);//added by hs 
 					return -EINVAL;
 		}
-	    if (!attrs->srq && (attrs->cap.max_recv_wr > dev->attr.max_qp_wr)) {
-                pr_err("%s unsupported recv_wr=0x%x requested\n",
-                       __func__,attrs->cap.max_recv_wr);
-                pr_err("%s(%d) supported recv_wr=0x%x\n",
-                       __func__,dev->attr.max_qp_wr);
-                return -EINVAL;
-        }
+//	    if (!attrs->srq && (attrs->cap.max_recv_wr > dev->attr.max_qp_wr)) {
+//               pr_err("%s unsupported recv_wr=0x%x requested\n",
+//                       __func__,attrs->cap.max_recv_wr);
+//                pr_err("%s(%d) supported recv_wr=0x%x\n",
+//                       __func__,dev->attr.max_qp_wr);
+//               return -EINVAL;
+//        }
+		printk("dwcroce: cap.max_inline-data \n");//added by hs
         if (attrs->cap.max_inline_data > 0) {
                 pr_err("%s unsupported inline data size=0x%x requested\n",
                        __func__,attrs->cap.max_inline_data);
@@ -1034,7 +1040,7 @@ static int dwcroce_check_qp_params(struct ib_pd *ibpd, struct dwcroce_dev *dev,
                        __func__);
                 return -EINVAL;
         }
-
+	printk("dwccroce:check qp param end \n");//added by hs
 
 		
 
@@ -1045,6 +1051,7 @@ static int dwcroce_check_qp_params(struct ib_pd *ibpd, struct dwcroce_dev *dev,
 /*dwcroce_set_qp_init_params. To get init params to private qp dwcroce_qp*/
 static void dwcroce_set_qp_init_params(struct dwcroce_qp *qp, struct dwcroce_pd *pd, struct ib_qp_init_attr *attrs)
 {
+		printk("dwcroce: set_qp_init params \n");//added by hs
 		qp->pd = pd;
 		spin_lock_init(&qp->sq.lock);
 		spin_lock_init(&qp->rq.lock);
@@ -1056,7 +1063,7 @@ static void dwcroce_set_qp_init_params(struct dwcroce_qp *qp, struct dwcroce_pd 
 		qp->rq.max_sges = attrs->cap.max_recv_sge;
 		qp->qp_state = DWCROCE_QPS_RST;
 		qp->signaled = (attrs->sq_sig_type == IB_SIGNAL_ALL_WR) ? true:false;
-
+		printk("dwcroce: set_qp_init params end .. \n");//added by hs
 }
 
 static int dwcroce_alloc_wr_id_tbl(struct dwcroce_qp* qp)
@@ -1094,7 +1101,8 @@ struct ib_qp *dwcroce_create_qp(struct ib_pd *ibpd,
 		rq_size = attrs->cap.max_recv_wr;
 		pd = get_dwcroce_pd(ibpd);
 		dev = get_dwcroce_dev(ibpd->device);
-
+		if(dev)
+			printk("dev exist");//added by hs
 		cq = get_dwcroce_cq(attrs->send_cq); // To get cq? but Most important that is send_cq && recv_cq  the same one.
 		if(!cq){
 			printk("dwcroce: cq is null \n");//added by hs 
@@ -1167,7 +1175,7 @@ int _dwcroce_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 		dev = get_dwcroce_dev(ibqp->device);
 		new_state = get_dwcroce_qp_state(attr->qp_state);
 		u32 lqp = qp->id;
-	
+		printk("dwcroce:dwcroce_modify_qp qp_state_change\n");//added by hs	
 		if(attr_mask & IB_QP_STATE)
 			status = dwcroce_qp_state_change(qp,attr->qp_state,&cur_state);
 		if(status < 0)
