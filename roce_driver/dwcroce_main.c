@@ -210,8 +210,8 @@ static int dwcroce_register_ibdev(struct dwcroce_dev *dev)
 		(1ull << IB_USER_VERBS_CMD_OPEN_QP);
 
 	/*mandatory verbs. */
-	ib_set_device_ops(&dev->ibdev, &dwcroce_dev_ops);
 	dev->ibdev.dev.parent =&dev->devinfo.pcidev->dev;
+	ib_set_device_ops(&dev->ibdev, &dwcroce_dev_ops);
 	/*create device attr file*/
 	rdma_set_device_sysfs_group(&dev->ibdev,&dwcroce_attr_group);
 	/*end*/

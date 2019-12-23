@@ -293,6 +293,7 @@ void dwcroce_add_index(void *arg)
 
 	write_lock_irqsave(&pool->pool_lock, flags);
 	elem->index = alloc_index(pool);
+	printk("dwcroce:mr->index :%d \n",elem->index);//added by hs
 	insert_index(pool, elem);
 	write_unlock_irqrestore(&pool->pool_lock, flags);
 	printk("dwcroce: dwcroce_add_index end!\n");//added by hs 

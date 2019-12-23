@@ -506,12 +506,12 @@ static int dwcroce_init_pgu_wqe(struct dwcroce_dev *dev)
 
 	count = 1ull << QPNUM; // 1024.
 	count = count -1;
-
+	pintk("dwcroce:WQE INIT, count : %d \n",count);//added by hs
 	/*socket id*/
 	writel(PGU_BASE + SOCKETID,base_addr + MPB_WRITE_ADDR);
-	writel(0x0,base_addr + MPB_RW_DATA);
+	writel(0x0,base_addr + MPB_RW_DATA);//should be MAC Address,but there is only 32bits.
 	/*TLB INIT*/
-	dwcroce_init_tlb(base_addr);
+	dwcroce_init_tlb(base_addr); 
 
 	/*init each WQEQueue entry*/
 	for (i = 0; i <= count; i = i + 1)
@@ -567,7 +567,7 @@ static int dwcroce_init_pgu_cq(struct dwcroce_dev *dev)
 
 	count = 1ull << QPNUM;
 	count = count -1;
-
+	printk("dwcroce:CQ INIT,count: %d \n",count);
 	printk("init tx cq start \n");//added by hs 
 	for (i = 0; i <= count; i = i + 1) // init tx cq
 	{
@@ -636,7 +636,7 @@ static int dwcroce_init_pgu_cq(struct dwcroce_dev *dev)
 	//	printk("dwcroce: rx cq end \n");//added by hs 
 		while(rxop & 0x00000001)
 		{
-			rxop = 0;
+			//rxop = 0;
 	//		printk("dwcroce: rx cq cycle \n");//added by hs 
 			writel(PGU_BASE + RxCQEOp,base_addr + MPB_WRITE_ADDR);
 			rxop = readl(base_addr + MPB_RW_DATA);
@@ -677,7 +677,7 @@ static int dwcroce_init_pgu_cq(struct dwcroce_dev *dev)
 		while (xmitop & 0x00000001)
 		{
 		//	printk("dwcroce: xmitop cycle \n");//added by hs 
-			xmitop = 0;
+			//xmitop = 0;
 			writel(PGU_BASE + XmitCQEOp,base_addr + MPB_WRITE_ADDR);
 			xmitop = readl(base_addr + MPB_RW_DATA);
 	//		printk("dwcroce: xmitop cycle  is %x\n",xmitop);//added by hs 

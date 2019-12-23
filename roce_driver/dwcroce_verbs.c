@@ -858,6 +858,7 @@ struct ib_pd *dwcroce_alloc_pd(struct ib_device *ibdev,
 		/*wait to add 2019/6/24*/
 		if(dev)	
 		pd = dwcroce_alloc(&dev->pd_pool);
+
 		if(pd)
 		printk("pd is exist\n");//added by hs	
 	//	mutex_lock(&dev->pd_mutex); // 利用位图来唯一分配PDN。
@@ -1191,6 +1192,7 @@ int _dwcroce_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 			void __iomem* base_addr;
 			base_addr = dev->devinfo.base_addr;
 			u32 destqp = qp->destqp;
+			u32 status = 1;
 			writel(PGU_BASE + SRCQP,base_addr + MPB_WRITE_ADDR); // INIT PSN
 			writel(lqp,base_addr + MPB_RW_DATA);
 
@@ -1201,12 +1203,19 @@ int _dwcroce_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 			writel(0x1,base_addr + MPB_RW_DATA);
 			/*map destqp and srcqp end*/
 
+			while (status != 0)
+			{
+				writel(PGU_BASE + RC_QPMAPPING,base_addr + MPB_WRITE_ADDR);
+				status = readl(base_addr + MPB_RW_DATA);
+			}
+			printk("dwcroce:rc mapping success lqp:%d rqp:%d\n",lqp,destqp);//added by hs
 			/*start nic*/
 			writel(PGU_BASE + GENRSP,base_addr + MPB_WRITE_ADDR);
 			writel(0x00100000,base_addr + MPB_RW_DATA);
 
 			writel(PGU_BASE + CFGRNR,base_addr + MPB_WRITE_ADDR);
-			writel(0x30010041,base_addr + MPB_RW_DATA);
+			writel(0x04010041,base_addr + MPB_RW_DATA);
+			printk("dwcroce:start nic \n");//added by hs
 			/*END*/
 		}
 		printk("dwcroce:dwcroce_modify_qp succeed end!\n");//added by hs for printing end info
