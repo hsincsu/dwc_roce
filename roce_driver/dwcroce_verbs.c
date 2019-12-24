@@ -38,6 +38,15 @@ static void dwcroce_set_wqe_dmac(struct dwcroce_qp *qp, struct dwcroce_wqe *wqe)
 	tmpwqe->destsocket1 += qp->mac_addr[1] & 0xf0;
 	tmpwqe->destsocket2 += qp->mac-addr[5] & 0x0f;
 
+	wqe->destqp & 0x000f;
+	wqe->destqp += tmpwqe->destqp;
+	wqe->destsocket1 & 0x0;
+	wqe->destsocket1 tmpwqe->destsocket1;
+	wqe->destsocket2 & 0xf0;
+	wqe->destsocket2 += tmpwqe->destsocket2;
+
+
+
 }
 
 static void dwcroce_set_wqe_opcode(struct dwcroce_wqe *wqe,u8 qp_type,u8 opcode)
