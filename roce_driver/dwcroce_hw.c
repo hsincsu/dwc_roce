@@ -717,7 +717,14 @@ static int dwcroce_init_qp(struct dwcroce_dev *dev)
 	writel(PGU_BASE + STARTINITPSN + 0xc,base_addr + MPB_WRITE_ADDR);
 	writel(0x10000,base_addr + MPB_RW_DATA);
 	
-	
+	/*start nic*/
+	writel(PGU_BASE + GENRSP,base_addr + MPB_WRITE_ADDR);
+	writel(0x00100000,base_addr + MPB_RW_DATA);
+
+	writel(PGU_BASE + CFGRNR,base_addr + MPB_WRITE_ADDR);
+	writel(0x04010041,base_addr + MPB_RW_DATA);
+	printk("dwcroce:start nic \n");//added by hs
+	/*END*/
 
 }
 int dwcroce_init_hw(struct dwcroce_dev *dev)
@@ -1379,7 +1386,45 @@ enum dwcroce_qp_state get_dwcroce_qp_state(enum ib_qp_state qps) {
 
 }
 
-int dwcroce_qp_state_change(struct dwcroce_qp *qp, enum ib_qp_state new_ib_state, enum ib_qp_state *old_ib_state) {
+static int dwcroce_resolve_dmac(struct dwcroce_dev *dev, struct rdma_ah_attr *ah_attr, u8 *mac_addr)
+{
+	struct in6_addr in6;
+	memcpy(&in6,rdma_ah_read_grh(ah_attr)->dgid.raw,sizeof(in6));
+	if(rdma_is_multicast_addr(&in6))
+		rdma_get_mcast_mac(&in6,mac_addr);
+	else if (rdma_link_local_addr(&in6))
+		rdma_get_ll_mac(&in6,mac_addr);
+	else
+		memcpy(mac_addr,ah_attr->roce.dmac,ETH_ALEN);
+	return 0;
+}
+
+static int dwcroce_set_av_params(struct dwcroce_qp *qp, struct ib_qp_attr *attrs, int attr_mask)
+{
+	int status;
+	struct rdma_ah_attr *ah_attr = &attrs->ah_attr;
+	const struct ib_gid_attr *sgid_attr;
+	u32 vlan_id =0xFFFF;
+	union {
+		struct sockaddr		_sockaddr;
+		struct sockaddr_in	_sockaddr_in;
+		struct sockaddr_in6 _sockaddr_in6;
+	}sgid_addr,dgid_addr;
+	struct dwcroce_dev *dev = get_dwcroce_dev(qp->ibqp.device);
+	const struct ib_global_route *grh;
+	if((rdma_ah_get_ah_flags(ah_attr)& IB_AH_GRH) == 0)
+				return -EINVAL;
+	grh = rdma_ah_read_grh(ah_attr);
+	sgid_attr = ah_attr->grh.sgid_attr;
+	vlan_id = rdma_vlan_dev_vlan_id(sgid_attr->ndev);
+	memcpy(qp->mac_addr,sgid_attr->ndev->dev_addr,ETH_ALEN);
+
+	qp->sgid_idx = grh->sgid_index;
+	status = dwcroce_resolve_dmac(dev,ah_attr,&qp->mac_addr[0]);
+
+}
+
+static int dwcroce_qp_state_change(struct dwcroce_qp *qp, enum ib_qp_state new_ib_state, enum ib_qp_state *old_ib_state) {
 	unsigned long flags;
 	enum dwcroce_qp_state new_state;
 	new_state = get_dwcroce_qp_state(new_ib_state);
@@ -1407,6 +1452,7 @@ int dwcroce_qp_state_change(struct dwcroce_qp *qp, enum ib_qp_state new_ib_state
 	return 0;
 }
 
+
 int dwcroce_set_qp_params(struct dwcroce_qp *qp, struct ib_qp_attr *attrs, int attr_mask) {
 	int status = 0;
 	struct dwcroce_dev *dev;
@@ -1421,6 +1467,46 @@ int dwcroce_set_qp_params(struct dwcroce_qp *qp, struct ib_qp_attr *attrs, int a
 	if (attr_mask & IB_QP_DEST_QPN) { // get dest qpn.
 		qp->destqp = attrs->dest_qp_num;
 	}
+	if (attr_mask & IB_QP_AV) {
+		status = dwcroce_set_av_params(qp,attrs,attr_mask);
+	}
+	else if (qp->qp_type == IB_QPT_GSI || qp->qp_type = IB_QPT_UD)
+	{
+		memcpy(qp->mac_addr,dev->devinfo.netdev->dev_addr,ETH_ALEN);
+		//GET LOCAL MAC
+	}
+	if (attr_mask & IB_QP_PATH_MTU) {
+		if (attrs->path_mtu < IB_MTU_512 ||
+			attrs->path_mtu > IB_MTU_4096) {
+			printk("dwcroce: not supported \n");//added by hs
+			status = -EINVAL;
+			}
+	}
+	if (attr_mask & IB_QP_TIMEOUT) {
+		  printk("dwcroce:timeout: %x \n",attrs->timeout);//added by hs
+	}
+	if (attr_mask & IB_QP_RETRY_CNT) {
+		  printk("dwcroce:retry_cnt: %x \n",attrs->retry_cnt);//added by hs
+	}
+	if (attr_mask & IB_QP_MIN_RNR_TIMER) {
+		  printk("dwcroce:min_rnr_timer: %x \n",attrs->min_rnr_timer);//added by hs
+	}
+	if (attr_mask & IB_QP_RNR_RETRY) {
+		printk("dwcroce:rnr_retry: %x \n",attrs->rnr_retry);//added by hs
+	}
+	if (attr_mask & IB_QP_SQ_PSN) {
+		printk("dwcroce:sq_psn: %x \n",attrs->sq_psn);//added by hs
+	}
+	if (attr_mask & IB_QP_RQ_PSN) {
+		printk("dwcroce:rq_psn: %x \n",attrs->rq_psn);//added by hs
+	}
+	if (attr_mask & IB_QP_MAX_QP_RD_ATOMIC) {
+		printk("dwcroce:max_qp_rd_atomic: %x \n",attrs->max_ord_per_qp);//added by hs
+	}
+	if (attr_mask & IB_QP_MAX_DEST_RD_ATOMIC) {
+		printk("dwcroce:max_dest_rd_atomic: %x \n",attrs->max_ird_per_qp);//added by hs
+	}
+	
 	printk("dwcroce:%s end \n",__func__);//added by hs
 	return status;
 

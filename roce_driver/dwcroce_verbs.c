@@ -19,6 +19,27 @@
 #include "dwcroce_verbs.h"
 #include "dwcroce_hw.h"
 
+static void dwcroce_set_wqe_dmac(struct dwcroce_qp *qp, struct dwcroce_wqe *wqe)
+{
+	struct dwcroce_wqe tmpwqe;
+	memset(&tmpwqe,0,sizeof(struct dwcroce_wqe));
+	tmpwqe->destqp = qp->mac_addr[1];
+	tmpwqe->destqp << 8;
+	tmpwqe->destqp = tmpwqe->destqp + qp->mac_addr[0];
+	tmpwqe->destqp <<4;
+	tmpwqe->destsocket1 = qp->mac_addr[5];
+	tmpwqe->destqp << 8;
+	tmpwqe->destsocket1 += qp->mac_addr[4];
+	tmpwqe->destqp << 8;
+	tmpwqe->destsocket1 += qp->mac_addr[3];
+	tmpwqe->destqp <<8;
+	tmpwqe->destsocket1 +=qp->mac_addr[2];
+	tmpwqe->destqp <<4;
+	tmpwqe->destsocket1 += qp->mac_addr[1] & 0xf0;
+	tmpwqe->destsocket2 += qp->mac-addr[5] & 0x0f;
+
+}
+
 static void dwcroce_set_wqe_opcode(struct dwcroce_wqe *wqe,u8 qp_type,u8 opcode)
 {
 	u8 opcode_l = 0;
@@ -32,6 +53,56 @@ static void dwcroce_set_wqe_opcode(struct dwcroce_wqe *wqe,u8 qp_type,u8 opcode)
 	if(wqe->opcode << 4)
 		wqe->opcode = wqe->destsocket2 & 0xf0;
 	wqe->opcode += opcode_h;
+}
+
+//set rc,uc 's wqe
+static void dwcroce_set_wqe_destqp(struct dwcroce_qp *qp,struct dwcroce_wqe *wqe)
+{
+	
+	u16 tempqpn;
+	u16 tempqpn_l = 0;
+	u16 tempqpn_h = 0;
+
+	tempqpn =qp->destqp; // get lower 16bits ,but qpn only 10 bits.
+	tempqpn_l = tempqpn & 0x003f;
+	tempqpn_l = tempqpn_l << 10;
+
+	tempqpn_h = tempqpn& 0x03c0; // get higher 4 bits;
+	tempqpn_h = tempqpn_h >> 6;
+
+	/*make sure the wqe's eecntx higher 6 bits is zero*/
+	if(wqe->eecntx >> 10)
+		wqe->eecntx = wqe->eecntx & 0x03ff; // mask is 0000 0011 1111 1111 to make higher 6 bits zero.
+	wqe->eecntx += tempqpn_l;
+
+	if(wqe->destqp << 12)
+		wqe->destqp = wqe->destqp & 0xfff0;
+	wqe->destqp += tempqpn_h;
+}
+
+//set ud 's wqe
+static void dwcroce_set_wqe_destqp(struct dwcroce_qp *qp, struct dwcroce_wqe *wqe, const struct ib_send_wr *wr) {
+	
+	u16 tempqpn;
+	u16 tempqpn_l = 0;
+	u16 tempqpn_h = 0;
+
+	tempqpn =ud_wr(wr)->remote_qpn; // get lower 16bits ,but qpn only 10 bits.
+	tempqpn_l = tempqpn & 0x003f;
+	tempqpn_l = tempqpn_l << 10;
+
+	tempqpn_h = tempqpn& 0x03c0; // get higher 4 bits;
+	tempqpn_h = tempqpn_h >> 6;
+
+	/*make sure the wqe's eecntx higher 6 bits is zero*/
+	if(wqe->eecntx >> 10)
+		wqe->eecntx = wqe->eecntx & 0x03ff; // mask is 0000 0011 1111 1111 to make higher 6 bits zero.
+	wqe->eecntx += tempqpn_l;
+
+	if(wqe->destqp << 12)
+		wqe->destqp = wqe->destqp & 0xfff0;
+	wqe->destqp += tempqpn_h;
+
 }
 
 static int  dwcroce_build_wqe_opcode(struct dwcroce_qp *qp,struct dwcroce_wqe *wqe,struct ib_send_wr *wr)
@@ -108,6 +179,11 @@ static int dwcroce_build_sges(struct dwcroce_qp *qp, struct dwcroce_wqe *wqe, in
 		status = dwcroce_build_wqe_opcode(qp,tmpwqe,wr);//added by hs 
 		if(status)
 			return status;
+		if(qp->destqp)
+			dwcroce_set_wqe_destqp(qp,tmpwqe);
+		
+		dwcroce_set_wqe_dmac(qp,tmpwqe);
+		tmpwqe->qkey = qp->qkey;
 		tmpwqe->rkey = sg_list[i].lkey;
 		tmpwqe->lkey = sg_list[i].lkey;
 		tmpwqe->localaddr = sg_list[i].addr;
@@ -182,29 +258,6 @@ static int dwcroce_build_inline_sges(struct dwcroce_qp *qp, struct dwcroce_wqe *
 
 }
 
-static void dwcroce_set_wqe_destqp(struct dwcroce_qp *qp, struct dwcroce_wqe *wqe, const struct ib_send_wr *wr) {
-	
-	u16 tempqpn;
-	u16 tempqpn_l = 0;
-	u16 tempqpn_h = 0;
-
-	tempqpn =ud_wr(wr)->remote_qpn; // get lower 16bits ,but qpn only 10 bits.
-	tempqpn_l = tempqpn & 0x003f;
-	tempqpn_l = tempqpn_l << 10;
-
-	tempqpn_h = tempqpn& 0x03c0; // get higher 4 bits;
-	tempqpn_h = tempqpn_h >> 6;
-
-	/*make sure the wqe's eecntx higher 6 bits is zero*/
-	if(wqe->eecntx >> 10)
-		wqe->eecntx = wqe->eecntx & 0x03ff; // mask is 0000 0011 1111 1111 to make higher 6 bits zero.
-	wqe->eecntx += tempqpn_l;
-
-	if(wqe->destqp << 12)
-		wqe->destqp = wqe->destqp & 0xfff0;
-	wqe->destqp += tempqpn_h;
-
-}
 
 static int dwcroce_buildwrite_inline_sges(struct dwcroce_qp *qp,struct dwcroce_wqe *wqe,const struct ib_send_wr *wr, u32 wqe_size)
 {
@@ -1209,14 +1262,7 @@ int _dwcroce_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 				status = readl(base_addr + MPB_RW_DATA);
 			}
 			printk("dwcroce:rc mapping success lqp:%d rqp:%d\n",lqp,destqp);//added by hs
-			/*start nic*/
-			writel(PGU_BASE + GENRSP,base_addr + MPB_WRITE_ADDR);
-			writel(0x00100000,base_addr + MPB_RW_DATA);
-
-			writel(PGU_BASE + CFGRNR,base_addr + MPB_WRITE_ADDR);
-			writel(0x04010041,base_addr + MPB_RW_DATA);
-			printk("dwcroce:start nic \n");//added by hs
-			/*END*/
+			
 		}
 		printk("dwcroce:dwcroce_modify_qp succeed end!\n");//added by hs for printing end info
 		return status;

@@ -184,7 +184,7 @@ struct dwcroce_rqe {
 	u32  opcode;
 };
 
-#pragma pack(1)//we don't need the default align,we need to make sure the wqe is 64 bytes.
+#pragma pack(1)//we don't need the default align,we need to make sure the wqe is 48 bytes.
 struct dwcroce_wqe {//defaultly,we use 48 byte WQE.a queue may have 256 wqes. 48 bytes long,but length is 64 bytes.
 	u32 immdt;
 	u16 pkey;
@@ -244,7 +244,9 @@ struct dwcroce_qp {
 	bool signaled;
 	u32 destqp;
 	u32 pkey_index;
+	int sgid_idx;
 	struct mutex mutex;
+	u8 mac_addr[6]; // dest mac addr
 
 
 };
