@@ -193,10 +193,25 @@ static int dwcroce_build_sges(struct dwcroce_qp *qp, struct dwcroce_wqe *wqe, in
 		
 		dwcroce_set_wqe_dmac(qp,tmpwqe);
 		tmpwqe->qkey = qp->qkey;
-		tmpwqe->rkey = sg_list[i].lkey;
+		tmpwqe->rkey = sg_list[i].rkey;
 		tmpwqe->lkey = sg_list[i].lkey;
 		tmpwqe->localaddr = sg_list[i].addr;
 		tmpwqe->dmalen = sg_list[i].length;
+		printk("dwcroce: ---------------check send wqe--------------\n");//added by hs
+		printk("dwcroce:immdat:0x%x \n",tmpwqe->immdt);//added by hs
+		printk("dwcroce:pkey:0x%x \n",tmpwqe->pkey);//added by hs
+		printk("dwcroce:rkey:0x%x \n",tmpwqe->rkey);//added by hs
+		printk("dwcroce:lkey:0x%x \n",tmpwqe->lkey);//added by hs
+		printk("dwcroce:qkey:0x%x \n",tmpwqe->qkey);//added by hs
+		printk("dwcroce:dmalen:0x%x \n",tmpwqe->dmalen);//added by hs
+		printk("dwcroce:destaddr:0x%x \n",tmpwqe->destaddr);//added by hs
+		printk("dwcroce:localaddr:0x%x \n",tmpwqe->localaddr);//added by hs
+		printk("dwcroce:eecntx:0x%x \n",tmpwqe->eecntx);//added by hs
+		printk("dwcroce:destqp:0x%x \n",tmpwqe->destqp);//added by hs
+		printk("dwcroce:destsocket1:0x%x \n",tmpwqe->destsocket1);//added by hs
+		printk("dwcroce:destsocket2:0x%x \n",tmpwqe->destsocket2);//added by hs
+		printk("dwcroce:opcode:0x%x \n",tmpwqe->opcode);//added by hs
+		printk("dwcroce:----------------check send wqe end------------\n");//added by hs
 		tmpwqe += 1;
 	}
 	if (num_sge == 0) {
@@ -219,6 +234,21 @@ static int dwcroce_buildwrite_sges(struct dwcroce_qp *qp, struct dwcroce_wqe *wq
 		tmpwqe->localaddr = sg_list[i].addr;
 		tmpwqe->dmalen = sg_list[i].length;
 		tmpwqe->destaddr = rdma_wr(wr)->remote_addr;
+		printk("dwcroce: ---------------check write wqe--------------\n");//added by hs
+		printk("dwcroce:immdat:0x%x \n",tmpwqe->immdt);//added by hs
+		printk("dwcroce:pkey:0x%x \n",tmpwqe->pkey);//added by hs
+		printk("dwcroce:rkey:0x%x \n",tmpwqe->rkey);//added by hs
+		printk("dwcroce:lkey:0x%x \n",tmpwqe->lkey);//added by hs
+		printk("dwcroce:qkey:0x%x \n",tmpwqe->qkey);//added by hs
+		printk("dwcroce:dmalen:0x%x \n",tmpwqe->dmalen);//added by hs
+		printk("dwcroce:destaddr:0x%x \n",tmpwqe->destaddr);//added by hs
+		printk("dwcroce:localaddr:0x%x \n",tmpwqe->localaddr);//added by hs
+		printk("dwcroce:eecntx:0x%x \n",tmpwqe->eecntx);//added by hs
+		printk("dwcroce:destqp:0x%x \n",tmpwqe->destqp);//added by hs
+		printk("dwcroce:destsocket1:0x%x \n",tmpwqe->destsocket1);//added by hs
+		printk("dwcroce:destsocket2:0x%x \n",tmpwqe->destsocket2);//added by hs
+		printk("dwcroce:opcode:0x%x \n",tmpwqe->opcode);//added by hs
+		printk("dwcroce:----------------check write wqe end------------\n");//added by hs
 		tmpwqe += 1;
 	}
 	if (num_sge == 0) {
@@ -534,9 +564,9 @@ static void dwcroce_build_rqsges(struct dwcroce_rqe *rqe, struct ib_recv_wr *wr)
 	struct ib_sge *sg_list;
 	sg_list = wr->sg_list;
 	for (i = 0; i < num_sge; i++) {
-		tmprqe[i].descbaseaddr = sg_list[i].addr;
-		tmprqe[i].dmalen = sg_list[i].length;
-		tmprqe[i].opcode = 0x80000000;
+		tmprqe->descbaseaddr = sg_list[i]->addr;
+		tmprqe->dmalen = sg_list[i]->length;
+		tmprqe->opcode = 0x80000000;
 		tmprqe += 1;
 		printk("dwcroce: in rq,num_sge = %d, tmprqe 's addr is %x\n",num_sge,tmprqe);//added by hs
 	}
@@ -549,6 +579,10 @@ static void dwcroce_build_rqe(struct dwcroce_qp *qp,struct dwcroce_rqe* rqe, con
 	u32 wqe_size = 0;
 
 	dwcroce_build_rqsges(rqe,wr);
+	printk("dwcroce:-----------------------check rq wqe--------------------\n");//added by hs
+	printk("dwcroce:descbaseaddr: %x \n",rqe->descbaseaddr);//added by hs
+	printk("dwcroce:dmalen:		  %x \n",rqe->dmalen);//added by hs
+	printk("dwcroce:opcode:		  %x \n",rqe->opcode);//added by hs
 	if(wr->num_sge){
 			wqe_size +=((wr->num_sge-1) * sizeof(struct dwcroce_wqe));
 			qp->rq.head = (qp->rq.head + wr->num_sge) % qp->rq.max_cnt; // update the head ptr,and check if the queue if full.
@@ -1103,6 +1137,20 @@ static int dwcroce_check_qp_params(struct ib_pd *ibpd, struct dwcroce_dev *dev,
                        __func__);
                 return -EINVAL;
         }
+		if (attrs->cap.max_send_sge > dev->attr.max_send_sge) {
+			pr_err("%s unsupported send_sge=0x%x requested \n",__func__,attrs->cap.max_send_sge);
+			pr_err("%s supported send_sge = 0x%x \n",__func__,dev->attr.max_send_sge);
+			return -EINVAL;
+		}
+		if (attrs->cap.max_recv_sge > dev->attr.max_recv_sge) {
+			pr_err("%s unsupported send_sge=0x%x requested \n",__func__,attrs->cap.max_recv_sge);
+			pr_err("%s supported send_sge = 0x%x \n",__func__,dev->attr.max_recv_sge);
+			return -EINVAL;
+		}
+		if (attrs->qp_type == IB_QPT_GSI && udata) {
+			pr_err("Userpace can't create special QPs of type = 0x %x \n",__func__,attrs->qp_type);
+		}
+
 	printk("dwccroce:check qp param end \n");//added by hs
 
 		
@@ -1192,13 +1240,18 @@ struct ib_qp *dwcroce_create_qp(struct ib_pd *ibpd,
 		if(attrs->qp_type == IB_QPT_SMI)/*In Roce, SM is not supportted*/
 			return -EINVAL;
 		else if(attrs->qp_type == IB_QPT_GSI)
-			qp_num = 1;
+			{	
+			if(!dev->Is_qp1_allocated) 
+					{qp_num = 1; dev->Is_qp1_allocated = false;}
+			else
+				return -EINVAL;
+			}		
 		else 
 			status = dwcroce_alloc_cqqpresource(dev,dev->allocated_qps,dev->attr.max_qp,&qp_num,&dev->next_qp);
 		qp->id = qp_num;
 		qp->ibqp.qp_num = qp_num;
-		printk("dwcroce: create_qp for qp_num is %d\n",qp_num);//added by hs 
-
+		printk("dwcroce: create_qp for qp_num is %d\n",qp_num);//added by hs ;
+		
 		/*kenrel create qp*/
 		mutex_lock(&dev->dev_lock); 
 		status = dwcroce_hw_create_qp(dev,qp,cq,pd,attrs);
@@ -1271,7 +1324,24 @@ int _dwcroce_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 				status = readl(base_addr + MPB_RW_DATA);
 			}
 			printk("dwcroce:rc mapping success lqp:%d rqp:%d\n",lqp,destqp);//added by hs
-			
+			u32 wqepagesize = 0;
+			u32 cfgenable =0;
+			writel(PGU_BASE + GENRSP,base_addr + MPB_WRITE_ADDR);
+			wqepagesize = readl(base_addr + MPB_RW_DATA);
+
+			writel(PGU_BASE + CFGRNR,base_addr + MPB_WRITE_ADDR);
+			cfgenable =real(base_addr + MPB_RW_DATA);
+			if(wqepagesize != 0x00100000)
+			{/*start nic*/
+				writel(PGU_BASE + GENRSP,base_addr + MPB_WRITE_ADDR);
+				writel(0x00100000,base_addr + MPB_RW_DATA);
+			}
+			if(cfgenable != 0x04010041)
+			{	writel(PGU_BASE + CFGRNR,base_addr + MPB_WRITE_ADDR);
+				writel(0x04010041,base_addr + MPB_RW_DATA);
+				printk("dwcroce:start nic \n");//added by hs
+				/*END*/
+			}
 		}
 		printk("dwcroce:dwcroce_modify_qp succeed end!\n");//added by hs for printing end info
 		return status;

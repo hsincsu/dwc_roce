@@ -292,6 +292,8 @@ struct dwcroce_dev{
 
 	spinlock_t resource_lock; //for cq,qp resource access
 	spinlock_t qptable_lock;
+
+	bool Is_qp1_allocated;
 };
 
 

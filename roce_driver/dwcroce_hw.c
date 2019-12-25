@@ -717,14 +717,7 @@ static int dwcroce_init_qp(struct dwcroce_dev *dev)
 	writel(PGU_BASE + STARTINITPSN + 0xc,base_addr + MPB_WRITE_ADDR);
 	writel(0x10000,base_addr + MPB_RW_DATA);
 	
-	/*start nic*/
-	writel(PGU_BASE + GENRSP,base_addr + MPB_WRITE_ADDR);
-	writel(0x00100000,base_addr + MPB_RW_DATA);
 
-	writel(PGU_BASE + CFGRNR,base_addr + MPB_WRITE_ADDR);
-	writel(0x04010041,base_addr + MPB_RW_DATA);
-	printk("dwcroce:start nic \n");//added by hs
-	/*END*/
 
 }
 int dwcroce_init_hw(struct dwcroce_dev *dev)
@@ -1102,7 +1095,7 @@ int dwcroce_hw_create_qp(struct dwcroce_dev *dev, struct dwcroce_qp *qp, struct 
 	len = 0;
 	/*For sq*/
 	u32 max_wqe_allocated;
-	u32 max_sges = attrs->cap.max_send_sge;
+	u32 max_sges = attrs->cap.max_send_sge;j
 	max_wqe_allocated = min_t(u32,attrs->cap.max_send_wr +1,dev->attr.max_qp_wr);
 	max_sges = min_t(u32,max_wqe_allocated,max_sges); // For a sge need a wqe, so sglist 'lenghth can't over wqe 's mounts.
 	len = sizeof(struct dwcroce_wqe) * max_wqe_allocated;
@@ -1115,9 +1108,12 @@ int dwcroce_hw_create_qp(struct dwcroce_dev *dev, struct dwcroce_qp *qp, struct 
 	qp->sq.pa = pa;
 	qp->sq.entry_size = sizeof(struct dwcroce_wqe);
 
-
-	/*ACCESS HardWare register*/
+	printk("dwcroce:----------------Create QP checking ---------------\n");//added by hs
+	printk("dwcroce:SQ va:0x%x , pa 0x%x , len:%d \n",qp->sq.va,qp->sq.pa,qp->sq.len);
+	printk("dwcroce:RQ va:0x%x , pa 0x%x , len:%d \n",qp->rq.va,qp->rq.pa,qp->sq.len);//added by hs
+																		   /*ACCESS HardWare register*/
 	u32 qpn = qp->id;
+	printk("dwcroce:QPN:%d \n",qp->id);//added by hs
 	void __iomem* base_addr;
 	base_addr = dev->devinfo.base_addr;
 	/*init psn*/
