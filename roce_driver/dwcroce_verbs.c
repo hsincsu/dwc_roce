@@ -44,7 +44,8 @@ static void dwcroce_set_wqe_dmac(struct dwcroce_qp *qp, struct dwcroce_wqe *wqe)
 	wqe->destsocket1 tmpwqe->destsocket1;
 	wqe->destsocket2 & 0xf0;
 	wqe->destsocket2 += tmpwqe->destsocket2;
-
+	printk("dwcroce:%s destqp:0x%x,  destsocket1: 0x%x,  destsocket2: 0x%x \n"
+		,__func__,wqe->destqp,wqe->destsocket1,wqe->destsocket2);//added by hs
 
 
 }
@@ -59,9 +60,11 @@ static void dwcroce_set_wqe_opcode(struct dwcroce_wqe *wqe,u8 qp_type,u8 opcode)
 	if(wqe->destsocket2 >> 4)
 		wqe->destsocket2 = wqe->destsocket2 & 0x0f;
 	wqe->destsocket2 += opcode_l;
+	printk("dwcroce:%s,destsocket2:0x%x \n",__func__,wqe->destsocket2);//added by hs
 	if(wqe->opcode << 4)
 		wqe->opcode = wqe->destsocket2 & 0xf0;
 	wqe->opcode += opcode_h;
+	printk("dwcroce:%s,opcode:0x%x \n",__func__,wqe->opcode);//added by hs
 }
 
 //set rc,uc 's wqe
@@ -83,10 +86,11 @@ static void dwcroce_set_wqe_destqp(struct dwcroce_qp *qp,struct dwcroce_wqe *wqe
 	if(wqe->eecntx >> 10)
 		wqe->eecntx = wqe->eecntx & 0x03ff; // mask is 0000 0011 1111 1111 to make higher 6 bits zero.
 	wqe->eecntx += tempqpn_l;
-
+	
 	if(wqe->destqp << 12)
 		wqe->destqp = wqe->destqp & 0xfff0;
 	wqe->destqp += tempqpn_h;
+	printk("dwcroce:%s2,eecntx:0x%x , destqp:0x%x \n",__func__,wqe->eecntx,wqe->destqp);
 }
 
 //set ud 's wqe
@@ -111,7 +115,7 @@ static void dwcroce_set_wqe_destqp(struct dwcroce_qp *qp, struct dwcroce_wqe *wq
 	if(wqe->destqp << 12)
 		wqe->destqp = wqe->destqp & 0xfff0;
 	wqe->destqp += tempqpn_h;
-
+	printk("dwcroce:%s3,eecntx:0x%x, destqp:0x%x \n",__func__,wqe->eecntx,wqe->destqp);//added by hs
 }
 
 static int  dwcroce_build_wqe_opcode(struct dwcroce_qp *qp,struct dwcroce_wqe *wqe,struct ib_send_wr *wr)
@@ -173,7 +177,8 @@ static int  dwcroce_build_wqe_opcode(struct dwcroce_qp *qp,struct dwcroce_wqe *w
 		return -EINVAL;
 	if(qp_type == RD && (opcode & SEND_WITH_INV))
 		return -EINVAL;
-
+	printk("dwcroce: %s,qp_type:0x%x , opcode:0x%x \n "
+			,__func__,qp_type,opcode);//added by hs
 	dwcroce_set_wqe_opcode(wqe,qp_type,opcode);
 	return 0;
 
