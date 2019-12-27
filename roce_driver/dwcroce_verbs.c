@@ -569,8 +569,8 @@ static void dwcroce_build_rqsges(struct dwcroce_rqe *rqe, struct ib_recv_wr *wr)
 	struct ib_sge *sg_list;
 	sg_list = wr->sg_list;
 	for (i = 0; i < num_sge; i++) {
-		tmprqe->descbaseaddr = sg_list[i]->addr;
-		tmprqe->dmalen = sg_list[i]->length;
+		tmprqe->descbaseaddr = sg_list[i].addr;
+		tmprqe->dmalen = sg_list[i].length;
 		tmprqe->opcode = 0x80000000;
 		tmprqe += 1;
 		printk("dwcroce: in rq,num_sge = %d, tmprqe 's addr is %x\n",num_sge,tmprqe);//added by hs
@@ -666,6 +666,10 @@ static int dwcroce_poll_hwcq(struct dwcroce_cq *cq, int num_entries, struct ib_w
 
 		while (num_entries) {
 			/*get tx cqe*/
+			/*read cq's wp,rp*/
+			/*read qp's sq.tail, update qp's sq.tail*/
+			/*get CQE from spcific CQ,retrieve the CQE to dwcroce_cqe.*/
+			/*fill the ib_wc ,next cqe.*/
 			break;
 		}
 		
