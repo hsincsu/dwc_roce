@@ -717,9 +717,15 @@ static int dwcroce_init_qp(struct dwcroce_dev *dev)
 	writel(PGU_BASE + STARTINITPSN + 0xc,base_addr + MPB_WRITE_ADDR);
 	writel(0x10000,base_addr + MPB_RW_DATA);
 	
+/*for some reason,need init these registers*/
+	writel(PGU_BASE + GENRSP,base_addr + MPB_WRITE_ADDR);
+        writel(0x0,base_addr + MPB_RW_DATA);
 
+	writel(PGU_BASE + CFGRNR,base_addr + MPB_WRITE_ADDR);
+        writel(0x0,base_addr + MPB_RW_DATA);
 
 }
+
 int dwcroce_init_hw(struct dwcroce_dev *dev)
 {
 	int status;
@@ -1417,7 +1423,7 @@ static int dwcroce_set_av_params(struct dwcroce_qp *qp, struct ib_qp_attr *attrs
 
 	qp->sgid_idx = grh->sgid_index;
 	status = dwcroce_resolve_dmac(dev,ah_attr,&qp->mac_addr[0]);
-
+	return status;
 }
 
  int dwcroce_qp_state_change(struct dwcroce_qp *qp, enum ib_qp_state new_ib_state, enum ib_qp_state *old_ib_state) {
