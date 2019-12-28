@@ -1,6 +1,6 @@
 obj-m += dwcroce.o
 
-dwcroce-y := dwcroce_main.o dwcroce_verbs.o dwcroce_ah.o dwcroce_hw.o
+dwcroce-y := dwcroce_main.o dwcroce_verbs.o dwcroce_ah.o dwcroce_hw.o dwcroce_pool.o
 
 
 

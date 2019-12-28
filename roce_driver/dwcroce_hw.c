@@ -506,7 +506,7 @@ static int dwcroce_init_pgu_wqe(struct dwcroce_dev *dev)
 
 	count = 1ull << QPNUM; // 1024.
 	count = count -1;
-	pintk("dwcroce:WQE INIT, count : %d \n",count);//added by hs
+	printk("dwcroce:WQE INIT, count : %d \n",count);//added by hs
 	/*socket id*/
 	writel(PGU_BASE + SOCKETID,base_addr + MPB_WRITE_ADDR);
 	writel(0x0,base_addr + MPB_RW_DATA);//should be MAC Address,but there is only 32bits.
@@ -1095,7 +1095,7 @@ int dwcroce_hw_create_qp(struct dwcroce_dev *dev, struct dwcroce_qp *qp, struct 
 	len = 0;
 	/*For sq*/
 	u32 max_wqe_allocated;
-	u32 max_sges = attrs->cap.max_send_sge;j
+	u32 max_sges = attrs->cap.max_send_sge;
 	max_wqe_allocated = min_t(u32,attrs->cap.max_send_wr +1,dev->attr.max_qp_wr);
 	max_sges = min_t(u32,max_wqe_allocated,max_sges); // For a sge need a wqe, so sglist 'lenghth can't over wqe 's mounts.
 	len = sizeof(struct dwcroce_wqe) * max_wqe_allocated;
@@ -1420,7 +1420,7 @@ static int dwcroce_set_av_params(struct dwcroce_qp *qp, struct ib_qp_attr *attrs
 
 }
 
-static int dwcroce_qp_state_change(struct dwcroce_qp *qp, enum ib_qp_state new_ib_state, enum ib_qp_state *old_ib_state) {
+ int dwcroce_qp_state_change(struct dwcroce_qp *qp, enum ib_qp_state new_ib_state, enum ib_qp_state *old_ib_state) {
 	unsigned long flags;
 	enum dwcroce_qp_state new_state;
 	new_state = get_dwcroce_qp_state(new_ib_state);
@@ -1466,7 +1466,7 @@ int dwcroce_set_qp_params(struct dwcroce_qp *qp, struct ib_qp_attr *attrs, int a
 	if (attr_mask & IB_QP_AV) {
 		status = dwcroce_set_av_params(qp,attrs,attr_mask);
 	}
-	else if (qp->qp_type == IB_QPT_GSI || qp->qp_type = IB_QPT_UD)
+	else if (qp->qp_type == IB_QPT_GSI || qp->qp_type == IB_QPT_UD)
 	{
 		memcpy(qp->mac_addr,dev->devinfo.netdev->dev_addr,ETH_ALEN);
 		//GET LOCAL MAC
@@ -1497,10 +1497,10 @@ int dwcroce_set_qp_params(struct dwcroce_qp *qp, struct ib_qp_attr *attrs, int a
 		printk("dwcroce:rq_psn: %x \n",attrs->rq_psn);//added by hs
 	}
 	if (attr_mask & IB_QP_MAX_QP_RD_ATOMIC) {
-		printk("dwcroce:max_qp_rd_atomic: %x \n",attrs->max_ord_per_qp);//added by hs
+		printk("dwcroce:max_qp_rd_atomic: %x \n",attrs->max_rd_atomic);//added by hs
 	}
 	if (attr_mask & IB_QP_MAX_DEST_RD_ATOMIC) {
-		printk("dwcroce:max_dest_rd_atomic: %x \n",attrs->max_ird_per_qp);//added by hs
+		printk("dwcroce:max_dest_rd_atomic: %x \n",attrs->max_dest_rd_atomic);//added by hs
 	}
 	
 	printk("dwcroce:%s end \n",__func__);//added by hs

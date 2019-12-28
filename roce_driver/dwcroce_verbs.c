@@ -23,27 +23,27 @@ static void dwcroce_set_wqe_dmac(struct dwcroce_qp *qp, struct dwcroce_wqe *wqe)
 {
 	struct dwcroce_wqe tmpwqe;
 	memset(&tmpwqe,0,sizeof(struct dwcroce_wqe));
-	tmpwqe->destqp = qp->mac_addr[1];
-	tmpwqe->destqp << 8;
-	tmpwqe->destqp = tmpwqe->destqp + qp->mac_addr[0];
-	tmpwqe->destqp <<4;
-	tmpwqe->destsocket1 = qp->mac_addr[5];
-	tmpwqe->destqp << 8;
-	tmpwqe->destsocket1 += qp->mac_addr[4];
-	tmpwqe->destqp << 8;
-	tmpwqe->destsocket1 += qp->mac_addr[3];
-	tmpwqe->destqp <<8;
-	tmpwqe->destsocket1 +=qp->mac_addr[2];
-	tmpwqe->destqp <<4;
-	tmpwqe->destsocket1 += qp->mac_addr[1] & 0xf0;
-	tmpwqe->destsocket2 += qp->mac-addr[5] & 0x0f;
+	tmpwqe.destqp = qp->mac_addr[1];
+	tmpwqe.destqp << 8;
+	tmpwqe.destqp = tmpwqe.destqp + qp->mac_addr[0];
+	tmpwqe.destqp <<4;
+	tmpwqe.destsocket1 = qp->mac_addr[5];
+	tmpwqe.destqp << 8;
+	tmpwqe.destsocket1 += qp->mac_addr[4];
+	tmpwqe.destqp << 8;
+	tmpwqe.destsocket1 += qp->mac_addr[3];
+	tmpwqe.destqp <<8;
+	tmpwqe.destsocket1 +=qp->mac_addr[2];
+	tmpwqe.destqp <<4;
+	tmpwqe.destsocket1 += qp->mac_addr[1] & 0xf0;
+	tmpwqe.destsocket2 += qp->mac_addr[5] & 0x0f;
 
 	wqe->destqp & 0x000f;
-	wqe->destqp += tmpwqe->destqp;
+	wqe->destqp += tmpwqe.destqp;
 	wqe->destsocket1 & 0x0;
-	wqe->destsocket1 tmpwqe->destsocket1;
+	wqe->destsocket1 =tmpwqe.destsocket1;
 	wqe->destsocket2 & 0xf0;
-	wqe->destsocket2 += tmpwqe->destsocket2;
+	wqe->destsocket2 += tmpwqe.destsocket2;
 	printk("dwcroce:%s destqp:0x%x,  destsocket1: 0x%x,  destsocket2: 0x%x \n"
 		,__func__,wqe->destqp,wqe->destsocket1,wqe->destsocket2);//added by hs
 
@@ -68,7 +68,7 @@ static void dwcroce_set_wqe_opcode(struct dwcroce_wqe *wqe,u8 qp_type,u8 opcode)
 }
 
 //set rc,uc 's wqe
-static void dwcroce_set_wqe_destqp(struct dwcroce_qp *qp,struct dwcroce_wqe *wqe)
+static void dwcroce_set_rcwqe_destqp(struct dwcroce_qp *qp,struct dwcroce_wqe *wqe)
 {
 	
 	u16 tempqpn;
@@ -194,11 +194,11 @@ static int dwcroce_build_sges(struct dwcroce_qp *qp, struct dwcroce_wqe *wqe, in
 		if(status)
 			return status;
 		if(qp->destqp)
-			dwcroce_set_wqe_destqp(qp,tmpwqe);
+			dwcroce_set_rcwqe_destqp(qp,tmpwqe);
 		
 		dwcroce_set_wqe_dmac(qp,tmpwqe);
-		tmpwqe->qkey = qp->qkey;
-		tmpwqe->rkey = sg_list[i].rkey;
+		tmpwqe->qkey = qp->qkey;	
+		//tmpwqe->rkey = sg_list[i].rkey;
 		tmpwqe->lkey = sg_list[i].lkey;
 		tmpwqe->localaddr = sg_list[i].addr;
 		tmpwqe->dmalen = sg_list[i].length;
@@ -234,6 +234,7 @@ static int dwcroce_buildwrite_sges(struct dwcroce_qp *qp, struct dwcroce_wqe *wq
 		status = dwcroce_build_wqe_opcode(qp,tmpwqe,wr);//added by hs 
 		if(status)
 			return -EINVAL;
+	
 		tmpwqe->rkey = rdma_wr(wr)->rkey;
 		tmpwqe->lkey = sg_list[i].lkey;
 		tmpwqe->localaddr = sg_list[i].addr;
@@ -1339,7 +1340,7 @@ int _dwcroce_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 			wqepagesize = readl(base_addr + MPB_RW_DATA);
 
 			writel(PGU_BASE + CFGRNR,base_addr + MPB_WRITE_ADDR);
-			cfgenable =real(base_addr + MPB_RW_DATA);
+			cfgenable =readl(base_addr + MPB_RW_DATA);
 			if(wqepagesize != 0x00100000)
 			{/*start nic*/
 				writel(PGU_BASE + GENRSP,base_addr + MPB_WRITE_ADDR);
