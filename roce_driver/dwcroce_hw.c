@@ -23,12 +23,16 @@ static int phd_start(struct dwcroce_dev *dev)
 	base_addr = dev->devinfo.base_addr;
 	writel(PHD_BASE_0 + PHDSTART, base_addr + MPB_WRITE_ADDR);
 	writel(0x1, base_addr + MPB_RW_DATA);
+
+	writel(PHD_BASE_1 + PHDSTART, base_addr + MPB_WRITE_ADDR);
+	writel(0x1, base_addr + MPB_RW_DATA);
+
 }
 
 static int phd_udp_init(struct dwcroce_dev *dev)
 {
-	void __iomem* base_addr;
-	base_addr = dev->devinfo.base_addr;
+	//void __iomem* base_addr;
+	//base_addr = dev->devinfo.base_addr;
 	printk("dwcroce: no need to init udp\n");//added by hs
 	return 0;
 }
@@ -458,13 +462,13 @@ static int dwcroce_init_cm(struct dwcroce_dev *dev)
 
 	/*write cmcfg*/
 	writel(CM_CFG + CMLOGEN,base_addr + MPB_WRITE_ADDR);
-	writel(0x7,base_addr + MPB_RW_DATA);
+	writel(0x3,base_addr + MPB_RW_DATA);
 
 	writel(CM_CFG + CMERREN,base_addr + MPB_WRITE_ADDR);
-	writel(0x7,base_addr + MPB_RW_DATA);
+	writel(0x3,base_addr + MPB_RW_DATA);
 
 	writel(CM_CFG + CMINTEN,base_addr + MPB_WRITE_ADDR);
-	writel(0x7,base_addr + MPB_RW_DATA);
+	writel(0x3,base_addr + MPB_RW_DATA);
 	return 0;
 }
 
