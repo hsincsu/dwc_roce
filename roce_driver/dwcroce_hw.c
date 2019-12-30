@@ -104,9 +104,12 @@ static int phd_ipv4_init(struct dwcroce_dev *dev)
 	struct net_device *netdev;
 	netdev = dev->devinfo.netdev;
 	__be32 addr;
+	printk("dwcroce:%s next is get ip \n",__func__);//added by hs
 	addr = netdev->ip_ptr->ifa_list->ifa_address;	
 	u32 addr_k;
+	printk("dwcroce:%s next is __be32_to_cpu(addr)",__func__);//added by hs
 	addr_k = __be32_to_cpu(addr);
+	
 	printk("ipv4: %x",addr_k);//added by hs for info
 
         writel(PHD_BASE_0 + PHDIPV4SOURCEADDR, base_addr + MPB_WRITE_ADDR);
@@ -191,12 +194,12 @@ static int phd_mac_init(struct dwcroce_dev *dev)
 	addl = readl(dev->devinfo->mac_base + MAC_MACA0LR);
 	printk("addh is %x, addl is %x \n",addh,addl);//added by hs 
 */
-	int i =0;
+//	int i =0;
 	unsigned int macaddr_l =0;
 	unsigned int  macaddr_h = 0;
 	macaddr_h = (addr[5]<<8)|(addr[4]<<0);
 	macaddr_l = (addr[3]<<24)|(addr[2]<<16)|(addr[1]<<8)|(addr[0]<<0);
-	
+	printk("dwcroce:macaddr_h:0x%x, macaddr_l:0x%x \n",macaddr_h,macaddr_l);//added by hs	
 	/*mac source addr  */
 	writel(PHD_BASE_0 + PHDMACSOURCEADDR_H, base_addr + MPB_WRITE_ADDR);
 	writel(macaddr_h, base_addr + MPB_RW_DATA);
@@ -209,7 +212,7 @@ static int phd_mac_init(struct dwcroce_dev *dev)
 
 	writel(PHD_BASE_1 + PHDMACSOURCEADDR_L, base_addr + MPB_WRITE_ADDR);
 	writel(macaddr_l, base_addr + MPB_RW_DATA);
-
+	printk("dwcroce:%s end \n",__func__);//added by hs
 	/*end*/
 #if 0 //added by hs ,no need to init !
 	/*mac type */
